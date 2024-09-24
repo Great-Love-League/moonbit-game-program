@@ -1,5 +1,4 @@
 # moonbit-game-program
 
-nothing
-
+try
 add and try
