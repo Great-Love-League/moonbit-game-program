@@ -1,1 +1,3 @@
 # moonbit-game-program
+
+nothing
