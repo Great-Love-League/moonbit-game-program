@@ -52,9 +52,9 @@ $SSH(Secure Shell)$ 是一种网络协议，用于在不安全的网络上安全
 
 打开git面板会有这三个东西，我们依次介绍
 
-1. **源代码管理储存库**
+#### **源代码管理储存库**
 
-   ![image-20240924175452943](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924175452943.png)
+![image-20240924175452943](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924175452943.png)
 
 从左到右依次是仓库名称，当前分支名，同步，提交暂存，刷新，更多操作。
 
@@ -67,6 +67,8 @@ $SSH(Secure Shell)$ 是一种网络协议，用于在不安全的网络上安全
 ![image-20240924180332177](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924180332177.png)
 
 ​	拉去推送字面意思，是本地仓库与远程仓库的交互。克隆是将远程仓库克隆到本地。
+
+​	**签出到：** 就是切换分支的意思，可以在这里面创建新的分支或者切换到现有分支（和直接点当前分支名是一个作用）
 
 ​	**提交**：
 
