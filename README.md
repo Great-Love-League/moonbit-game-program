@@ -70,9 +70,11 @@ $SSH(Secure Shell)$ 是一种网络协议，用于在不安全的网络上安全
 
 ​	**提交**：
 
-​	![image-20240924181119008](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924181119008.png)
+​	![image-20240924212342073](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924212342073.png)
 
 ​	这里的提交就是字面意思，但是大家会发现后面三个提交有“(修改)”，这个是可以将你这次提交与上一次提交相合并，减少提交数量，并且可以修改提交报文。
+
+​	关于
 
 ​	**储存：**
 
