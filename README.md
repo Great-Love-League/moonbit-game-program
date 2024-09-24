@@ -48,13 +48,13 @@ $SSH(Secure Shell)$ 是一种网络协议，用于在不安全的网络上安全
 
 #### 面板介绍
 
-![image-20240924174401840](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924174401840.png)
+![image-20240924174401840](https://cdn.luogu.com.cn/upload/image_hosting/yd0isist.png)
 
 打开git面板会有这三个东西，我们依次介绍
 
 #### **源代码管理储存库**
 
-![image-20240924175452943](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924175452943.png)
+![image-20240924175452943](https://cdn.luogu.com.cn/upload/image_hosting/di8zsyfr.png)
 
 从左到右依次是仓库名称，当前分支名，同步，提交暂存，刷新，更多操作。
 
@@ -64,7 +64,7 @@ $SSH(Secure Shell)$ 是一种网络协议，用于在不安全的网络上安全
 
 **更多操作（基本上关于git的操作都在这里）：**
 
-![image-20240924180332177](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924180332177.png)
+![image-20240924180332177](https://cdn.luogu.com.cn/upload/image_hosting/x592xrl6.png)
 
 ​	**拉取推送克隆：** 拉取是指从远程仓库获取数据并立即尝试与本地分支合并。推送是将本地分支的更改推送到远程仓库。克隆是将远程仓库克隆到本地。
 
@@ -74,7 +74,7 @@ $SSH(Secure Shell)$ 是一种网络协议，用于在不安全的网络上安全
 
 ​	**提交**：
 
-​	![image-20240924212342073](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924212342073.png)
+​	![image-20240924212342073](https://cdn.luogu.com.cn/upload/image_hosting/e8i1xdru.png)
 
 ​	这里的提交就是字面意思，但是大家会发现后面三个提交有“(修改)”，这个是可以将你这次提交与上一次提交相合并，减少提交数量，并且可以修改提交报文。
 
@@ -84,7 +84,7 @@ $SSH(Secure Shell)$ 是一种网络协议，用于在不安全的网络上安全
 
 ​	**储存：**
 
-​	![image-20240924181542850](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924181542850.png)
+​	![image-20240924181542850](https://cdn.luogu.com.cn/upload/image_hosting/f3jkcyvp.png)
 
 ​	这个适用于你要切换分支，但是暂存区和工作区还有未提交的文件，可以新建一个储存，将当前状态储存下来，在之后再切换回来。
 
@@ -92,7 +92,7 @@ $SSH(Secure Shell)$ 是一种网络协议，用于在不安全的网络上安全
 
 ​	**分支：**
 
-​	![image-20240924221438711](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924221438711.png)
+​	![image-20240924221438711](https://cdn.luogu.com.cn/upload/image_hosting/5r9fnlcx.png)
 
 ​	分支合并：选择一个分支与当前分支合并
 
@@ -106,7 +106,7 @@ $SSH(Secure Shell)$ 是一种网络协议，用于在不安全的网络上安全
 
 在这里会显示一些在工作区的更改，以及暂存区的情况，还有提交修改按钮
 
-![image-20240924222518316](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924222518316.png)
+![image-20240924222518316](https://cdn.luogu.com.cn/upload/image_hosting/oig718kr.png)
 
 在最上面“消息”框内输入本次提交的提交信息，当然也可以点击下箭头选择更多的功能。
 
@@ -116,7 +116,7 @@ Hint：右上角的三个点和在上一节中的功能是一样的。
 
 #### 源代码管理图
 
-![image-20240924222918393](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924222918393.png)
+![image-20240924222918393](https://cdn.luogu.com.cn/upload/image_hosting/3dawl4xj.png)
 
 在这里，你可以看到当前分支以及其依据分支（就是这个分支从哪里迁出来的）和分支合并的情况，以及这些分支是属于哪里的，本地的还是云端同步的是属于那个分支的（就在右边的小图标）
 
@@ -126,15 +126,15 @@ Hint：右上角的三个点和在上一节中的功能是一样的。
 
 当合并时会出现一个合并更改，其中有“！”标识的就代表有冲突
 
-![image-20240924225456776](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924225456776.png)
+![image-20240924225456776](https://cdn.luogu.com.cn/upload/image_hosting/alq0krh6.png)
 
 这个时候打开他，就会看见如下：
 
-![image-20240924225607043](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924225607043.png)
+![image-20240924225607043](https://cdn.luogu.com.cn/upload/image_hosting/j18b56p8.png)
 
 在左上角提供了一些快捷方式，具体建议自行尝试。如果修改比较复杂，就可以使用右下角的“在合并编辑器中解析”
 
-![image-20240924225847929](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924225847929.png)
+![image-20240924225847929](https://cdn.luogu.com.cn/upload/image_hosting/vsi17kyj.png)
 
 左右两边就是冲突内容，下面的就是最后合并得到的内容，在左右两个框中提供了一些快捷导入方式，可以自行尝试。
 
@@ -146,7 +146,7 @@ Hint：右上角的三个点和在上一节中的功能是一样的。
 
 ~~其实这个一开始就该讲~~
 
-![image-20240924231113915](C:\Users\18384\AppData\Roaming\Typora\typora-user-images\image-20240924231113915.png)
+![image-20240924231113915](https://cdn.luogu.com.cn/upload/image_hosting/zyk9cjxa.png)
 
 |        |                              |
 | ------ | ---------------------------- |
