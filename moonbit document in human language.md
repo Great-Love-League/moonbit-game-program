@@ -651,7 +651,119 @@ fn main {
     | `String::fold[A](self : String, ~init : A, f : (A, Char) -> A) -> A` |
     | `String::rev_fold[A](self : String, ~init : A, f : (A, Char) -> A) -> A` |
 
+### 字符 Char
 
+char的东西少呀，比较轻松
+
+#### 自带函数
+
+1. to_..
+
+   | to_type                                  |               |
+   | ---------------------------------------- | ------------- |
+   | `Char::to_string(self : Char) -> String` |               |
+   | `Char::to_json(self : Char) -> Json`     |               |
+   | `Char::to_int(self : Char) -> Int`       | 转化为ASCII码 |
+
+2. Char::op_equal
+
+   `Char::op_equal(self : Char, other : Char) ->Bool`
+
+   以ASCII码来比较大小
+
+3. Char::compare
+
+   `Char::compare(self : Char, other : Char) -> Int`
+
+   以ASCII码来比较大小
+
+   | Result | Return value |
+   | ------ | ------------ |
+   | <      | -1           |
+   | =      | 0            |
+   | >      | 1            |
+
+4. Char::default()
+
+   `Char::default() -> Char`
+
+   返回一个字符 `NUL`
+
+5. Char::from_int
+
+   `Char::from_int(val : Int)->Char`
+
+   返回一个 ASCII 码为 `val` 的字符
+
+6. 发现char还有两个接口方法被实现
+
+   | `impl Hash for Char with hash(self : Char) -> Int`           |
+   | ------------------------------------------------------------ |
+   | `impl Hash for Char with hash_combine(self : Char, hasher : Hasher) -> Unit` |
+
+   不知道干啥
+
+### 字节（序列）Byte(Bytes)
+
+感觉用不着，暂时放下。其实 `Byte` 和 `Bytes` 的关系和 `Char` 与 `String` 的关系差不多
+
+### 元组 Tuple
+
+我翻文档发现这个元组最高只支持16个元素，可以去试一下把元组搞爆
+
+#### 元组介绍
+
+元组是一个有限值的**有序**集合，使用圆括号 `()` 构造，其中的元素由逗号 `,` 分隔。元素的顺序很重要，例如 `(1, true)` 和 `(true, 1)` 是不同的类型。以下是一个例子：
+
+```
+fn pack(a: Bool, b: Int, c: String, d: Double) -> (Bool, Int, String, Double) {
+    (a, b, c, d)
+}
+fn main {
+    let quad = pack(false, 100, "text", 3.14)
+    let (bool_val, int_val, str, float_val) = quad
+    println("\{bool_val} \{int_val} \{str} \{float_val}")
+}
+//false 100 text 3.14
+```
+
+元组的访问方式有两种
+
+1. 模式匹配
+
+   即通过给元组中每个变量一个名字来访问他，这个名字相当于引用
+
+2. 索引
+
+   和下标没区别，只不过是用点号标识
+
+   ```
+   fn main {
+     ttry((1,2))
+   }
+   
+   fn ttry(t:(Int,Int))->Unit{
+     let (x1,y1)=t
+     println(x1)//模式匹配
+     println(t.0)//索引
+   }
+   ```
+
+   发现一个问题，这样的元组是不可以更改的，还在寻找更改的方法
+
+#### 内在函数
+
+1. Tuple::op_equal
+
+   元组自动重载了 `==`
+
+2. Tuple::to_string
+
+   元组支持直接输出，以及 `“\{}”` 输出
+
+#### 数组
+
+又来一个大头，比string更大QAQ
 
 ## 函数
 
@@ -832,3 +944,51 @@ main 函数只可以有一个
 
 
 
+## 泛型
+
+您可以在顶层的函数和数据结构定义中使用泛型。类型参数可以由方括号引入。其实很像 `C++` 中的 `template<typename T>`
+
+在使用泛型的过程中，可以通过一些方法为泛型指定接口（看了接口再看这里，不然蒙蔽）
+
+```
+trait add{
+  op_add(Self,Self)->Self
+  op_mul(Self,Self)->Self
+}
+
+fn comput[T](a:T,b:T)->T{
+  a*b
+}
+```
+
+这样会报错，因为没有为泛型 $T$ 提供相乘的方法
+
+现在有两个解决办法
+
+1. 为泛型默认方法
+
+   ```
+   trait add{
+     op_add(Self,Self)->Self
+     op_mul(Self,Self)->Self
+   }
+   
+   fn comput[T:add](a:T,b:T)->T{
+     a*b
+   }
+   ```
+
+2. 在使用时，指定接口
+
+   ```
+   trait add{
+     op_add(Self,Self)->Self
+     op_mul(Self,Self)->Self
+   }
+   
+   fn comput[T](a:T,b:T)->T{
+     add:op_add(a,b)
+   }
+   ```
+
+   注意，如果接口重载了运算符，只可以写成运算符的函数形式
