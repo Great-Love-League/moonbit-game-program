@@ -1,6 +1,14 @@
 # moonbit 学习笔录
 
+[参考文献1](https://mooncakes.io/docs/#/moonbitlang/core/)
+
+[MoonBit | MoonBit Docs (moonbitlang.cn)](https://docs.moonbitlang.cn/)
+
+
+
 ## 内置数据结构
+
+为变量赋值使用 `let` 或者 `let mut`（标示变量可以更改）
 
 hint：在 moonbit 中， ``let`` 关键字用于绑定变量，这意味着这可以在同一个地方将同一个变量名反复绑定
 
@@ -761,9 +769,654 @@ fn main {
 
    元组支持直接输出，以及 `“\{}”` 输出
 
-#### 数组
+### 数组 array
 
-又来一个大头，比string更大QAQ
+数组一共有三种类型
+
+1. Array 相当于 C++中的vector
+2. FixedArray 相当于C++中的数组 性能较Array优秀
+3. Arrayview
+
+#### 数组 Array
+
+数组是支持随机访问的值的集合，并且可以在大小上增长。
+
+##### 内在函数
+
+###### 基本操作类
+
+1. Array::push[T]
+
+   `Array::push[T](self : Array[T], value : T) -> Unit`
+
+   将一个元素添加到数组的末尾。
+
+   `Array::push_iter[T](self : Array[T], iter : Iter[T]) -> Unit`
+
+   将迭代器中的所有元素添加到数组的末尾。该函数遍历所提供的迭代器中的每个元素，并使用push方法将它们添加到数组中。
+
+2. Array::pop[T]
+
+   `Array::pop[T](self : Array[T]) -> T?`
+
+   从数组中移除最后一个元素并返回该元素，如果为空则返回None。
+
+   这个 `pop` 很安全呀
+
+3. Array::new[T]
+
+   `Array::new[T](~capacity : Int = ..) -> Array[T]`
+
+   Creates a new array.
+
+4. Array::resize[T]
+
+   `Array::resize[T](self : Array[T], new_len : Int, f : T) -> Unit`
+
+   使用默认值将数组大小调整为新长度，保留原有元素，在末尾加上默认值
+
+5. Array::clear[T]
+
+   `Array::clear[T](self : Array[T]) -> Unit`
+
+   清除数组，移除所有值。
+
+   此方法对阵列的分配容量没有影响，只是将长度设置为0。
+
+6. Array::length[T]
+
+   `Array::length[T](self : Array[T]) -> Int`
+
+   返回数组中元素的个数。
+
+7. Array::dedup
+
+   `Array::dedup[T : Eq](self : Array[T]) -> Unit`
+
+   去重函数，和C++中的 `unique` 是一个东西，但是没有返回值
+
+   其中泛型 `T` 必须实现了接口 `Eq` ，就是要重载运算符 `==`
+
+   **目前这个函数有bug，等待修正**
+
+8. Array::rev_inplace[T]
+
+   `Array::rev_inplace[T](self : Array[T]) -> Unit`
+
+   翻转整个数组
+
+9. Array::rev[T]
+
+   ` Array::rev[T](self : Array[T]) -> Array[T]`
+
+   反转数组中元素的顺序并返回一个新数组。对原数组没有改变
+
+10. Array::is_sorted[T]
+
+    `Array::is_sorted[T : Compare + Eq](self : Array[T]) -> Bool`
+
+    测试数组是否已排序。
+
+    默认为升序，降序要自己改
+
+    ```
+    fn main {
+      let arr = [1, 2, 3, 4, 5, 6]
+      let c=arr.rev()
+      println(c.is_sorted()) //false
+      println(arr.is_sorted()) //true
+    }
+    ```
+
+    
+
+11. Array::sort[T : Compare + Eq]
+
+    `Array::sort[T : Compare + Eq](self : Array[T]) -> Unit`
+
+    快排，修改是 `in place`
+
+    `Array::sort_by[T](self : Array[T], cmp : (T, T) -> Int) -> Unit`
+
+    通过某个比较规则排序
+
+    ` Array::sort_by_key[T, K : Compare + Eq](self : Array[T], map : (T) -> K) -> Unit`
+
+    排序的依据变为了 `map(T)->K`
+
+    此排序不稳定，相同的元素的顺序可能会被交换
+
+12. Array::mapi[T, U]
+
+    `Array::mapi[T, U](self : Array[T], f : (Int, T) -> U) -> Array[U]`
+
+    将数组中的每一个元素通过 `f` 提供的映射关系进行转化，得到一个新的数组，新数组的元素种类可以不同
+
+    `f` 中，第一个参数为下标，第二个为对应的元素
+
+    ```
+    fn main {
+      let a:Array[Int]=[0,0,0,0,0,0]
+      println(a)
+      let a=a.mapi(fn(x,y){x+y});
+      println(a)
+    }
+    //[0, 0, 0, 0, 0, 0]
+    //[0, 1, 2, 3, 4, 5]
+    ```
+
+13. Array::map[T, U]
+
+    `Array::map[T, U](self : Array[T], f : (T) -> U) -> Array[U]`
+
+    和上一个一样，只是 `f` 少一个参数
+
+14. Array::mapi_inplace[T]
+
+    `Array::mapi_inplace[T](self : Array[T], f : (Int, T) -> T) -> Unit`
+
+    和 `mapi` 一样，只不过是 `in_place` 修改
+
+15. Array::insert[T]
+
+    `Array::insert[T](self : Array[T], index : Int, value : T) -> Unit`
+
+    插入元素，在给定的索引处插入元素
+
+    ```
+    fn main {
+      let a:Array[Int]=[0,0,0,0,0,0]
+      println(a)
+      a.insert(1,2)
+      println(a)
+    }
+    //[0, 0, 0, 0, 0, 0]
+    //[0, 2, 0, 0, 0, 0, 0]
+    ```
+
+16. Array::remove[T]
+
+    `Array::remove[T](self : Array[T], index : Int) -> T`
+
+    删除下表对应的元素，并且返回他。
+
+    注意：有返回值！
+
+    ```
+    fn main {
+      let a:Array[Int]=[1,2,3,4,5,6,7]
+      println(a)
+      a.remove(0) |> ignore
+      println(a)
+    }
+    //[1, 2, 3, 4, 5, 6, 7]
+    //[2, 3, 4, 5, 6, 7]
+    ```
+
+17. Array::drain[T]
+
+    `Array::drain[T](self : Array[T], begin : Int, end : Int)->Array[T]`
+
+    删除 `self` 中 `[begin,end)` 的元素，并且返回他
+
+    ```
+    let v = [3, 4, 5]
+    let vv = v.drain(1, 2) // vv = [4], v = [3, 5]
+    ```
+
+    
+
+18. Array::binary_search[T]
+
+    `Array::binary_search[T : Compare + Eq](self : Array[T], value : T) -> Result[Int, Int]`
+
+    建议了解错误类型后来看
+
+    在此升序数组中查找 `value` 并返回其索引
+
+    | Result             | Return value                                            |
+    | ------------------ | ------------------------------------------------------- |
+    | 找到一个符合要求   | 返回OK变量，包含其索引                                  |
+    | 找到多个个符合要求 | 返回OK变量，包含最左边那个的索引                        |
+    | 没有找到符合要求的 | 返回Err变量，其中包含可以插入元素以保持排序顺序的索引。 |
+
+    ```
+    fn main {
+      let v = [1,3, 4, 5]
+      let result = v.binary_search(2)
+      println(result) // Err(1)
+      let result = v.binary_search(1)
+      println(result) // Ok(0)
+      let result = v.binary_search(3)
+      println(result) // Ok(1)
+    }
+    ```
+
+    **务必保持元素成升序排列**
+
+19. Array::search[T : Eq]
+
+    `Array::search[T : Eq](self : Array[T], value : T) -> Int?`
+
+    结果和 `Array::binary_search[T]` 一样，但是不用保证升序
+
+20. Array::swap[T]
+
+    `Array::swap[T](self : Array[T], i : Int, j : Int) -> Unit`
+
+    交换数组中的两个元素。
+
+21. Array::filter[T]
+
+    `Array::filter[T](self : Array[T], f : (T) -> Bool) -> Array[T]`
+
+    根据 `f` 中提供的方法，对 `self` 实现过滤
+
+    ```
+    fn main {
+      let arr = [1, 2, 3, 4, 5, 6]
+      let b=arr.filter(fn (x) { x % 2 == 0 })  
+      println(b)// [2, 4, 6]
+    }
+    ```
+
+    这个不会改变 `self` 本身
+
+22. Array::extract_if[T]
+
+    `Array::extract_if[T](self : Array[T], f : (T) -> Bool) -> Array[T]`
+
+    此函数功能与上一个一样，但是有点不同
+
+    这个函数将从原始数组中删除元素并返回一个新数组。
+
+    ```
+    let v = [3, 4, 5]
+    let vv = v.extract_if(fn(x) { x > 3 }) // vv = [4, 5], v = [3]
+    ```
+
+    
+
+23. Array::to_string[T]
+
+    `Array::to_string[T : Show](self : Array[T]) -> String`
+
+    字面意思
+
+24. Array::to_json[T]
+
+    `Array::to_json[X : ToJson](self : Array[X]) -> Json`
+
+25. Array::from_iter[T]
+
+    `Array::from_iter[T](iter : Iter[T]) -> Array[T]`
+
+    从一个迭代器构造数组
+
+26. Array::make[T]
+
+    `Array::make[T](len : Int, elem : T) -> Array[T]`
+
+    用指定的长度[len]和元素[elem]创建一个新的数组。
+
+    `Array::makei[T](length : Int, value : (Int) -> T) -> Array[T]`
+
+    初始化一个长度为 `length` 的数组，其的值由 `value` 函数决定
+
+27. Array::split_at[T]
+
+    `Array::split_at[T](self : Array[T], index : Int) -> (Array[T], Array[T])`
+
+    将数组分为两个，第一个包含 `[0,index-1]` 第二个包含 `[index,self.length()]`
+
+28. Array::is_empty[T]
+
+    `Array::is_empty[T](self : Array[T]) -> Bool`
+
+    字面意思
+
+29. Array::repeat[T]
+
+    `Array::repeat[T](self : Array[T], times : Int) -> Array[T]`
+
+    字面意思
+
+30. Array::ends_with[T : Eq] && Array::starts_with[T : Eq]
+
+    `Array::ends_with[T : Eq](self : Array[T], suffix : Array[T]) -> Bool`
+
+    检查数组是否以给定后缀结尾。
+
+    `Array::starts_with[T : Eq](self : Array[T], prefix : Array[T]) -> Bool`
+
+    检查数组是否以给定的前缀开始。
+
+31. Array::retain[T]
+
+    `Array::retain[T](self : Array[T], f : (T) -> Bool) -> Unit`
+
+    仅保留 `f` 指定的元素。
+
+    ```
+    fn main {
+      let v = [3, 4, 5]
+      v.retain(fn(x) { x > 3 })
+      println(v) // [4, 5]
+    }
+    ```
+
+32. Array::append[T]
+
+    `Array::append[T](self : Array[T], other : Array[T]) -> Unit` 
+
+    就是 `op_add[T]`
+
+###### 操作符重载
+
+| Op_name                                                      | Operation |
+| ------------------------------------------------------------ | --------- |
+| `Array::op_as_view[T](self : Array[T], ~start : Int, ~end? : Int) -> ArrayView[T]` | [:]       |
+| `Array::op_add[T](self : Array[T], other : Array[T]) -> Array[T]` | +         |
+| `Array::op_set[T](self : Array[T], index : Int, value : T) -> Unit` | []        |
+| `Array::op_equal[T : Eq](self : Array[T], other : Array[T]) -> Bool` | ==        |
+
+注意：`op_set` 有一个更安全的使用方式
+
+`Array::get[T](self : Array[T], index : Int) -> T?`
+
+从数组中检索指定索引处的元素，如果索引越界则为None
+
+###### 莫名奇妙类
+
+1. Array::reserve_capacity[T]
+
+   `Array::reserve_capacity[T](self : Array[T], capacity : Int) -> Unit`
+
+   保留容量以确保它至少可以容纳capacity参数指定的元素数量。
+
+   没啥用，array的capacity似乎会自己增加
+
+2. Array::fold_left
+
+   `Array::fold_left[T, U](self : Array[T], f : (U, T) -> U, ~init : U) -> U`
+
+   Fold out values from an array according to certain rules.
+
+   @alert deprecated "Use fold instead."
+
+3.  Array::each[T]
+
+   ` Array::each[T](self : Array[T], f : (T) -> Unit) -> Unit`
+
+   遍历数组中的所有元素，可以在 `f` 函数中进行一些处理，但是传入的参数是拷贝的，不是引用，感觉没啥用，不如循环
+   
+4. Array::eachi[T]
+
+   `Array::eachi[T](self : Array[T], f : (Int, T) -> Unit) -> Unit`
+
+   和上一个一样，只是 `f` 传入参数多了一个 `index`
+
+5. Array::rev_eachi[T]
+
+   `Array::rev_eachi[T](self : Array[T], f : (Int, T) -> Unit) -> Unit`
+
+   和上面那个一样，只是顺序反了
+
+6. Array::binary_search_by[T]
+
+   `Array::binary_search_by[T](self : Array[T], cmp : (T) -> Int) -> Result[Int, Int]`
+
+   没啥用
+
+7. Array::chunks[T]
+
+   `Array::chunks[T](self : Array[T], size : Int) -> Array[Array[T]]`
+
+   将数组的元素分组为大小相同的块。
+
+   最后不够分的元素会被放进最后一个块
+
+   ```
+   let v = [1, 2, 3, 4, 5, 6, 7, 8]
+   let chunks = v.chunks(3) // chunks = [[1, 2, 3], [4, 5, 6], [7, 8]]
+   ```
+
+8. Array::split[T]
+
+   `Array::split[T](self : Array[T], pred : (T) -> Bool) -> Array[Array[T]]`
+
+   基于 `pred` 将数组拆成块
+
+   ```
+   fn main {
+     let v = [1, 0, 2, 0, 3, 0, 4]
+     let chunks = v.split(fn(x) { x == 0 })
+     println(chunks)
+   }
+   ```
+
+9. Array::flatten[T]
+
+   `Array::flatten[T](self : Array[Array[T]]) -> Array[T]`
+
+   理解为上两个函数的逆操作
+
+   ```
+   fn main {
+     let arr = [1, 2, 3, 4, 5, 6]
+     let b=arr.chunks(3)
+     println(b)//[[1, 2, 3], [4, 5, 6]]
+     let c=b.flatten()
+     println(c)//[1, 2, 3, 4, 5, 6]
+   }
+   ```
+
+   
+
+10. Array::shrink_to_fit[T]
+
+    `Array::shrink_to_fit[T](self : Array[T]) -> Unit`
+
+    Shrinks the capacity of the array as much as possible.
+
+11. Array::strip_prefix[T : Eq]
+
+    `Array::strip_prefix[T : Eq](self : Array[T], prefix : Array[T]) -> Array[T]?`
+
+    从数组中剥离前缀。如果数组以前缀开头，则返回前缀后面的数组，否则返回`None`。
+
+12. Array::join[T]
+
+    `Array::join[T : Show](self : Array[T], sep : String) -> String`
+
+    使用指定的分隔符将数组的元素连接为单个字符串。
+
+    ```
+    fn main {
+      let v = [4,3,3,4,4,5]
+      println(v.join("OK")) // [4, 5]
+    }//4OK3OK3OK4OK4OK5
+    ```
+
+#### FixedArray
+
+大体和 `array` 相同，但是其会固定你的数组长度，性能较 `array` 优秀,具体有以下一些区别
+
+1. FixedArray::from_array[T]
+
+   `FixedArray::from_array[T](array : Array[T]) -> FixedArray[T]`
+
+#### ArrayView
+
+这是 `Array` 的一个切片，他对于 `Array` 来说是引用，修改 `ArrayView` 会影响 `Array`
+
+```
+fn main {
+  let v = [4,3,3,4,4,5]
+  println(v)//[4, 3, 3, 4, 4, 5]
+  let b=v[0:1]
+  b[0]=1;
+  println(v)//[1, 3, 3, 4, 4, 5]
+  println(b)//[1]
+}
+```
+
+##### 自带函数
+
+这个的自带函数就少很多，这里简单列举，用法与功能和 `array` 的同名函数一样
+
+1. `ArrayView::length[T](self : ArrayView[T]) -> Int`
+2. `ArrayView::iter[A](self : ArrayView[A]) -> Iter[A]`
+3. `ArrayView::swap[T](self : ArrayView[T], i : Int, j : Int) -> Unit`
+4. `ArrayView::to_string[X : Show](self : ArrayView[X]) -> String`
+5. `ArrayView::rev_inplace[T](self : ArrayView[T]) -> Unit`
+6. ` ArrayView::each[T](self : ArrayView[T], f:(Int)->Unit)->Unit`
+
+### Map
+
+1. `Map::is_empty[K, V](self : Map[K, V]) -> Bool`
+
+   检查哈希映射是否为空。
+
+2. 重载
+
+   | Op_name                                                      | Operation |
+   | ------------------------------------------------------------ | --------- |
+   | `Map::op_equal[K : Eq, V : Eq](self : Map[K, V], that : Map[K, V]) -> Bool` | ==        |
+   | `Map::op_set[K : Hash + Eq, V](self : Map[K, V], key : K, value : V) -> Unit` | Map[K]=V  |
+   | `Map::op_get[K : Hash + Eq, V](self : Map[K, V], key : K) -> V?` | Map[K]    |
+
+3. `Map::iter[K, V](self : Map[K, V]) -> Iter[(K, V)]`
+
+   返回哈希映射的迭代器，按插入顺序提供元素。
+
+   `Map::values[K, V](self : Map[K, V]) -> Iter[V]`
+
+   `Map::iter2[K, V](self : Map[K, V]) -> Iter2[K, V]`
+
+4. `Map::each[K, V](self : Map[K, V], f : (K, V) -> Unit) -> Unit`
+
+   按插入顺序遍历映射的所有键值对。可以在 `f` 中对其进行一些处理，但是这个参数是拷贝的
+
+   `Map::eachi[K, V](self : Map[K, V], f : (Int, K, V) -> Unit) -> Unit`
+
+   多提供了一个参数
+
+5. `Map::to_array[K, V](self : Map[K, V]) -> Array[(K, V)]`
+
+   将哈希映射转换为数组。
+
+   `Map::to_json[K : Show, V : ToJson](self : Map[K, V]) -> Json`
+
+   将哈希映射转换为Json。
+
+   `Map::to_string[K : Show, V : Show](self : Map[K, V]) -> String`
+
+6. `Map::size[K, V](self : Map[K, V]) -> Int`
+
+   获取映射中键值对的数量。
+
+7. ` Map::get_or_default[K : Hash + Eq, V](self : Map[K, V], key : K, default : V) -> V`
+
+   获取与键关联的值，如果键不存在则返回提供的默认值。
+
+   `Map::get[K : Hash + Eq, V](self : Map[K, V], key : K) -> V?`
+
+   获取与键相关联的值，不存在返回 None
+
+8. `Map::remove[K : Hash + Eq, V](self : Map[K, V], key : K) -> Unit`
+
+   从哈希映射中删除键值对。
+
+9. `Map::capacity[K, V](self : Map[K, V]) -> Int`
+
+   得到`Map`的容量。
+
+10. `Map::of[K : Hash + Eq, V](arr : FixedArray[(K, V)]) -> Map[K, V]`
+
+    从 `FixedArray` 转化为 `Map`
+
+    `Map::from_iter[K : Hash + Eq, V](iter : Iter[(K, V)]) -> Map[K, V]`
+
+    从` iter `转化为 `Map`
+
+    `Map::from_array[K : Hash + Eq, V](arr : Array[(K, V)]) -> Map[K, V]`
+
+    从 `Array` 转化为 `Map`
+
+11. `Map::contains[K : Hash + Eq, V](self : Map[K, V], key : K) -> Bool`
+
+    检查哈希映射是否包含键。
+
+12. `Map::clear[K, V](self : Map[K, V]) -> Unit`
+
+    清除映射，移除所有键值对。保留已分配的空间。
+
+### 迭代器 Iter
+
+相当于指针（简单理解），在函数间传参时建议使用
+
+## 数据类型
+
+### [结构体 struct](https://docs.moonbitlang.cn/#数据类型)
+
+在 MoonBit 中，结构与元组类似，但它们的字段由字段名索引。 结构体可以使用结构体字面量构造，结构体字面量由一组带有标签的值组成，并用花括号括起来。 如果结构体字面量的字段完全匹配类型定义，则其类型可以被自动推断。 使用点语法 `s.f` 可以访问结构体字段。 如果一个字段使用关键字 `mut` 标记为可变，那么可以给它赋予新的值。
+
+```
+struct User {
+  id: Int
+  name: String
+  mut email: String
+}
+
+fn main {
+  let u = { id: 0, name: "John Doe", email: "john@doe.com" }
+  u.email = "john@doe.name"
+  println(u.id)
+  println(u.name)
+  println(u.email)
+}
+
+```
+
+#### 创建结构体的简写形式
+
+如果已经有和结构体的字段同名的变量，并且想使用这些变量作为结构体同名字段的值， 那么创建结构体时，可以只写字段名，不需要把同一个名字重复两次。例如：
+
+```
+fn main {
+  let name = "john"
+  let email = "john@doe.com"
+  let u = { id: 0, name, email } // 等价于 { id: 0, name: name, email: email }
+}
+```
+
+#### [更新结构体的语法](https://docs.moonbitlang.cn/#更新结构体的语法)
+
+如果想要基于现有的结构体来创建新的结构体，只需修改现有结构体的一部分字段，其他字段的值保持不变， 可以使用结构体更新语法：
+
+```
+struct User {
+  id: Int
+  name: String
+  email: String
+} derive(Show)
+
+fn main {
+  let user = { id: 0, name: "John Doe", email: "john@doe.com" }
+  let updated_user = { ..user, email: "john@doe.name" }
+  println(user)          // 输出: { id: 0, name: "John Doe", email: "john@doe.com" }
+  println(updated_user)  // 输出: { id: 0, name: "John Doe", email: "john@doe.name" }
+}
+```
+
+### 枚举
+
+看文档
+
+### 新类型
+
+建议不要用，因为他不会继承原有类型的函数，感觉有点麻烦
 
 ## 函数
 
@@ -978,6 +1631,25 @@ fn comput[T](a:T,b:T)->T{
    }
    ```
 
+   对与同一个泛型，可以使其使用多个接口，使用 `+` 连接
+
+   ```
+   trait add{
+     op_add(Self,Self)->Self
+     op_mul(Self,Self)->Self
+   }
+   
+   trait apd{
+     op_sub(Self,Self)->Self
+   }
+   
+   fn comput[T:add+apd](a:T,b:T)->T{
+     a-b+a*b
+   }
+   ```
+
+   
+
 2. 在使用时，指定接口
 
    ```
@@ -992,3 +1664,16 @@ fn comput[T](a:T,b:T)->T{
    ```
 
    注意，如果接口重载了运算符，只可以写成运算符的函数形式
+
+## [控制结构](https://docs.moonbitlang.cn/#控制结构)
+
+这个文档上比较拟人，看文档吧
+
+## 访问控制
+
+见文档，和 C++ 中的类相似
+
+## [方法系统](https://docs.moonbitlang.cn/#方法系统)
+
+见文档
+
