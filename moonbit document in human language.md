@@ -713,7 +713,28 @@ char的东西少呀，比较轻松
 
 ### 字节（序列）Byte(Bytes)
 
-感觉用不着，暂时放下。其实 `Byte` 和 `Bytes` 的关系和 `Char` 与 `String` 的关系差不多
+MoonBit中的字节字面值要么是单个ASCII字符，要么是用单引号'括起来的单个转义字符，前面加字符b。字节字面值的类型是byte。例如:
+
+```
+fn main {
+  let b1 : Byte = b'a'
+  println(b1.to_int())
+  let b2 = b'\xff'
+  println(b2.to_int())
+}
+```
+
+A Bytes是一个字节序列。与byte类似，bytes字面值具有b"…"的形式。例如:
+
+```
+fn main {
+  let b1 : Bytes = b"abcd"
+  let b2 = b"\x61\x62\x63\x64"
+  println(b1 == b2) // true
+}
+```
+
+
 
 ### 元组 Tuple
 
