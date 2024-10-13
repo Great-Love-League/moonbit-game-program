@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "wasm4": "^2.7.0"
+  }
+}
