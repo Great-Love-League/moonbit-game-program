@@ -71,6 +71,18 @@
             "Debug",
             "Release"
           ]
+        },
+        "D:\\Code\\moonbit-game-program\\src\\lib\\struct\\struct_trait.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
         }
       },
       "wbtest-files": {},
