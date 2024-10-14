@@ -1,5 +1,4 @@
-let frame_cnt:Ref[Int64]=Ref::new(0)
-//计算当前是第几帧
+
 pub fn start() -> Unit {
 	@wasm4.set_palette(1,@wasm4.rgb(1377129))
 	@wasm4.set_palette(3,@wasm4.rgb(5224703))
@@ -9,5 +8,5 @@ pub fn start() -> Unit {
 }
 
 pub fn update() -> Unit {
-	frame_cnt.val=frame_cnt.val+1
+	@time_cnt.update_time()
 }

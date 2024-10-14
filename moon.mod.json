@@ -1,5 +1,5 @@
 {
-  "name": "moonbit/demo",
+  "name": "GAME",
   "version": "0.1.0",
   "deps": {
     "moonbitlang/wasm4": "0.2.2"

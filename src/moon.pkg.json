@@ -1,6 +1,8 @@
 {
   "import": [
-    "moonbitlang/wasm4"
+    "moonbitlang/wasm4",
+	{"path": "GAME/struct","alias": "antity"},
+	"GAME/time_cnt"
   ],
   "link": {
     "wasm": {
