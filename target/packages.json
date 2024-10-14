@@ -43,10 +43,47 @@
       "files": {},
       "wbtest-files": {},
       "test-files": {},
-      "deps": [],
+      "deps": [
+        {
+          "path": "moonbitlang/wasm4",
+          "alias": "wasm4"
+        }
+      ],
       "wbtest-deps": [],
       "test-deps": [],
       "artifact": "D:\\Code\\moonbit-game-program\\target\\wasm-gc\\release\\check\\lib\\lib.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\moonbit-game-program\\src\\lib\\struct",
+      "root": "moonbit/demo",
+      "rel": "lib/struct",
+      "files": {
+        "D:\\Code\\moonbit-game-program\\src\\lib\\struct\\struct.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "deps": [
+        {
+          "path": "moonbitlang/wasm4",
+          "alias": "wasm4"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\moonbit-game-program\\target\\wasm-gc\\release\\check\\lib\\struct\\struct.mi"
     },
     {
       "is-main": false,
