@@ -9,4 +9,5 @@ pub fn start() -> Unit {
 
 pub fn update() -> Unit {
 	@time_cnt.update_time()
+	// @time_cnt.get_time()
 }
