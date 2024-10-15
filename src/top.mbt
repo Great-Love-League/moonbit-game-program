@@ -8,6 +8,7 @@ pub fn start() -> Unit {
 }
 
 pub fn update() -> Unit {
-	@time_cnt.update_time()
+	@time_cnt.update_time();
+	@music.musicplay()
 	// @time_cnt.get_time()
 }

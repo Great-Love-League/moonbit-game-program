@@ -90,20 +90,18 @@ fn setup_tone_params() -> Array[ToneParams] {
     return [tone1, tone2, tone3, tone4, tone5, tone6, tone7, tone8];
 }
 
-let frame_counter = [0, 1];
 let tones: Array[ToneParams] = setup_tone_params();
 
 pub fn start() -> Unit {
     // 初始化音调参数
 }
 
-pub fn update() -> Unit {
-    frame_counter[0] += 1;
-
-    // 每秒运行60次，假设每个音调播放0.5秒（30帧）
-    let tone_duration = 30;
-    let index = (frame_counter[0] / tone_duration) % 8;
-
+pub fn musicplay() -> Unit {
+    let frame_counter :Int64= @time_cnt.get_time();
+		    // 每秒运行60次，假设每个音调播放0.5秒（30帧）
+    let tone_duration :Int= 30;
+    let index :Int64= ((frame_counter / tone_duration.to_int64()) % 8);
     // 根据frame_counter的值播放不同的音调
-    play_tone(tones[index]);
+    let index=index.to_int();
+    play_tone(tones[index])
 }
