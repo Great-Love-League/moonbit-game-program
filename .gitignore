@@ -1,4 +1,5 @@
 /.vscode
+/target
 target/
 /target
 .mooncakes/

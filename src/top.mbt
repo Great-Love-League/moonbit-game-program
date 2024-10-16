@@ -1,4 +1,3 @@
-
 pub fn start() -> Unit {
 	@wasm4.set_palette(1,@wasm4.rgb(1377129))
 	@wasm4.set_palette(3,@wasm4.rgb(5224703))
@@ -8,6 +7,8 @@ pub fn start() -> Unit {
 }
 
 pub fn update() -> Unit {
-	@time_cnt.update_time()
+	@time_cnt.update_time();
+	@music.musicplay()
 	// @time_cnt.get_time()
+	@antity.print(@antity.player_Plane_1)
 }
