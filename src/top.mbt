@@ -1,10 +1,14 @@
 pub fn start() -> Unit {
-
+	@wasm4.set_palette(1,@wasm4.rgb(1377129))
+	@wasm4.set_palette(3,@wasm4.rgb(5224703))
+	@wasm4.set_palette(4,@wasm4.rgb(11221214))
+	@wasm4.set_palette(2,@wasm4.rgb(16754473))
+	//初始化调色板，之后调色板禁止更改！！
 }
 
 pub fn update() -> Unit {
-  @wasm4.set_draw_colors(4,index=1)
-  @wasm4.set_draw_colors(3,index=2)
-  //相当于有两个序列，第一个是调色板，也就是颜色储存的地方，就是这里的第一个参数
-  //第二个是使用的颜色序列，也是只有四个空位，每一种画图函数会调用这四个空位中的颜色来作画，index的值就是这四个位置的下标
+	@time_cnt.update_time();
+	@music.musicplay()
+	// @time_cnt.get_time()
+	@antity.print(@antity.player_Plane_1)
 }
