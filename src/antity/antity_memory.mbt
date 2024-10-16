@@ -8,6 +8,7 @@ pub let hh : Frame_effects={
 }
 
 pub let player_Plane_1 : Frame_effects={
+	
 	begin_time:0,
 	end_time:0,
 	x:0,
