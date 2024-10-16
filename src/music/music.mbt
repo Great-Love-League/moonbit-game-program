@@ -97,10 +97,10 @@ pub fn start() -> Unit {
 }
 
 pub fn musicplay() -> Unit {
-    let frame_counter :Int64= @time_cnt.get_time();
+    let frame_counter :UInt64= @time_cnt.get_time();
 		    // 每秒运行60次，假设每个音调播放0.5秒（30帧）
     let tone_duration :Int= 30;
-    let index :Int64= ((frame_counter / tone_duration.to_int64()) % 8);
+    let index :Int64= ((frame_counter.to_int64() / tone_duration.to_int64()) % 8);
     // 根据frame_counter的值播放不同的音调
     let index=index.to_int();
     play_tone(tones[index])
