@@ -1,0 +1,3 @@
+{"$message_type":"diagnostic","level":"warning","loc":{"path":"D:\\Code\\moonbit-game-program\\src\\antity\\struct.mbt","start":{"line":50,"col":8},"end":{"line":50,"col":14}},"message":"Warning: Unused type 'Bullet'","error_code":1003}
+{"$message_type":"diagnostic","level":"warning","loc":{"path":"D:\\Code\\moonbit-game-program\\src\\antity\\struct.mbt","start":{"line":59,"col":8},"end":{"line":59,"col":16}},"message":"Warning: Unused type 'Aircraft'","error_code":1003}
+{"$message_type":"diagnostic","level":"warning","loc":{"path":"D:\\Code\\moonbit-game-program\\src\\antity\\struct.mbt","start":{"line":69,"col":8},"end":{"line":69,"col":17}},"message":"Warning: Unused type 'Cartridge'","error_code":1003}

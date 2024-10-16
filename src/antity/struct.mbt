@@ -8,8 +8,8 @@ pub struct Location{
 }
 
 struct Sprite_parameter{
-	mut x:UInt
-	mut y:UInt
+	 x:UInt
+	 y:UInt
 	//相对于基准像素的偏移量
 	color:UInt
 }
@@ -30,9 +30,8 @@ pub struct Frame_time_config{
 pub struct Frame_effects{
 	mut begin_time:UInt64
 	mut end_time:UInt64
-	//开始和结束的帧，闭区间
-	mut x:Int
-	mut y:Int
+	mut x:UInt
+	mut y:UInt
 	sprite:Array[Sprite_parameter]
 	time_management:Array[Frame_time_config]
 	//time_management与sprite的长度一致，time_management用于控制sprite的每一帧显示时间

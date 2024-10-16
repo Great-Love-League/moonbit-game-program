@@ -30,7 +30,7 @@
           "alias": "wasm4"
         },
         {
-          "path": "GAME/struct",
+          "path": "GAME/antity",
           "alias": "antity"
         },
         {
@@ -41,6 +41,66 @@
       "wbtest-deps": [],
       "test-deps": [],
       "artifact": "D:\\Code\\moonbit-game-program\\target\\wasm-gc\\release\\check\\GAME.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\moonbit-game-program\\src\\antity",
+      "root": "GAME",
+      "rel": "antity",
+      "files": {
+        "D:\\Code\\moonbit-game-program\\src\\antity\\antity_memory.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\Code\\moonbit-game-program\\src\\antity\\struct.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\Code\\moonbit-game-program\\src\\antity\\struct_trait.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "deps": [
+        {
+          "path": "moonbitlang/wasm4",
+          "alias": "wasm4"
+        },
+        {
+          "path": "GAME/time_cnt",
+          "alias": "time_cnt"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\moonbit-game-program\\target\\wasm-gc\\release\\check\\antity\\antity.mi"
     },
     {
       "is-main": false,
@@ -70,7 +130,7 @@
           "alias": "wasm4"
         },
         {
-          "path": "GAME/struct",
+          "path": "GAME/antity",
           "alias": "antity"
         },
         {
@@ -81,66 +141,6 @@
       "wbtest-deps": [],
       "test-deps": [],
       "artifact": "D:\\Code\\moonbit-game-program\\target\\wasm-gc\\release\\check\\interface\\interface.mi"
-    },
-    {
-      "is-main": false,
-      "is-third-party": false,
-      "root-path": "D:\\Code\\moonbit-game-program\\src\\struct",
-      "root": "GAME",
-      "rel": "struct",
-      "files": {
-        "D:\\Code\\moonbit-game-program\\src\\struct\\antity_memory.mbt": {
-          "backend": [
-            "Wasm",
-            "WasmGC",
-            "Js",
-            "Native"
-          ],
-          "optlevel": [
-            "Debug",
-            "Release"
-          ]
-        },
-        "D:\\Code\\moonbit-game-program\\src\\struct\\struct.mbt": {
-          "backend": [
-            "Wasm",
-            "WasmGC",
-            "Js",
-            "Native"
-          ],
-          "optlevel": [
-            "Debug",
-            "Release"
-          ]
-        },
-        "D:\\Code\\moonbit-game-program\\src\\struct\\struct_trait.mbt": {
-          "backend": [
-            "Wasm",
-            "WasmGC",
-            "Js",
-            "Native"
-          ],
-          "optlevel": [
-            "Debug",
-            "Release"
-          ]
-        }
-      },
-      "wbtest-files": {},
-      "test-files": {},
-      "deps": [
-        {
-          "path": "moonbitlang/wasm4",
-          "alias": "wasm4"
-        },
-        {
-          "path": "GAME/time_cnt",
-          "alias": "time_cnt"
-        }
-      ],
-      "wbtest-deps": [],
-      "test-deps": [],
-      "artifact": "D:\\Code\\moonbit-game-program\\target\\wasm-gc\\release\\check\\struct\\struct.mi"
     },
     {
       "is-main": false,
