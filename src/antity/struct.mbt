@@ -37,7 +37,12 @@ pub struct Frame_effects{
 	//time_management与sprite的长度一致，time_management用于控制sprite的每一帧显示时间
 }
 
-
+pub struct ToneParams {
+    frequency: (UInt, UInt)
+    adsr: @wasm4.ADSR
+    volume: @wasm4.ADSRVolume
+    channel: @wasm4.ToneFlag
+}
 pub struct Sound_effects{
 	//具体实现待研究QWQ
 }

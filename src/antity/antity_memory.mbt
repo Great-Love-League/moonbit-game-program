@@ -8,7 +8,7 @@ pub let hh : Frame_effects={
 }
 
 pub let player_Plane_1 : Frame_effects={
-	
+
 	begin_time:0,
 	end_time:0,
 	x:0,
@@ -244,3 +244,13 @@ pub let player_Plane_1 : Frame_effects={
 		{begin:0,end:360}
 	]
 }
+//pub var of music
+pub let adsrSTD:@wasm4.ADSR=@wasm4.ADSR::new(attack=0, decay=0,30, release=0);//ADSR指播放时声音的变化形式，具体自己查
+pub let volumeSTD:@wasm4.ADSRVolume=@wasm4.ADSRVolume::new(100,peak=100);//音量
+pub let channelSTD:@wasm4.ToneFlag=@wasm4.ToneFlag::new(
+        channel = @wasm4.ToneChannel::Triangle,//音色
+        mode = @wasm4.ToneMode::Duty_1_2,//波形
+        pan = @wasm4.TonePan::Center//左右，中心声道
+    );
+//音乐用途tones数组
+pub let tones: Array[ToneParams] = setup_tone_params();
