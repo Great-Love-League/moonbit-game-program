@@ -7,13 +7,14 @@ pub fn start() -> Unit {
 }
 
 pub fn update() -> Unit {
-
+	let pubsound_effects:@immut/priority_queue.T[@antity.ToneForPub]=@immut/priority_queue.new();
+	// let a:@immut/priority_queue.T[Int]=@immut/priority_queue.new();
 	@time_cnt.update_time();
 	let currenttime = @time_cnt.get_time();
 	@antity.musicplay();
 	// @time_cnt.get_time()
-	@antity.print(@antity.player_Plane_1)
-	while true{
+	// @antity.print(@antity.player_Plane_1)
+	while @antity.pubsound_effects.is_empty().not(){
 		let tone = @antity.pubsound_effects.peek().unwrap();
 		if(@antity.pubsound_effects.is_empty() || tone.startfps > currenttime.to_uint()){
 			break;
