@@ -7,8 +7,22 @@ pub fn start() -> Unit {
 }
 
 pub fn update() -> Unit {
+
 	@time_cnt.update_time();
+	let currenttime = @time_cnt.get_time();
 	@antity.musicplay();
 	// @time_cnt.get_time()
 	@antity.print(@antity.player_Plane_1)
+	while true{
+		let tone = @antity.pubsound_effects.peek().unwrap();
+		if(@antity.pubsound_effects.is_empty() || tone.startfps > currenttime.to_uint()){
+			break;
+		}
+		else{
+			let tone = @antity.pubsound_effects.peek().unwrap();
+			@antity.play_tone(tone.tone);
+			ignore(@antity.pubsound_effects.pop());
+
+		}
+	}		
 }

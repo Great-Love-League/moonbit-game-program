@@ -253,4 +253,5 @@ pub let channelSTD:@wasm4.ToneFlag=@wasm4.ToneFlag::new(
         pan = @wasm4.TonePan::Center//左右，中心声道
     );
 //音乐用途tones数组
-pub let tones: Array[ToneParams] = setup_tone_params();
+pub let pubsound_effects:@immut/priority_queue.T[ToneForPub]=@immut/priority_queue.new();
+pub let tones: Sound_effects={effects:setup_tone_params()};

@@ -123,8 +123,17 @@ pub fn setup_tone_params() -> Array[ToneParams] {
     return [tone1, tone2, tone3, tone4, tone5, tone6, tone7, tone8];
 }
 
-fn play_tone(params: ToneParams) -> Unit {
+pub fn play_tone(params: ToneParams) -> Unit {
     @wasm4.tone(params.frequency, params.adsr, params.volume, params.channel);
+}
+fn play_sound_effects(effects: Sound_effects) -> Unit {
+    let mut startcnt=@time_cnt.get_time();
+    for effect in effects.effects {
+        let tone_for_pub = { tone: effect, startfps: startcnt.to_uint() };
+        ignore(pubsound_effects.push(tone_for_pub));
+        startcnt+=(effect.adsr.release+effect.adsr.attack+effect.adsr.decay+effect.adsr.sustain).to_uint64();
+
+    }
 }
 pub fn musicplay() -> Unit {
     let frame_counter :UInt64= @time_cnt.get_time();
@@ -133,7 +142,7 @@ pub fn musicplay() -> Unit {
     let index :Int64= ((frame_counter.to_int64() / tone_duration.to_int64()) % 8);
     // 根据frame_counter的值播放不同的音调
     let index=index.to_int();
-    play_tone(tones[index])
+    play_tone(tones.effects[index])
 }
 //play_tone的用法如下:
 //let toneExample = {
@@ -143,3 +152,10 @@ pub fn musicplay() -> Unit {
 //    channel: channelSTD
 //};//这里的adsrSTD,volumeSTD,channelSTD是在antity_memory.mbt中定义的标准量
 //play_tone(toneExample)
+pub fn compare(self:ToneForPub,other:ToneForPub)->Int{
+    self.startfps.compare(other.startfps)
+}
+
+pub fn op_equal(self: ToneForPub, other: ToneForPub) -> Bool {
+    self.startfps == other.startfps
+}
