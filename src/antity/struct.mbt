@@ -1,8 +1,8 @@
 pub struct Location{
   mut x:Double
   mut y:Double
-  mut newx:Double
-  mut newy:Double
+  // mut newx:Double
+  // mut newy:Double
   type_:UInt
 //用于记录实体的位置
 }
@@ -52,7 +52,7 @@ pub struct Effects{
 	sound:Frame_effects
 }
 
-struct Bullet{
+pub struct Bullet{
 	type_:UInt
 	harm:UInt
 	pos:Location
@@ -61,17 +61,31 @@ struct Bullet{
 	frame:Frame_effects
 }
 
-struct Aircraft{
+pub struct Laser{
+	type_:UInt
+	pos:Location
+	//表示激光最顶点的位置
+	dir:UInt
+	//激光方向
+	harm:UInt
+	warming:Frame_effects
+	
+}
+//激光应当还有一个方向改变函数！！！
+
+pub struct Aircraft{
   type_:UInt
   pos:Location
-  speed:UInt
-  dir:UInt
+  speed:Double
+  mut dir:Double
   mut weapon:UInt
 	frame:Frame_effects
   mut hp:Int
 }
-
-struct Cartridge{
+//方向先不管，是个角度，0度方向与x轴正方向平行，顺时针转
+//weapon 1是单发 2是双发
+//speed 是每帧速度
+pub struct Cartridge{
   type_:UInt
   pos:Location
   mut speed:UInt

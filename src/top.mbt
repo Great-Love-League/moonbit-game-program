@@ -8,7 +8,6 @@ pub fn start() -> Unit {
 
 pub fn update() -> Unit {
 	@time_cnt.update_time();
-	@antity.musicplay();
-	// @time_cnt.get_time()
-	@antity.print(@antity.player_Plane_1)
+	// @antity.player_Plane_1_frame.print()
+	@interface.interface();
 }

@@ -7,8 +7,8 @@ pub let hh : Frame_effects={
 	time_management:[{begin:0,end:360}]
 }
 
-pub let player_Plane_1 : Frame_effects={
-
+// 玩家飞机正常一般形态
+pub let player_Plane_1_frame : Frame_effects={
 	begin_time:0,
 	end_time:0,
 	x:0,
@@ -244,6 +244,17 @@ pub let player_Plane_1 : Frame_effects={
 		{begin:0,end:360}
 	]
 }
+
+pub let player_Plane:Aircraft={
+	type_:3,
+	pos:Location::new(x=73,y=145,3),
+	speed:0.6666666666666667,
+	dir:180,
+	weapon:1,
+	frame:player_Plane_1_frame,
+	hp:100
+}
+
 //pub var of music
 pub let adsrSTD:@wasm4.ADSR=@wasm4.ADSR::new(attack=0, decay=0,30, release=0);//ADSR指播放时声音的变化形式，具体自己查
 pub let volumeSTD:@wasm4.ADSRVolume=@wasm4.ADSRVolume::new(100,peak=100);//音量

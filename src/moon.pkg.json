@@ -3,7 +3,7 @@
     "moonbitlang/wasm4",
     "GAME/antity",
     "GAME/time_cnt",
-	  "GAME/music"
+    "GAME/interface"
   ],
   "link": {
     "wasm": {

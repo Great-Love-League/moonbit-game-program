@@ -1,7 +1,3 @@
-pub trait Print{
-	print(Self)->Unit
-}
-
 pub trait Strike{
 	is_strike(Self,Self)->Bool
 }
@@ -17,7 +13,9 @@ pub trait Setmusic{
 		setup_tone_params() -> Array[ToneParams]
 }
 pub fn show(self:Sprite_parameter)->Unit{
-	@wasm4.set_frame_buffer(get_index(self.x,self.y),self.color)
+    if 0U<=self.x&&self.x<160&&0U<=self.y&&self.y<160{
+	    @wasm4.set_frame_buffer(get_index(self.x,self.y),self.color)
+    }
 }
 
 pub fn show(self:Frame_effects,x:Int)->Unit{
@@ -31,16 +29,36 @@ pub fn check_in_time(self:Frame_effects,x:Int,time:UInt64)->Bool{
 pub fn get_index(x:UInt,y:UInt)->UInt{
 	y*160+x
 }
-pub fn print(sub:Frame_effects)->Unit{
-	let len=sub.sprite.length();
-	if sub.time_management.length()!=len {}
+pub fn print(self:Frame_effects)->Unit{
+	let len=self.sprite.length();
+	if self.time_management.length()!=len {}
 	let time=@time_cnt.get_time()
 	for i=0;i<len;i=i+1{
-		if(sub.check_in_time(i,time)){
-			sub.show(i)
+		if(self.check_in_time(i,time)){
+			self.show(i)
 		}
 	}
 }
+
+pub fn print(self:Aircraft)->Unit{
+    let len=self.frame.sprite.length();
+    self.frame.x=self.pos.x.to_int().reinterpret_as_uint()
+    self.frame.y=self.pos.y.to_int().reinterpret_as_uint()
+	for i=0;i<len;i=i+1{
+		self.frame.show(i)
+	}
+}
+
+fn Location::new(~x:Double=0,~y:Double=0,type_:UInt)->Location{
+    {x,y,type_}
+}
+
+let eps:Double=0.000000001
+pub fn Aircraft::update_pos(self:Aircraft)->Unit{
+    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir)
+    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir)
+}
+
 //function of music 
 pub fn setup_tone_params() -> Array[ToneParams] {
     let adsr = @wasm4.ADSR::new(attack=0, decay=0,30, release=0);
@@ -130,7 +148,7 @@ pub fn musicplay() -> Unit {
     let frame_counter :UInt64= @time_cnt.get_time();
 		    // 每秒运行60次，假设每个音调播放0.5秒（30帧）
     let tone_duration :Int= 30;
-    let index :Int64= ((frame_counter.to_int64() / tone_duration.to_int64()) % 8);
+    let index :Int64= ((frame_counter.reinterpret_as_int64() / tone_duration.to_int64()) % 8);
     // 根据frame_counter的值播放不同的音调
     let index=index.to_int();
     play_tone(tones[index])
