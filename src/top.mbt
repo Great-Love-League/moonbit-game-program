@@ -14,8 +14,12 @@ pub fn update() -> Unit {
 	// @time_cnt.get_time()
 	@antity.print(@antity.player_Plane_1)
 	while true{
+		//let tone = @antity.pubsound_effects.peek().unwrap();
+		if(@antity.pubsound_effects.is_empty() ){
+			break;
+		}
 		let tone = @antity.pubsound_effects.peek().unwrap();
-		if(@antity.pubsound_effects.is_empty() || tone.startfps > currenttime.to_uint()){
+		if(tone.startfps>currenttime.to_uint()){
 			break;
 		}
 		else{

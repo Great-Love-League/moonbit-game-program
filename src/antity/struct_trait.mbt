@@ -59,7 +59,7 @@ pub fn setup_tone_params() -> Array[ToneParams] {
     );
 
     let channel3 = @wasm4.ToneFlag::new(
-        channel = @wasm4.ToneChannel::Triangle,
+        channel = @wasm4.ToneChannel::Pulse1,
         mode = @wasm4.ToneMode::Duty_1_2,
         pan = @wasm4.TonePan::Center
     );
