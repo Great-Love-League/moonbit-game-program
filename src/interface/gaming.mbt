@@ -6,9 +6,10 @@ fn gaming()->Unit{
 fn gaming_logic()->Unit{
   //get_next_pos
   //self_plane_update_pos
-  if (button_state.val.button_down||button_state.val.button_up||button_state.val.button_left||button_state.val.button_right)||(button_state.val.button_down&&button_state.val.button_up&&button_state.val.button_left&&button_state.val.button_right){
-    update_self()
-  }
+  // if (button_state.val.button_down||button_state.val.button_up||button_state.val.button_left||button_state.val.button_right)||(button_state.val.button_down&&button_state.val.button_up&&button_state.val.button_left&&button_state.val.button_right){
+  //   update_self()
+  // }
+  
   //check crash
   //show
   @antity.player_Plane.print()
