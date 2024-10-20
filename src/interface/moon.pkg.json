@@ -3,18 +3,5 @@
     "moonbitlang/wasm4",
 	  {"path": "GAME/antity","alias": "antity"},
 	  "GAME/time_cnt"
-  ],
-  "link": {
-    "wasm": {
-      "exports": [
-        "start",
-        "update"
-      ],
-      "import-memory": {
-        "module": "env",
-        "name": "memory"
-      },
-      "heap-start-address": 6560
-    }
-  }
+  ]
 }

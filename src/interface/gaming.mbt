@@ -3,20 +3,17 @@ fn gaming()->Unit{
   // @antity.player_Plane_1.print()
 }
 
-let x:Ref[Int]=Ref::new(1)
-let y:Ref[Int]=Ref::new(1)
+let aircraft:Array[@antity.Aircraft]=[]
+let bullet:Array[@antity.Bullet]=[]
+let laser:Array[@antity.Laser]=[]
+let effect:Array[@antity.Effects]=[]
+
 fn gaming_logic()->Unit{
   //get_next_pos
   //self_plane_update_pos
   if (button_state.val.button_down||button_state.val.button_up||button_state.val.button_left||button_state.val.button_right)&&(button_state.val.button_down&&button_state.val.button_up&&button_state.val.button_left&&button_state.val.button_right).not()&&((button_state.val.button_down&&button_state.val.button_up)&&button_state.val.button_left.not()&&button_state.val.button_right.not()).not()&&(button_state.val.button_down.not()&&button_state.val.button_up.not()&&(button_state.val.button_left&&button_state.val.button_right)).not(){
     update_self()
   }
-  if button_state.val.button_down {y.val=y.val+1}
-  if button_state.val.button_up {{y.val=y.val-1}}
-  if button_state.val.button_left {x.val=x.val-1}
-  if button_state.val.button_right {{x.val=x.val+1}}
-  @antity.Sprite_parameter::new(x.val.reinterpret_as_uint(),y.val.reinterpret_as_uint(),2).show()
-  // @antity.Sprite_parameter::new(10,10,2).show()
   //check crash
   //show
   @antity.player_Plane.print()

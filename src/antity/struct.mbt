@@ -32,6 +32,8 @@ pub struct Frame_effects{
 	mut end_time:UInt64
 	mut x:UInt
 	mut y:UInt
+	xlen:UInt
+	ylen:UInt
 	sprite:Array[Sprite_parameter]
 	time_management:Array[Frame_time_config]
 	//time_management与sprite的长度一致，time_management用于控制sprite的每一帧显示时间

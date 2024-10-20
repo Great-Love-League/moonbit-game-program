@@ -1,11 +1,4 @@
-pub let hh : Frame_effects={
-	begin_time:0,
-	end_time:0,
-	x:0,
-	y:0,
-	sprite:[{x:6,y:0,color:4}],
-	time_management:[{begin:0,end:360}]
-}
+let low_y=150
 
 // 玩家飞机正常一般形态
 pub let player_Plane_1_frame : Frame_effects={
@@ -13,6 +6,8 @@ pub let player_Plane_1_frame : Frame_effects={
 	end_time:0,
 	x:0,
 	y:0,
+	xlen:13U,
+	ylen:15U,
 	sprite:[
 		{x:6,y:0,color:4},
 		{x:6,y:1,color:4},
@@ -247,7 +242,7 @@ pub let player_Plane_1_frame : Frame_effects={
 
 pub let player_Plane:Aircraft={
 	type_:3,
-	pos:Location::new(x=73,y=145,3),
+	pos:Location::new(x=73,y=120,3),
 	speed:0.6666666666666667,
 	dir:180,
 	weapon:1,

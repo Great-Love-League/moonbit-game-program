@@ -57,10 +57,38 @@ pub fn Sprite_parameter::new(x:UInt,y:UInt,color:UInt)->Sprite_parameter{
     {x,y,color}
 }
 
+//飞机更新位置
 let eps:Double=0.000000001
 pub fn Aircraft::update_pos(self:Aircraft)->Unit{
+    let x=self.pos.x
+    let y=self.pos.y
     self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.pi)
     self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.pi)
+    if self.type_==3{
+        if(self.is_out_partly()){
+            self.pos.x=x
+            self.pos.y=y
+        }
+    }
+}
+
+//检测是否部分出界
+pub fn Aircraft::is_out_partly(self:Aircraft)->Bool{
+    let xl=self.pos.x.to_int().reinterpret_as_uint()+self.frame.xlen-1
+    let yl=self.pos.y.to_int().reinterpret_as_uint()+self.frame.ylen-1
+    let x=self.pos.x
+    let y=self.pos.y
+    if(x<0||xl>=160||y<0||yl>=low_y.reinterpret_as_uint()) {true}
+    else {false}
+}
+
+pub fn Aircraft::is_out_all(self:Aircraft)->Bool{
+    let xl=self.pos.x.to_int().reinterpret_as_uint()+self.frame.xlen-1
+    let yl=self.pos.y.to_int().reinterpret_as_uint()+self.frame.ylen-1
+    let x=self.pos.x.to_int().reinterpret_as_uint()
+    let y=self.pos.y.to_int().reinterpret_as_uint()
+    if((x>=160||xl<0)&&(y<0||yl>=low_y.reinterpret_as_uint())) {true}
+    else {false}
 }
 
 //function of music 
