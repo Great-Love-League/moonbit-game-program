@@ -53,10 +53,14 @@ fn Location::new(~x:Double=0,~y:Double=0,type_:UInt)->Location{
     {x,y,type_}
 }
 
+pub fn Sprite_parameter::new(x:UInt,y:UInt,color:UInt)->Sprite_parameter{
+    {x,y,color}
+}
+
 let eps:Double=0.000000001
 pub fn Aircraft::update_pos(self:Aircraft)->Unit{
-    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir)
-    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir)
+    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.pi)
+    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.pi)
 }
 
 //function of music 

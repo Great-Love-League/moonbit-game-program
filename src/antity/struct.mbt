@@ -49,7 +49,7 @@ pub struct Sound_effects{
 
 pub struct Effects{
 	frame:Frame_effects
-	sound:Frame_effects
+	sound:Array[ToneParams]
 }
 
 pub struct Bullet{
