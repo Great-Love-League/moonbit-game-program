@@ -1,0 +1,1 @@
+npx wasm4 bundle --html game.html target/wasm/debug/build/GAME.wasm
