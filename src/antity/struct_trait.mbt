@@ -12,6 +12,16 @@ pub trait Get_new_pos{
 pub trait Setmusic{
 		setup_tone_params() -> Array[ToneParams]
 }
+
+pub fn check_in_time(self:Frame_effects,x:Int,time:UInt64)->Bool{
+	(self.time_management[x].begin.reinterpret_as_uint64()+self.begin_time<=time)&&(time<=self.time_management[x].end.reinterpret_as_uint64()+self.begin_time)
+}
+
+pub fn get_index(x:UInt,y:UInt)->UInt{
+	y*160+x
+}
+
+//展示函数#############################################
 pub fn show(self:Sprite_parameter)->Unit{
     if 0U<=self.x&&self.x<160&&0U<=self.y&&self.y<160{
 	    @wasm4.set_frame_buffer(get_index(self.x,self.y),self.color)
@@ -22,13 +32,6 @@ pub fn show(self:Frame_effects,x:Int)->Unit{
 	{..self.sprite[x],x:self.sprite[x].x+self.x,y:self.sprite[x].y+self.y}.show()
 }
 
-pub fn check_in_time(self:Frame_effects,x:Int,time:UInt64)->Bool{
-	(self.time_management[x].begin.reinterpret_as_uint64()+self.begin_time<=time)&&(time<=self.time_management[x].end.reinterpret_as_uint64()+self.begin_time)
-}
-
-pub fn get_index(x:UInt,y:UInt)->UInt{
-	y*160+x
-}
 pub fn print(self:Frame_effects)->Unit{
 	let len=self.sprite.length();
 	if self.time_management.length()!=len {}
@@ -48,16 +51,22 @@ pub fn print(self:Aircraft)->Unit{
 		self.frame.show(i)
 	}
 }
+//展示函数#############################################
 
-fn Location::new(~x:Double=0,~y:Double=0,type_:UInt)->Location{
+//构造函数#############################################
+pub fn Location::new(~x:Double=0,~y:Double=0,type_:UInt)->Location{
     {x,y,type_}
 }
 
 pub fn Sprite_parameter::new(x:UInt,y:UInt,color:UInt)->Sprite_parameter{
     {x,y,color}
 }
+pub fn Bullet_exit_point::new(x:Int,y:Int,type_:Int,last_shoot:Int64,shoot_speed:Int64)->Bullet_exit_point{
+    {x,y,type_,last_shoot,shoot_speed}
+}
+//构造函数#############################################
 
-//飞机更新位置
+//更新位置#############################################
 let eps:Double=0.000000001
 pub fn Aircraft::update_pos(self:Aircraft)->Unit{
     let x=self.pos.x
@@ -72,7 +81,13 @@ pub fn Aircraft::update_pos(self:Aircraft)->Unit{
     }
 }
 
-//检测是否部分出界
+pub fn Bullet::update_pos(self:Bullet)->Unit{
+    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.pi)
+    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.pi)
+}
+//更新位置#############################################
+
+//检测是否出界#########################################
 pub fn Aircraft::is_out_partly(self:Aircraft)->Bool{
     let xl=self.pos.x.to_int().reinterpret_as_uint()+self.frame.xlen-1
     let yl=self.pos.y.to_int().reinterpret_as_uint()+self.frame.ylen-1
@@ -90,6 +105,18 @@ pub fn Aircraft::is_out_all(self:Aircraft)->Bool{
     if((x>=160||xl<0)&&(y<0||yl>=low_y.reinterpret_as_uint())) {true}
     else {false}
 }
+
+pub fn Bullet::is_out_all(self:Bullet)->Bool{
+    let xl=self.pos.x.to_int().reinterpret_as_uint()+self.frame.xlen-1
+    let yl=self.pos.y.to_int().reinterpret_as_uint()+self.frame.ylen-1
+    let x=self.pos.x.to_int().reinterpret_as_uint()
+    let y=self.pos.y.to_int().reinterpret_as_uint()
+    if((x>=160||xl<0)&&(y<0||yl>=low_y.reinterpret_as_uint())) {true}
+    else {false}
+}
+//检测是否出界#########################################
+
+
 
 //function of music 
 pub fn setup_tone_params() -> Array[ToneParams] {

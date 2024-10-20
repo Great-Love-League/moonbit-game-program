@@ -58,7 +58,7 @@ pub struct Bullet{
 	type_:UInt
 	harm:UInt
 	pos:Location
-	dir:UInt
+	dir:Double
 	speed:Double
 	frame:Frame_effects
 }
@@ -75,14 +75,22 @@ pub struct Laser{
 }
 //激光应当还有一个方向改变函数！！！
 
+pub struct Bullet_exit_point{
+	x:Int
+	y:Int
+	type_:Int
+	last_shoot:Int64
+	shoot_speed:Int64
+}
+
 pub struct Aircraft{
   type_:UInt
   pos:Location
   speed:Double
   mut dir:Double
-  mut weapon:UInt
-	frame:Frame_effects
+  frame:Frame_effects
   mut hp:Int
+  bullet_exit_point:Array[Bullet_exit_point]
 }
 //方向先不管，是个角度，0度方向与x轴正方向平行，顺时针转
 //weapon 1是单发 2是双发
@@ -92,11 +100,12 @@ pub struct Cartridge{
   pos:Location
   mut speed:UInt
   dir:UInt
-	frame:Frame_effects
+  frame:Frame_effects
 }
 
 // type_ 分配规则
-// 普通子弹 1
+// 普通子弹_敌人 1
+// 普通子弹_自己 9
 // 高爆子弹 2
 // 自机 3
 // 敌机小型机 4
