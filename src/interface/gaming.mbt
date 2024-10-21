@@ -2,13 +2,16 @@ fn gaming()->Unit{
   gaming_logic()
   // @antity.player_Plane_1.print()
 }
+// fn random(l : Int, r : Int) -> Int = "canvas" "random"
 
-let random:@random.Rand=@random.Rand::new(seed=b"")
+let random:@random.Rand=@random.Rand::new(seed=b"124234324dwerf3fewf43wede234fwe")
 let aircraft:Array[@antity.Aircraft]=[]
 let bullet:Array[@antity.Bullet]=[]
 let bullet_my:Array[@antity.Bullet]=[]
 let laser:Array[@antity.Laser]=[]
 let effect:Array[@antity.Effects]=[]
+let cartridge:Array[@antity.Cartridge]=[]
+let player_plane=@antity.player_Plane
 fn gaming_logic()->Unit{
   //get_next_pos
   //self_plane_update_pos
@@ -70,21 +73,34 @@ fn gaming_logic()->Unit{
   if(random.uint()%1000<=3){
     generate_pane(4)
   }
-
+  for i=aircraft.length()-1;i>=0;i=i-1{
+    shoot(aircraft[i])
+  }
+  shoot(player_plane)
   //show
-  @antity.player_Plane.print()
+  player_plane.print()
   for i=aircraft.length()-1;i>=0;i=i-1{
     aircraft[i].print()
   }
+  for i=bullet.length()-1;i>=0;i=i-1{
+    bullet[i].print()
+  }
 }
 
-//生成飞机
+//生成################################################################################################################################################
 fn generate_pane(type_:Int)->Unit{
   aircraft.push({..@antity.plans[type_].unwrap(),pos:@antity.Location::new(x=(random.uint()%160).to_float().to_double(),y=0,type_.reinterpret_as_uint())})
   // if type_==4 {aircraft.push({..@antity.middle_plane,pos:@antity.Location::new(x=(random.uint()%160).to_float().to_double(),y=0,type_.reinterpret_as_uint())})}
   // else if type_==5 {aircraft.push({..@antity.small_plane,pos:@antity.Location::new(x=(random.uint()%160).to_float().to_double(),y=0,type_.reinterpret_as_uint())})}
 }
 
+fn shoot(plane:@antity.Aircraft)->Unit{
+
+}
+
+//生成################################################################################################################################################
+
+//自身飞机操作控制########################################################################################################################################
 fn update_self()->Unit{
   let mut dir:Double=0;
   if (button_state.val.button_down&&button_state.val.button_up).not()&&(button_state.val.button_down||button_state.val.button_up){
@@ -109,6 +125,7 @@ fn update_self()->Unit{
     if button_state.val.button_right {dir=0}
     else if button_state.val.button_left {dir=180}
   }
-  @antity.player_Plane.dir=dir
-  @antity.player_Plane.update_pos()
+  player_plane.dir=dir
+  player_plane.update_pos()
 }
+//自身飞机操作控制########################################################################################################################################

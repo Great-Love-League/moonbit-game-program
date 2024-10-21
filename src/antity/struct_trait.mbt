@@ -51,6 +51,15 @@ pub fn print(self:Aircraft)->Unit{
 		self.frame.show(i)
 	}
 }
+
+pub fn print(self:Bullet)->Unit{
+    let len=self.frame.sprite.length();
+    self.frame.x=self.pos.x.to_int().reinterpret_as_uint()
+    self.frame.y=self.pos.y.to_int().reinterpret_as_uint()
+	for i=0;i<len;i=i+1{
+		self.frame.show(i)
+	}
+}
 //展示函数#############################################
 
 //构造函数#############################################
