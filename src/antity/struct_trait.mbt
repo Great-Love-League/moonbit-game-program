@@ -13,10 +13,6 @@ pub trait Setmusic{
 		setup_tone_params() -> Array[ToneParams]
 }
 
-pub fn check_in_time(self:Frame_effects,x:Int,time:UInt64)->Bool{
-	(self.time_management[x].begin.reinterpret_as_uint64()+self.begin_time<=time)&&(time<=self.time_management[x].end.reinterpret_as_uint64()+self.begin_time)
-}
-
 pub fn get_index(x:UInt,y:UInt)->UInt{
 	y*160+x
 }
@@ -34,12 +30,9 @@ pub fn show(self:Frame_effects,x:Int)->Unit{
 
 pub fn print(self:Frame_effects)->Unit{
 	let len=self.sprite.length();
-	if self.time_management.length()!=len {}
 	let time=@time_cnt.get_time()
 	for i=0;i<len;i=i+1{
-		if(self.check_in_time(i,time)){
-			self.show(i)
-		}
+		self.show(i)
 	}
 }
 

@@ -35,6 +35,16 @@ pub struct Frame_effects{
 	xlen:UInt
 	ylen:UInt
 	sprite:Array[Sprite_parameter]
+	// time_management:Array[Frame_time_config]
+	//time_management与sprite的长度一致，time_management用于控制sprite的每一帧显示时间
+}
+
+pub struct Frame_effects_{
+	mut begin_time:UInt64
+	mut end_time:UInt64
+	mut x:UInt
+	mut y:UInt
+	sprite:Array[Frame]
 	time_management:Array[Frame_time_config]
 	//time_management与sprite的长度一致，time_management用于控制sprite的每一帧显示时间
 }
@@ -45,12 +55,9 @@ pub struct ToneParams {
     volume: @wasm4.ADSRVolume
     channel: @wasm4.ToneFlag
 }
-pub struct Sound_effects{
-	//具体实现待研究QWQ
-}
 
 pub struct Effects{
-	frame:Frame_effects
+	frame:Frame_effects_
 	sound:Array[ToneParams]
 }
 

@@ -14,7 +14,7 @@ let laser:Array[@antity.Laser]=[]
 let effect:Array[@antity.Effects]=[]
 let cartridge:Array[@antity.Cartridge]=[]
 let player_plane=@antity.player_Plane
-let died:Bool=false
+let died:Ref[Bool]=Ref::new(false)
 fn gaming_logic()->Unit{
   //get_next_pos################################################################################################################
   //self_plane_update_pos
@@ -52,8 +52,8 @@ fn gaming_logic()->Unit{
     }
   }
   for i=0;i<aircraft.length();i=i+1{
-    if(aircraft[i].crash(@antity.player_Plane)){
-
+    if(aircraft[i].crash(player_plane)){
+      died.val=true
     }
   }
   for i=0;i<laser.length();i=i+1{
