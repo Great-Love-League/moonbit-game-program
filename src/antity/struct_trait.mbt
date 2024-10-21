@@ -138,11 +138,11 @@ pub fn die(self:Aircraft)->Bool{
 //检测撞击#################################################################################
 
 pub fn crash(self:Bullet,obj:Aircraft)->Bool{
-
+ true
 }
 
 pub fn crash(self:Aircraft,obj:Aircraft)->Bool{
-
+    true
 }
 
 //检测撞击#################################################################################

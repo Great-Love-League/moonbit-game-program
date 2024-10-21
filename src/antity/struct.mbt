@@ -86,7 +86,7 @@ pub struct Bullet_exit_point{
 	x:Int
 	y:Int
 	type_:Int
-	last_shoot:Int64
+	mut last_shoot:Int64
 	shoot_speed:Int64
 }
 

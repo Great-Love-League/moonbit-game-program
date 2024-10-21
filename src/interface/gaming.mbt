@@ -120,7 +120,7 @@ fn gaming_logic()->Unit{
   for i=cartridge.length()-1;i>=0;i=i-1{
     cartridge[i].print()
   }
-
+  died.val=died.val||player_plane.die()
   //打印底部状态栏######################################################################################################
   // column()
 }
@@ -133,7 +133,14 @@ fn generate_pane(type_:Int)->Unit{
 }
 
 fn shoot(plane:@antity.Aircraft)->Unit{
-
+  for i=plane.bullet_exit_point.length()-1;i>=0;i=i-1{
+    if(plane.bullet_exit_point[i].last_shoot>=plane.bullet_exit_point[i].shoot_speed) {
+      if(plane.type_==3) {bullet_my.push({..@antity.bullet[plane.bullet_exit_point[i].type_].unwrap(),pos:@antity.Location::new(x=plane.bullet_exit_point[i].x.to_double()+plane.pos.x,y=plane.bullet_exit_point[i].y.to_double()+plane.pos.y,plane.bullet_exit_point[i].type_.reinterpret_as_uint())})}
+      else {bullet.push({..@antity.bullet[plane.bullet_exit_point[i].type_].unwrap(),pos:@antity.Location::new(x=plane.bullet_exit_point[i].x.to_double()+plane.pos.x,y=plane.bullet_exit_point[i].y.to_double()+plane.pos.y,plane.bullet_exit_point[i].type_.reinterpret_as_uint())})}
+      plane.bullet_exit_point[i].last_shoot=plane.bullet_exit_point[i].last_shoot%plane.bullet_exit_point[i].shoot_speed
+    }
+    else {plane.bullet_exit_point[i].last_shoot=plane.bullet_exit_point[i].last_shoot+1}
+  }
 }
 
 //生成################################################################################################################################################

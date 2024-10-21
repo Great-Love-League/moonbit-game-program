@@ -343,6 +343,59 @@ pub let player_Plane:Aircraft={
 
 pub let plans:Map[Int,Aircraft]={3:player_Plane,4:small_plane,5:middle_plane}
 
+
+pub let bullet1_:Frame_effects={
+	begin_time:0,
+	end_time:0,
+	x:0,
+	y:0,
+	xlen:2,
+	ylen:2,
+	sprite:[
+		{x:0,y:0,color:2},
+		{x:1,y:0,color:2},
+		{x:0,y:1,color:2},
+		{x:1,y:1,color:2}
+	]
+}
+
+pub let bullet2_:Frame_effects={
+	begin_time:0,
+	end_time:0,
+	x:0,
+	y:0,
+	xlen:2,
+	ylen:2,
+	sprite:[
+		{x:0,y:0,color:4},
+		{x:1,y:0,color:4},
+		{x:0,y:1,color:4},
+		{x:1,y:1,color:4}
+	]
+}
+
+
+pub let bullet1:Bullet={
+	type_:9,
+	harm:10,
+	pos:Location::new(9),
+	dir:270,
+	speed:4,
+	frame:bullet1_
+}
+
+pub let bullet2:Bullet={
+	type_:1,
+	harm:10,
+	pos:Location::new(1),
+	dir:90,
+	speed:4,
+	frame:bullet2_
+}
+
+pub let bullet:Map[Int,Bullet]={9:bullet1,1:bullet2}
+
+
 //pub var of music
 pub let adsrSTD:@wasm4.ADSR=@wasm4.ADSR::new(attack=0, decay=0,30, release=0);//ADSR指播放时声音的变化形式，具体自己查
 pub let volumeSTD:@wasm4.ADSRVolume=@wasm4.ADSRVolume::new(100,peak=100);//音量
