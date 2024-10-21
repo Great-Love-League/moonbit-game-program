@@ -89,7 +89,7 @@ pub struct Aircraft{
   speed:Double
   mut dir:Double
   frame:Frame_effects
-  mut hp:Int
+  mut hp:Double
   bullet_exit_point:Array[Bullet_exit_point]
 }
 //方向先不管，是个角度，0度方向与x轴正方向平行，顺时针转

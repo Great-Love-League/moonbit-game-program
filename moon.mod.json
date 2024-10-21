@@ -2,8 +2,7 @@
   "name": "GAME",
   "version": "0.1.0",
   "deps": {
-    "moonbitlang/wasm4": "0.2.2",
-    "peter-jerry-ye/canvas": "0.4.0"
+    "moonbitlang/wasm4": "0.2.2"
   },
   "readme": "README.md",
   "repository": "",
