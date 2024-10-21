@@ -624,7 +624,7 @@ pub let player_Plane:Aircraft={
 	hp:100
 }
 
-// pub let plans:Map[Int,Aircraft]={3:player_Plane,4:small_plane,5:middle_plane}
+pub let plans:Map[Int,Aircraft]={3:player_Plane,4:small_plane,5:middle_plane}
 
 //pub var of music
 pub let adsrSTD:@wasm4.ADSR=@wasm4.ADSR::new(attack=0, decay=0,30, release=0);//ADSR指播放时声音的变化形式，具体自己查

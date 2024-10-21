@@ -3,7 +3,7 @@ fn gaming()->Unit{
   // @antity.player_Plane_1.print()
 }
 
-let random:@random.Rand=@random.Rand::new()
+let random:@random.Rand=@random.Rand::new(seed=b"")
 let aircraft:Array[@antity.Aircraft]=[]
 let bullet:Array[@antity.Bullet]=[]
 let bullet_my:Array[@antity.Bullet]=[]
@@ -80,9 +80,9 @@ fn gaming_logic()->Unit{
 
 //生成飞机
 fn generate_pane(type_:Int)->Unit{
-  // aircraft.push({..@antity.plans[type_].unwrap(),pos:@antity.Location::new(x=(random.uint()%160).to_float().to_double(),y=0,type_.reinterpret_as_uint())})
-  if type_==4 {aircraft.push({..@antity.middle_plane,pos:@antity.Location::new(x=(random.uint()%160).to_float().to_double(),y=0,type_.reinterpret_as_uint())})}
-  else if type_==5 {aircraft.push({..@antity.small_plane,pos:@antity.Location::new(x=(random.uint()%160).to_float().to_double(),y=0,type_.reinterpret_as_uint())})}
+  aircraft.push({..@antity.plans[type_].unwrap(),pos:@antity.Location::new(x=(random.uint()%160).to_float().to_double(),y=0,type_.reinterpret_as_uint())})
+  // if type_==4 {aircraft.push({..@antity.middle_plane,pos:@antity.Location::new(x=(random.uint()%160).to_float().to_double(),y=0,type_.reinterpret_as_uint())})}
+  // else if type_==5 {aircraft.push({..@antity.small_plane,pos:@antity.Location::new(x=(random.uint()%160).to_float().to_double(),y=0,type_.reinterpret_as_uint())})}
 }
 
 fn update_self()->Unit{
