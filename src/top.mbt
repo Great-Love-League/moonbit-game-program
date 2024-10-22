@@ -9,5 +9,6 @@ pub fn start() -> Unit {
 pub fn update() -> Unit {
 	@time_cnt.update_time();
 	// @antity.player_Plane_1_frame.print()
+	@antity.bullet1_.print()
 	@interface.interface()
 }

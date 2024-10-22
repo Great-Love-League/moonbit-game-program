@@ -34,40 +34,40 @@ fn gaming_logic()->Unit{
     //waiting
   }
   //判断碰撞####################################################################################################################
-  for i=0;i<laser.length();i=i+1{
+  // for i=0;i<laser.length();i=i+1{
 
-  }
-  let bullet_crashed:Array[Int]=[]
-  let bullet_crashed_my:Array[Int]=[]
-  for i=0;i<bullet.length();i=i+1{
-    if(bullet[i].crash(@antity.player_Plane)){
-      bullet_crashed.push(i)
-    }
-  }
-  for i=0;i<bullet_my.length();i=i+1{
-    for j=0;j<aircraft.length();j=j+1{
-      if(bullet_my[i].crash(aircraft[j])){
-        bullet_crashed_my.push(i)
-      }
-    }
-  }
-  for i=0;i<aircraft.length();i=i+1{
-    if(aircraft[i].crash(player_plane)){
-      died.val=true
-    }
-  }
-  for i=0;i<laser.length();i=i+1{
-    //waiting
-  }
+  // }
+  // let bullet_crashed:Array[Int]=[]
+  // let bullet_crashed_my:Array[Int]=[]
+  // for i=0;i<bullet.length();i=i+1{
+  //   if(bullet[i].crash(@antity.player_Plane)){
+  //     bullet_crashed.push(i)
+  //   }
+  // }
+  // for i=0;i<bullet_my.length();i=i+1{
+  //   for j=0;j<aircraft.length();j=j+1{
+  //     if(bullet_my[i].crash(aircraft[j])){
+  //       bullet_crashed_my.push(i)
+  //     }
+  //   }
+  // }
+  // for i=0;i<aircraft.length();i=i+1{
+  //   if(aircraft[i].crash(player_plane)){
+  //     died.val=true
+  //   }
+  // }
+  // for i=0;i<laser.length();i=i+1{
+  //   //waiting
+  // }
   //淘汰#########################################################################################################################
-  for i=bullet_crashed_my.length()-1;i>=0;i=i-1{
-    bullet_my.remove(bullet_crashed_my[i]) |> ignore
-    //加入子弹爆炸特效
-  }
-  for i=bullet_crashed.length()-1;i>=0;i=i-1{
-    bullet.remove(bullet_crashed[i]) |> ignore
-    //加入子弹爆炸特效
-  }
+  // for i=bullet_crashed_my.length()-1;i>=0;i=i-1{
+  //   bullet_my.remove(bullet_crashed_my[i]) |> ignore
+  //   //加入子弹爆炸特效
+  // }
+  // for i=bullet_crashed.length()-1;i>=0;i=i-1{
+  //   bullet.remove(bullet_crashed[i]) |> ignore
+  //   //加入子弹爆炸特效
+  // }
   for i=aircraft.length()-1;i>=0;i=i-1{
     if(aircraft[i].is_out_all()){
       aircraft.remove(i)|> ignore
@@ -99,16 +99,25 @@ fn gaming_logic()->Unit{
   if(random.uint()%1000<=3){
     generate_pane(4)
   }
-  for i=aircraft.length()-1;i>=0;i=i-1{
-    shoot(aircraft[i])
-  }
-  shoot(player_plane)
+  // for i=aircraft.length()-1;i>=0;i=i-1{
+  //   shoot(aircraft[i])
+  // }
+  // shoot(player_plane)
+  // if(player_plane.bullet_exit_point[0].last_shoot>=player_plane.bullet_exit_point[0].shoot_speed){
+  //   player_plane.bullet_exit_point[0].last_shoot=player_plane.bullet_exit_point[0].last_shoot%player_plane.bullet_exit_point[0].shoot_speed
+  //   bullet_my.push({..@antity.bullet[player_plane.bullet_exit_point[0].type_].unwrap(),pos:@antity.Location::new(x=player_plane.bullet_exit_point[0].x.to_double()+player_plane.pos.x,y=player_plane.bullet_exit_point[0].y.to_double()+player_plane.pos.y,player_plane.bullet_exit_point[0].type_.reinterpret_as_uint())})
+  // }
+  // else {player_plane.bullet_exit_point[0].last_shoot=player_plane.bullet_exit_point[0].last_shoot+1}
+  if(@time_cnt.get_time()%60==0) {bullet_my.push(@antity.bullet1)}
   //子弹袋生成！！！
 
   //打印##############################################################################################################
 
   for i=bullet.length()-1;i>=0;i=i-1{
     bullet[i].print()
+  }
+  for i=bullet_my.length()-1;i>=0;i=i-1{
+    bullet_my[i].print()
   }
   player_plane.print()
   for i=aircraft.length()-1;i>=0;i=i-1{

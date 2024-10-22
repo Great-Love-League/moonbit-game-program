@@ -334,7 +334,7 @@ pub let middle_plane:Aircraft={
 pub let player_Plane:Aircraft={
 	type_:3,
 	pos:Location::new(x=73,y=120,3),
-	bullet_exit_point:[Bullet_exit_point::new(7,5,1,0,20)],
+	bullet_exit_point:[Bullet_exit_point::new(7,5,9,0,20)],
 	speed:0.6666666666666667,
 	dir:180,
 	frame:player_Plane_1_frame,
