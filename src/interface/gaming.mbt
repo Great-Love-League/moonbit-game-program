@@ -97,13 +97,15 @@ fn gaming_logic()->Unit{
     generate_plane(4)
   }
   for i=aircraft.length()-1;i>=0;i=i-1{
-    // shoot(aircraft[i])
+    shoot(aircraft[i])
   }
   shoot(player_plane)
   //子弹袋生成！！！
 
   //打印##############################################################################################################
   @wasm4.text(bullet_my.length().to_string(),0,0)
+  @wasm4.text(bullet.length().to_string(),0,8)
+  @wasm4.text(aircraft.length().to_string(),0,48)
   for i=bullet.length()-1;i>=0;i=i-1{
     bullet[i].print()
   }
@@ -128,8 +130,6 @@ fn gaming_logic()->Unit{
 //生成################################################################################################################################################
 fn generate_plane(type_:Int)->Unit{
   aircraft.push({..@antity.plans[type_].unwrap(),pos:@antity.Location::new(x=(random.uint()%160).to_float().to_double(),y=0,type_.reinterpret_as_uint())})
-  // if type_==4 {aircraft.push({..@antity.middle_plane,pos:@antity.Location::new(x=(random.uint()%160).to_float().to_double(),y=0,type_.reinterpret_as_uint())})}
-  // else if type_==5 {aircraft.push({..@antity.small_plane,pos:@antity.Location::new(x=(random.uint()%160).to_float().to_double(),y=0,type_.reinterpret_as_uint())})}
 }
 
 fn shoot(plane:@antity.Aircraft)->Unit{

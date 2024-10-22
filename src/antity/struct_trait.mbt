@@ -113,7 +113,15 @@ pub fn Aircraft::is_out_all(self:Aircraft)->Bool{
     let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
     let x=self.pos.x.to_int()
     let y=self.pos.y.to_int()
-    if((x>=160||xl<0)&&(y<0||yl>=low_y)) {true}
+    if(tttt.val){
+        // @wasm4.text(self.type_.to_string(),0,0)
+        @wasm4.text(y.to_string(),0,16)
+        @wasm4.text(xl.to_string(),0,24)
+        @wasm4.text(yl.to_string(),0,32)
+        @wasm4.text(x.to_string(),0,40)
+        tttt.val=false
+    }
+    if((x>=160||xl<0)||(y<0||yl>=low_y)) {true}
     else {false}
 }
 
@@ -124,15 +132,15 @@ pub fn Bullet::is_out_all(self:Bullet)->Bool{
     let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
     let x=self.pos.x.to_int()
     let y=self.pos.y.to_int()
-    if(tttt.val){
-        @wasm4.text(self.type_.to_string(),0,0)
-        @wasm4.text(x.to_string(),0,8)
-        @wasm4.text(y.to_string(),0,16)
-        @wasm4.text(xl.to_string(),0,24)
-        @wasm4.text(yl.to_string(),0,32)
-        tttt.val=false
-    }
-    if((x>=160||xl<0)&&(y<0||yl>=low_y)) {true}
+    // if(tttt.val){
+    //     @wasm4.text(self.type_.to_string(),0,0)
+    //     @wasm4.text(x.to_string(),0,8)
+    //     @wasm4.text(y.to_string(),0,16)
+    //     @wasm4.text(xl.to_string(),0,24)
+    //     @wasm4.text(yl.to_string(),0,32)
+    //     tttt.val=false
+    // }
+    if((x>=160||xl<0)||(y<0||yl>=low_y)) {true}
     else {false}
 }
 //检测是否出界#########################################
