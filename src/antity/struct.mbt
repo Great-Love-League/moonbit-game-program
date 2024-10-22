@@ -63,7 +63,7 @@ pub struct Effects{
 
 pub struct Bullet{
 	type_:UInt
-	harm:UInt
+	harm:Double
 	pos:Location
 	dir:Double
 	speed:Double
