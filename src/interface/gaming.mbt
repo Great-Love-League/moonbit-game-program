@@ -48,11 +48,12 @@ fn gaming_logic()->Unit{
       }
     }
   }
-  // for i=0;i<aircraft.length();i=i+1{
-  //   if(aircraft[i].crash(player_plane)){
-  //     died.val=true
-  //   }
-  // }
+  for i=aircraft.length()-1;i>=0;i=i-1{
+    if(aircraft[i].crash(player_plane)){
+      died.val=true
+      aircraft.remove(i) |> ignore
+    }
+  }
   // for i=0;i<laser.length();i=i+1{
   //   //waiting
   // }
