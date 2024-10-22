@@ -34,20 +34,20 @@ fn gaming_logic()->Unit{
   // for i=0;i<laser.length();i=i+1{
 
   // }
-  // let bullet_crashed:Array[Int]=[]
-  // let bullet_crashed_my:Array[Int]=[]
-  // for i=0;i<bullet.length();i=i+1{
-  //   if(bullet[i].crash(@antity.player_Plane)){
-  //     bullet_crashed.push(i)
-  //   }
-  // }
-  // for i=0;i<bullet_my.length();i=i+1{
-  //   for j=0;j<aircraft.length();j=j+1{
-  //     if(bullet_my[i].crash(aircraft[j])){
-  //       bullet_crashed_my.push(i)
-  //     }
-  //   }
-  // }
+  let bullet_crashed:Array[Int]=[]
+  let bullet_crashed_my:Array[Int]=[]
+  for i=bullet.length()-1;i>=0;i=i-1{
+    if(bullet[i].crash(player_plane)){
+      bullet_crashed.push(i)
+    }
+  }
+  for i=bullet_my.length()-1;i>=0;i=i-1{
+    for j=aircraft.length()-1;j>=0;j=j-1{
+      if(bullet_my[i].crash(aircraft[j])){
+        bullet_crashed_my.push(i)
+      }
+    }
+  }
   // for i=0;i<aircraft.length();i=i+1{
   //   if(aircraft[i].crash(player_plane)){
   //     died.val=true
@@ -57,14 +57,14 @@ fn gaming_logic()->Unit{
   //   //waiting
   // }
   //淘汰#########################################################################################################################
-  // for i=bullet_crashed_my.length()-1;i>=0;i=i-1{
-  //   bullet_my.remove(bullet_crashed_my[i]) |> ignore
-  //   //加入子弹爆炸特效
-  // }
-  // for i=bullet_crashed.length()-1;i>=0;i=i-1{
-  //   bullet.remove(bullet_crashed[i]) |> ignore
-  //   //加入子弹爆炸特效
-  // }
+  for i=bullet_crashed_my.length()-1;i>=0;i=i-1{
+    bullet_my.remove(bullet_crashed_my[i]) |> ignore
+    //加入子弹爆炸特效
+  }
+  for i=bullet_crashed.length()-1;i>=0;i=i-1{
+    bullet.remove(bullet_crashed[i]) |> ignore
+    //加入子弹爆炸特效
+  }
   for i=aircraft.length()-1;i>=0;i=i-1{
     if(aircraft[i].is_out_all()){
       aircraft.remove(i)|> ignore
@@ -105,7 +105,10 @@ fn gaming_logic()->Unit{
   //打印##############################################################################################################
   @wasm4.text(bullet_my.length().to_string(),0,0)
   @wasm4.text(bullet.length().to_string(),0,8)
-  @wasm4.text(aircraft.length().to_string(),0,48)
+  @wasm4.text(aircraft.length().to_string(),0,16)
+  @wasm4.text(player_plane.hp.to_string(),0,24)
+  @wasm4.text(bullet_crashed_my.length().to_string(),0,32)
+  @wasm4.text(bullet_crashed.length().to_string(),0,40)
   for i=bullet.length()-1;i>=0;i=i-1{
     bullet[i].print()
   }

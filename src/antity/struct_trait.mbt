@@ -17,6 +17,10 @@ pub fn get_index(x:UInt,y:UInt)->UInt{
 	y*160+x
 }
 
+//造成伤害#######################################################################################################################################
+
+//造成伤害#######################################################################################################################################
+
 //展示函数#############################################
 pub fn show(self:Sprite_parameter)->Unit{
     if 0U<=self.x&&self.x<160&&0U<=self.y&&self.y<160{
@@ -113,14 +117,14 @@ pub fn Aircraft::is_out_all(self:Aircraft)->Bool{
     let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
     let x=self.pos.x.to_int()
     let y=self.pos.y.to_int()
-    if(tttt.val){
-        // @wasm4.text(self.type_.to_string(),0,0)
-        @wasm4.text(y.to_string(),0,16)
-        @wasm4.text(xl.to_string(),0,24)
-        @wasm4.text(yl.to_string(),0,32)
-        @wasm4.text(x.to_string(),0,40)
-        tttt.val=false
-    }
+    // if(tttt.val){
+    //     // @wasm4.text(self.type_.to_string(),0,0)
+    //     @wasm4.text(y.to_string(),0,16)
+    //     @wasm4.text(xl.to_string(),0,24)
+    //     @wasm4.text(yl.to_string(),0,32)
+    //     @wasm4.text(x.to_string(),0,40)
+    //     tttt.val=false
+    // }
     if((x>=160||xl<0)||(y<0||yl>=low_y)) {true}
     else {false}
 }
@@ -156,7 +160,24 @@ pub fn die(self:Aircraft)->Bool{
 //检测撞击#################################################################################
 
 pub fn crash(self:Bullet,obj:Aircraft)->Bool{
- true
+    let mut xs:Int=0
+    let mut ys:Int=0
+    let mut xo:Int=0
+    let mut yo:Int=0
+    let mut ans=false
+    for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
+        xs=(self.frame.sprite[i].x).reinterpret_as_int()+self.pos.x.to_int()
+        ys=(self.frame.sprite[i].y).reinterpret_as_int()+self.pos.y.to_int()
+        for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
+            xo=(obj.frame.sprite[j].x).reinterpret_as_int()+obj.pos.x.to_int()
+            yo=(obj.frame.sprite[j].y).reinterpret_as_int()+obj.pos.y.to_int()
+            if(xs==xo&&yo==ys) {ans=true}
+        }
+    }
+    if(ans){
+        obj.hp=obj.hp-self.harm
+    }
+    ans
 }
 
 pub fn crash(self:Aircraft,obj:Aircraft)->Bool{
