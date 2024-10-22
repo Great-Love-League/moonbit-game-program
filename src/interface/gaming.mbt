@@ -133,7 +133,17 @@ fn gaming_logic()->Unit{
 
 //生成################################################################################################################################################
 fn generate_plane(type_:Int)->Unit{
-  aircraft.push({..@antity.plans[type_].unwrap(),pos:@antity.Location::new(x=(random.uint()%160).to_float().to_double(),y=0,type_.reinterpret_as_uint())})
+  let x={
+    ..@antity.plans[type_].unwrap(),
+    pos:@antity.Location::new(
+      x=(random.uint()%160).to_float().to_double(),
+      y=0,type_.reinterpret_as_uint()
+    )
+  }
+  while(x.is_out_partly()) {
+    x.pos.x=(random.uint()%160).to_float().to_double()
+  }
+  aircraft.push(x)
 }
 
 fn shoot(plane:@antity.Aircraft)->Unit{

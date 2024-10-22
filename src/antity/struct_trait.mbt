@@ -82,7 +82,7 @@ pub fn Bullet_exit_point::new(x:Int,y:Int,type_:Int,last_shoot:Int64,shoot_speed
 //构造函数#############################################
 
 //更新位置#############################################
-let eps:Double=0.000000001
+// let eps:Double=0.000000001
 pub fn Aircraft::update_pos(self:Aircraft)->Unit{
     let x=self.pos.x
     let y=self.pos.y
@@ -108,7 +108,7 @@ pub fn Aircraft::is_out_partly(self:Aircraft)->Bool{
     let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
     let x=self.pos.x
     let y=self.pos.y
-    if(x<0||xl>=160||y<0||yl>=low_y) {true}
+    if(((x<160&&xl>=160)||(y>low_y.to_double()&&yl>=low_y)||(x<0&&xl>=0)||(y<0&&yl>=0))||self.is_out_all()) {true}
     else {false}
 }
 
