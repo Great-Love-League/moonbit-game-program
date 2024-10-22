@@ -100,29 +100,39 @@ pub fn Bullet::update_pos(self:Bullet)->Unit{
 
 //检测是否出界#########################################
 pub fn Aircraft::is_out_partly(self:Aircraft)->Bool{
-    let xl=self.pos.x.to_int().reinterpret_as_uint()+self.frame.xlen-1
-    let yl=self.pos.y.to_int().reinterpret_as_uint()+self.frame.ylen-1
+    let xl=self.pos.x.to_int()+self.frame.xlen.reinterpret_as_int()-1
+    let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
     let x=self.pos.x
     let y=self.pos.y
-    if(x<0||xl>=160||y<0||yl>=low_y.reinterpret_as_uint()) {true}
+    if(x<0||xl>=160||y<0||yl>=low_y) {true}
     else {false}
 }
 
 pub fn Aircraft::is_out_all(self:Aircraft)->Bool{
-    let xl=self.pos.x.to_int().reinterpret_as_uint()+self.frame.xlen-1
-    let yl=self.pos.y.to_int().reinterpret_as_uint()+self.frame.ylen-1
-    let x=self.pos.x.to_int().reinterpret_as_uint()
-    let y=self.pos.y.to_int().reinterpret_as_uint()
-    if((x>=160||xl<0)&&(y<0||yl>=low_y.reinterpret_as_uint())) {true}
+    let xl=self.pos.x.to_int()+self.frame.xlen.reinterpret_as_int()-1
+    let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
+    let x=self.pos.x.to_int()
+    let y=self.pos.y.to_int()
+    if((x>=160||xl<0)&&(y<0||yl>=low_y)) {true}
     else {false}
 }
 
+
+pub let tttt:Ref[Bool]=Ref::new(true)
 pub fn Bullet::is_out_all(self:Bullet)->Bool{
-    let xl=self.pos.x.to_int().reinterpret_as_uint()+self.frame.xlen-1
-    let yl=self.pos.y.to_int().reinterpret_as_uint()+self.frame.ylen-1
-    let x=self.pos.x.to_int().reinterpret_as_uint()
-    let y=self.pos.y.to_int().reinterpret_as_uint()
-    if((x>=160||xl<0)&&(y<0||yl>=low_y.reinterpret_as_uint())) {true}
+    let xl=self.pos.x.to_int()+self.frame.xlen.reinterpret_as_int()-1
+    let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
+    let x=self.pos.x.to_int()
+    let y=self.pos.y.to_int()
+    if(tttt.val){
+        @wasm4.text(self.type_.to_string(),0,0)
+        @wasm4.text(x.to_string(),0,8)
+        @wasm4.text(y.to_string(),0,16)
+        @wasm4.text(xl.to_string(),0,24)
+        @wasm4.text(yl.to_string(),0,32)
+        tttt.val=false
+    }
+    if((x>=160||xl<0)&&(y<0||yl>=low_y)) {true}
     else {false}
 }
 //检测是否出界#########################################

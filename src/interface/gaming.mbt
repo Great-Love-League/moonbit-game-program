@@ -1,11 +1,8 @@
 fn gaming1()->Unit{
+  @antity.tttt.val=true
   gaming_logic()
   // @antity.player_Plane_1.print()
 }
-type Instant
-fn Instant::now() = "__moonbit_time_unstable" "instant_now"
-fn Instant::elapsed_as_secs_f64(self : Instant) -> Double = "__moonbit_time_unstable" "instant_elapsed_as_secs_f64"
-
 let random:@random.Rand=@random.Rand::new(seed=b"ABCDEFGHIJKSMNOPQRSTUVWXYZ123456")
 let aircraft:Array[@antity.Aircraft]=[]
 let bullet:Array[@antity.Bullet]=[]
@@ -94,25 +91,19 @@ fn gaming_logic()->Unit{
   //生成##############################################################################################################
 
   if(random.uint()%500<=1){
-    generate_pane(5)
+    generate_plane(5)
   }
   if(random.uint()%1000<=3){
-    generate_pane(4)
+    generate_plane(4)
   }
-  // for i=aircraft.length()-1;i>=0;i=i-1{
-  //   shoot(aircraft[i])
-  // }
-  // shoot(player_plane)
-  // if(player_plane.bullet_exit_point[0].last_shoot>=player_plane.bullet_exit_point[0].shoot_speed){
-  //   player_plane.bullet_exit_point[0].last_shoot=player_plane.bullet_exit_point[0].last_shoot%player_plane.bullet_exit_point[0].shoot_speed
-  //   bullet_my.push({..@antity.bullet[player_plane.bullet_exit_point[0].type_].unwrap(),pos:@antity.Location::new(x=player_plane.bullet_exit_point[0].x.to_double()+player_plane.pos.x,y=player_plane.bullet_exit_point[0].y.to_double()+player_plane.pos.y,player_plane.bullet_exit_point[0].type_.reinterpret_as_uint())})
-  // }
-  // else {player_plane.bullet_exit_point[0].last_shoot=player_plane.bullet_exit_point[0].last_shoot+1}
-  if(@time_cnt.get_time()%60==0) {bullet_my.push(@antity.bullet1)}
+  for i=aircraft.length()-1;i>=0;i=i-1{
+    // shoot(aircraft[i])
+  }
+  shoot(player_plane)
   //子弹袋生成！！！
 
   //打印##############################################################################################################
-
+  @wasm4.text(bullet_my.length().to_string(),0,0)
   for i=bullet.length()-1;i>=0;i=i-1{
     bullet[i].print()
   }
@@ -135,7 +126,7 @@ fn gaming_logic()->Unit{
 }
 
 //生成################################################################################################################################################
-fn generate_pane(type_:Int)->Unit{
+fn generate_plane(type_:Int)->Unit{
   aircraft.push({..@antity.plans[type_].unwrap(),pos:@antity.Location::new(x=(random.uint()%160).to_float().to_double(),y=0,type_.reinterpret_as_uint())})
   // if type_==4 {aircraft.push({..@antity.middle_plane,pos:@antity.Location::new(x=(random.uint()%160).to_float().to_double(),y=0,type_.reinterpret_as_uint())})}
   // else if type_==5 {aircraft.push({..@antity.small_plane,pos:@antity.Location::new(x=(random.uint()%160).to_float().to_double(),y=0,type_.reinterpret_as_uint())})}
@@ -144,8 +135,21 @@ fn generate_pane(type_:Int)->Unit{
 fn shoot(plane:@antity.Aircraft)->Unit{
   for i=plane.bullet_exit_point.length()-1;i>=0;i=i-1{
     if(plane.bullet_exit_point[i].last_shoot>=plane.bullet_exit_point[i].shoot_speed) {
-      if(plane.type_==3) {bullet_my.push({..@antity.bullet[plane.bullet_exit_point[i].type_].unwrap(),pos:@antity.Location::new(x=plane.bullet_exit_point[i].x.to_double()+plane.pos.x,y=plane.bullet_exit_point[i].y.to_double()+plane.pos.y,plane.bullet_exit_point[i].type_.reinterpret_as_uint())})}
-      else {bullet.push({..@antity.bullet[plane.bullet_exit_point[i].type_].unwrap(),pos:@antity.Location::new(x=plane.bullet_exit_point[i].x.to_double()+plane.pos.x,y=plane.bullet_exit_point[i].y.to_double()+plane.pos.y,plane.bullet_exit_point[i].type_.reinterpret_as_uint())})}
+      if(plane.type_==3) {
+        bullet_my.push({
+          ..@antity.bullet[plane.bullet_exit_point[i].type_].unwrap(),
+          pos:@antity.Location::new(
+            x=plane.bullet_exit_point[i].x.to_double()+plane.pos.x,
+            y=plane.bullet_exit_point[i].y.to_double()+plane.pos.y,
+            plane.bullet_exit_point[i].type_.reinterpret_as_uint())
+          })}
+      else {bullet.push({
+        ..@antity.bullet[plane.bullet_exit_point[i].type_].unwrap(),
+        pos:@antity.Location::new(
+          x=plane.bullet_exit_point[i].x.to_double()+plane.pos.x,
+          y=plane.bullet_exit_point[i].y.to_double()+plane.pos.y,
+          plane.bullet_exit_point[i].type_.reinterpret_as_uint())
+          })}
       plane.bullet_exit_point[i].last_shoot=plane.bullet_exit_point[i].last_shoot%plane.bullet_exit_point[i].shoot_speed
     }
     else {plane.bullet_exit_point[i].last_shoot=plane.bullet_exit_point[i].last_shoot+1}

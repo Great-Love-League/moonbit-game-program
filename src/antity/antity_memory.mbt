@@ -1,4 +1,4 @@
-let low_y=150
+let low_y:Int=150
 
 // 玩家飞机正常一般形态
 pub let player_Plane_1_frame : Frame_effects={
@@ -324,7 +324,7 @@ pub let small_plane:Aircraft={
 pub let middle_plane:Aircraft={
 	type_:5,
 	pos:Location::new(x=0,y=0,5),
-	bullet_exit_point:[Bullet_exit_point::new(6,17,1,0,20)],
+	bullet_exit_point:[Bullet_exit_point::new(4,17,1,0,20)],
 	speed:0.6666666666666667,
 	dir:90,
 	frame:middle_plane_,
@@ -334,7 +334,7 @@ pub let middle_plane:Aircraft={
 pub let player_Plane:Aircraft={
 	type_:3,
 	pos:Location::new(x=73,y=120,3),
-	bullet_exit_point:[Bullet_exit_point::new(7,5,9,0,20)],
+	bullet_exit_point:[Bullet_exit_point::new(5,5,9,0,20)],
 	speed:0.6666666666666667,
 	dir:180,
 	frame:player_Plane_1_frame,
@@ -349,13 +349,18 @@ pub let bullet1_:Frame_effects={
 	end_time:0,
 	x:0,
 	y:0,
-	xlen:2,
-	ylen:2,
+	xlen:3,
+	ylen:3,
 	sprite:[
 		{x:0,y:0,color:2},
 		{x:1,y:0,color:2},
 		{x:0,y:1,color:2},
-		{x:1,y:1,color:2}
+		{x:1,y:1,color:2},
+		{x:1,y:2,color:2},
+		{x:2,y:1,color:2},
+		{x:2,y:2,color:2},
+		{x:0,y:2,color:2},
+		{x:2,y:0,color:2}
 	]
 }
 
@@ -364,13 +369,18 @@ pub let bullet2_:Frame_effects={
 	end_time:0,
 	x:0,
 	y:0,
-	xlen:2,
-	ylen:2,
+	xlen:3,
+	ylen:3,
 	sprite:[
 		{x:0,y:0,color:4},
 		{x:1,y:0,color:4},
 		{x:0,y:1,color:4},
-		{x:1,y:1,color:4}
+		{x:1,y:1,color:4},
+		{x:1,y:2,color:4},
+		{x:2,y:1,color:4},
+		{x:2,y:2,color:4},
+		{x:0,y:2,color:4},
+		{x:2,y:0,color:4}
 	]
 }
 
@@ -380,7 +390,7 @@ pub let bullet1:Bullet={
 	harm:10,
 	pos:Location::new(9),
 	dir:270,
-	speed:4,
+	speed:1,
 	frame:bullet1_
 }
 
