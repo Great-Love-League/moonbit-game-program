@@ -88,6 +88,7 @@ pub struct Bullet_exit_point{
 	type_:Int
 	mut last_shoot:Int64
 	shoot_speed:Int64
+	limit:Int
 }
 
 pub struct Aircraft{
@@ -105,8 +106,9 @@ pub struct Aircraft{
 pub struct Cartridge{
   type_:UInt
   pos:Location
-  mut speed:UInt
-  dir:UInt
+  mut speed:Double
+  dir:Double
+	effect:Double
   frame:Frame_effects
 }
 
@@ -120,3 +122,4 @@ pub struct Cartridge{
 // 高爆子弹包 6
 // 双倍子弹包 7
 // 血量恢复包 8
+// 激光子弹包 10

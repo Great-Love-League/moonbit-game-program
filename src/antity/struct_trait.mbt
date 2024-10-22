@@ -63,7 +63,12 @@ pub fn print(self:Laser)->Unit{
 }
 
 pub fn print(self:Cartridge)->Unit{
-
+    let len=self.frame.sprite.length();
+    self.frame.x=self.pos.x.to_int().reinterpret_as_uint()
+    self.frame.y=self.pos.y.to_int().reinterpret_as_uint()
+	for i=0;i<len;i=i+1{
+		self.frame.show(i)
+	}
 }
 
 //展示函数#############################################
@@ -76,8 +81,8 @@ pub fn Location::new(~x:Double=0,~y:Double=0,type_:UInt)->Location{
 pub fn Sprite_parameter::new(x:UInt,y:UInt,color:UInt)->Sprite_parameter{
     {x,y,color}
 }
-pub fn Bullet_exit_point::new(x:Int,y:Int,type_:Int,last_shoot:Int64,shoot_speed:Int64)->Bullet_exit_point{
-    {x,y,type_,last_shoot,shoot_speed}
+pub fn Bullet_exit_point::new(x:Int,y:Int,type_:Int,last_shoot:Int64,shoot_speed:Int64,~limit:Int=-1)->Bullet_exit_point{
+    {x,y,type_,last_shoot,shoot_speed,limit}
 }
 //构造函数#############################################
 
@@ -97,6 +102,11 @@ pub fn Aircraft::update_pos(self:Aircraft)->Unit{
 }
 
 pub fn Bullet::update_pos(self:Bullet)->Unit{
+    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.pi)
+    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.pi)
+}
+
+pub fn Cartridge::update_pos(self:Cartridge)->Unit{
     self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.pi)
     self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.pi)
 }
@@ -130,7 +140,6 @@ pub fn Aircraft::is_out_all(self:Aircraft)->Bool{
 }
 
 
-pub let tttt:Ref[Bool]=Ref::new(true)
 pub fn Bullet::is_out_all(self:Bullet)->Bool{
     let xl=self.pos.x.to_int()+self.frame.xlen.reinterpret_as_int()-1
     let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
@@ -147,6 +156,33 @@ pub fn Bullet::is_out_all(self:Bullet)->Bool{
     if((x>=160||xl<0)||(y<0||yl>=low_y)) {true}
     else {false}
 }
+
+pub fn Cartridge::is_out_all(self:Cartridge)->Bool{
+    let xl=self.pos.x.to_int()+self.frame.xlen.reinterpret_as_int()-1
+    let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
+    let x=self.pos.x.to_int()
+    let y=self.pos.y.to_int()
+    // if(tttt.val){
+    //     // @wasm4.text(self.type_.to_string(),0,0)
+    //     @wasm4.text(y.to_string(),0,16)
+    //     @wasm4.text(xl.to_string(),0,24)
+    //     @wasm4.text(yl.to_string(),0,32)
+    //     @wasm4.text(x.to_string(),0,40)
+    //     tttt.val=false
+    // }
+    if((x>=160||xl<0)||(y<0||yl>=low_y)) {true}
+    else {false}
+}
+
+pub fn Cartridge::is_out_partly(self:Cartridge)->Bool{
+    let xl=self.pos.x.to_int()+self.frame.xlen.reinterpret_as_int()-1
+    let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
+    let x=self.pos.x
+    let y=self.pos.y
+    if(((x<160&&xl>=160)||(y>low_y.to_double()&&yl>=low_y)||(x<0&&xl>=0)||(y<0&&yl>=0))||self.is_out_all()) {true}
+    else {false}
+}
+
 //检测是否出界#########################################
 
 //判断死亡########################################################################################
@@ -201,7 +237,39 @@ pub fn crash(self:Aircraft,obj:Aircraft)->Bool{
     ans
 }
 
+pub fn crash(self:Cartridge,obj:Aircraft)->Bool{
+    let mut xs:Int=0
+    let mut ys:Int=0
+    let mut xo:Int=0
+    let mut yo:Int=0
+    let mut ans=false
+    for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
+        xs=(self.frame.sprite[i].x).reinterpret_as_int()+self.pos.x.to_int()
+        ys=(self.frame.sprite[i].y).reinterpret_as_int()+self.pos.y.to_int()
+        for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
+            xo=(obj.frame.sprite[j].x).reinterpret_as_int()+obj.pos.x.to_int()
+            yo=(obj.frame.sprite[j].y).reinterpret_as_int()+obj.pos.y.to_int()
+            if(xs==xo&&yo==ys) {ans=true}
+        }
+    }
+    if(ans){
+        self.take_effect(obj)
+    }
+    ans
+}
+
 //检测撞击#################################################################################
+
+
+//弹药箱生效函数######################################################################################
+
+fn take_effect(self:Cartridge,obj:Aircraft)->Unit{
+    if(self.type_==8){
+        obj.hp=obj.hp+self.effect
+    }
+}
+
+//弹药箱生效函数######################################################################################
 
 
 //function of music 
