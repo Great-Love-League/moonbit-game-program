@@ -6,7 +6,7 @@ type Instant
 fn Instant::now() = "__moonbit_time_unstable" "instant_now"
 fn Instant::elapsed_as_secs_f64(self : Instant) -> Double = "__moonbit_time_unstable" "instant_elapsed_as_secs_f64"
 
-let random:@random.Rand=@random.Rand::new(seed=b"ABCDEFGHIJKSMNOPQRSTUVWXYZ123456")
+let random:@random.Rand=@random.Rand::new()
 let aircraft:Array[@antity.Aircraft]=[]
 let bullet:Array[@antity.Bullet]=[]
 let bullet_my:Array[@antity.Bullet]=[]
@@ -100,9 +100,9 @@ fn gaming_logic()->Unit{
     generate_pane(4)
   }
   for i=aircraft.length()-1;i>=0;i=i-1{
-    shoot(aircraft[i])
+    // shoot(aircraft[i])
   }
-  shoot(player_plane)
+  // shoot(player_plane)
   //子弹袋生成！！！
 
   //打印##############################################################################################################
