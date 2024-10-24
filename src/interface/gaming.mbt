@@ -7,7 +7,6 @@ let aircraft:Array[@antity.Aircraft]=[]
 let bullet:Array[@antity.Bullet]=[]
 let bullet_my:Array[@antity.Bullet]=[]
 let laser:Array[@antity.Laser]=[]
-let effect:Array[@antity.Effects]=[]
 let cartridge:Array[@antity.Cartridge]=[]
 let player_plane=@antity.player_Plane
 let died:Ref[Bool]=Ref::new(false)
@@ -33,9 +32,9 @@ fn gaming_logic()->Unit{
     //waiting
   }
   //判断碰撞####################################################################################################################
-  // for i=0;i<laser.length();i=i+1{
+  for i=0;i<laser.length();i=i+1{
 
-  // }
+  }
   let bullet_crashed:Array[Int]=[]
   let bullet_crashed_my:Array[Int]=[]
   for i=bullet.length()-1;i>=0;i=i-1{
@@ -61,9 +60,9 @@ fn gaming_logic()->Unit{
       cartridge.remove(i)|> ignore
     }
   }
-  // for i=0;i<laser.length();i=i+1{
-  //   //waiting
-  // }
+  for i=0;i<laser.length();i=i+1{
+    //waiting
+  }
   //淘汰#########################################################################################################################
   for i=bullet_crashed_my.length()-1;i>=0;i=i-1{
     bullet_my.remove(bullet_crashed_my[i]) |> ignore
@@ -113,9 +112,9 @@ fn gaming_logic()->Unit{
     generate_cartridge()
   }
   for i=aircraft.length()-1;i>=0;i=i-1{
-    // shoot(aircraft[i])
+    shoot(aircraft[i])
   }
-  // shoot(player_plane)
+  shoot(player_plane)
   //子弹袋生成！！！
 
   //打印##############################################################################################################
