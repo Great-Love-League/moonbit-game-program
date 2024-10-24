@@ -1,26 +1,8 @@
 pub struct Location{
   mut x:Double
   mut y:Double
-  // mut newx:Double
-  // mut newy:Double
   type_:UInt
-//用于记录实体的位置
 }
-
-// struct Sprite_parameter{
-// 	 x:UInt
-// 	 y:UInt
-// 	//相对于基准像素的偏移量
-// 	color:UInt
-// }
-
-// pub struct Frame{
-// 	mut x:Int
-// 	mut y:Int
-// 	//代表左上角的基准像素
-// 	sprite:Array[Sprite_parameter]
-// 	//这个代表一帧！！
-// }
 
 pub struct Frame_time_config{
 	mut begin:Int64
@@ -34,15 +16,15 @@ pub struct Frame_effects{
 	back_ground:@bitset.Bitset
 }
 
-// pub struct Frame_effects_{
-// 	mut begin_time:UInt64
-// 	mut end_time:UInt64
-// 	mut x:UInt
-// 	mut y:UInt
-// 	sprite:Array[Frame]
-// 	time_management:Array[Frame_time_config]
-// 	//time_management与sprite的长度一致，time_management用于控制sprite的每一帧显示时间
-// }
+pub struct Frame_effects_{
+	mut begin_time:UInt64
+	mut end_time:UInt64
+	mut x:UInt
+	mut y:UInt
+	sprite:Array[Frame_effects]
+	time_management:Array[Frame_time_config]
+	//time_management与sprite的长度一致，time_management用于控制sprite的每一帧显示时间
+}
 
 pub struct ToneParams {
     frequency: (UInt, UInt)
@@ -51,10 +33,10 @@ pub struct ToneParams {
     channel: @wasm4.ToneFlag
 }
 
-// pub struct Effects{
-// 	frame:Frame_effects_
-// 	sound:Array[ToneParams]
-// }
+pub struct Effects{
+	frame:Frame_effects_
+	sound:Array[ToneParams]
+}
 
 pub struct Bullet{
 	type_:UInt
