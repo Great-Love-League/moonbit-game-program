@@ -43,11 +43,11 @@ pub fn op_get(self:Bitset,index:Int)->Int{
 }
 
 pub fn push(self:Bitset,input:UInt)->Unit{
-  println("Push \{input}")
+  // println("Push \{input}")
   let indexx=self.top*self.per_size
   let mut block=indexx/up_bit
   let mut move=indexx-block*up_bit
-  println("\{indexx} \{block} \{move}")
+  // println("\{indexx} \{block} \{move}")
   if(move==0) {self.bits.push(0)}
   for i=0;i<self.per_size;i=i+1{
     if(move>=up_bit){
@@ -56,7 +56,7 @@ pub fn push(self:Bitset,input:UInt)->Unit{
       move=0;
     }
     self.bits[block]=(self.bits[block]|(((input>>i)&1)<<move))
-    println(self.bits[block]|(((input>>i)&1)<<move))
+    // println(self.bits[block]|(((input>>i)&1)<<move))
     move=move+1
   }
   self.top=self.top+1;
