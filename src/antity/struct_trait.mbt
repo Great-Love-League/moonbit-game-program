@@ -22,53 +22,38 @@ pub fn get_index(x:UInt,y:UInt)->UInt{
 //造成伤害#######################################################################################################################################
 
 //展示函数#############################################
-pub fn show(self:Sprite_parameter)->Unit{
-    if 0U<=self.x&&self.x<160&&0U<=self.y&&self.y<160{
-	    @wasm4.set_frame_buffer(get_index(self.x,self.y),self.color)
+
+pub fn show(self:Frame_effects,x:Int,y:Int)->Unit{
+    let len=self.sprite.length()
+    let mut index=0
+    let mut posx=x
+    let mut posy=y
+    for i=0U;i<self.ylen;i=i+1{
+        for e=0U;e<self.xlen;e=e+1{
+            if((self.back_ground[index]==1||posx>=160||posx<0||posy<0||posy>low_y).not()){
+                @wasm4.set_frame_buffer(get_index(posx.reinterpret_as_uint(),posy.reinterpret_as_uint()),self.sprite[index]+1)
+            }
+            index=index+1
+            posx=posx+1
+        }
+        posx=x
+        posy=posy+1
     }
 }
-
-pub fn show(self:Frame_effects,x:Int)->Unit{
-	{..self.sprite[x],x:self.sprite[x].x+self.x,y:self.sprite[x].y+self.y}.show()
-}
-
-pub fn print(self:Frame_effects)->Unit{
-	let len=self.sprite.length();
-	let time=@time_cnt.get_time()
-	for i=0;i<len;i=i+1{
-		self.show(i)
-	}
-}
-
 pub fn print(self:Aircraft)->Unit{
-    let len=self.frame.sprite.length();
-    self.frame.x=self.pos.x.to_int().reinterpret_as_uint()
-    self.frame.y=self.pos.y.to_int().reinterpret_as_uint()
-	for i=0;i<len;i=i+1{
-		self.frame.show(i)
-	}
+    self.frame.show(self.pos.x.to_int(),self.pos.y.to_int())
 }
 
 pub fn print(self:Bullet)->Unit{
-    let len=self.frame.sprite.length();
-    self.frame.x=self.pos.x.to_int().reinterpret_as_uint()
-    self.frame.y=self.pos.y.to_int().reinterpret_as_uint()
-	for i=0;i<len;i=i+1{
-		self.frame.show(i)
-	}
+    self.frame.show(self.pos.x.to_int(),self.pos.y.to_int())
 }
 
 pub fn print(self:Laser)->Unit{
-
+    // self.frame.show(self.pos.x.to_int(),self.pos.y.to_int())
 }
 
 pub fn print(self:Cartridge)->Unit{
-    let len=self.frame.sprite.length();
-    self.frame.x=self.pos.x.to_int().reinterpret_as_uint()
-    self.frame.y=self.pos.y.to_int().reinterpret_as_uint()
-	for i=0;i<len;i=i+1{
-		self.frame.show(i)
-	}
+    self.frame.show(self.pos.x.to_int(),self.pos.y.to_int())
 }
 
 //展示函数#############################################
@@ -78,9 +63,6 @@ pub fn Location::new(~x:Double=0,~y:Double=0,type_:UInt)->Location{
     {x,y,type_}
 }
 
-pub fn Sprite_parameter::new(x:UInt,y:UInt,color:UInt)->Sprite_parameter{
-    {x,y,color}
-}
 pub fn Bullet_exit_point::new(x:Int,y:Int,type_:Int,last_shoot:Int64,shoot_speed:Int64,~limit:Int=-1)->Bullet_exit_point{
     {x,y,type_,last_shoot,shoot_speed,limit}
 }
@@ -127,14 +109,6 @@ pub fn Aircraft::is_out_all(self:Aircraft)->Bool{
     let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
     let x=self.pos.x.to_int()
     let y=self.pos.y.to_int()
-    // if(tttt.val){
-    //     // @wasm4.text(self.type_.to_string(),0,0)
-    //     @wasm4.text(y.to_string(),0,16)
-    //     @wasm4.text(xl.to_string(),0,24)
-    //     @wasm4.text(yl.to_string(),0,32)
-    //     @wasm4.text(x.to_string(),0,40)
-    //     tttt.val=false
-    // }
     if((x>=160||xl<0)||(y<0||yl>=low_y)) {true}
     else {false}
 }
@@ -195,68 +169,68 @@ pub fn die(self:Aircraft)->Bool{
 
 //检测撞击#################################################################################
 
-pub fn crash(self:Bullet,obj:Aircraft)->Bool{
-    let mut xs:Int=0
-    let mut ys:Int=0
-    let mut xo:Int=0
-    let mut yo:Int=0
-    let mut ans=false
-    for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
-        xs=(self.frame.sprite[i].x).reinterpret_as_int()+self.pos.x.to_int()
-        ys=(self.frame.sprite[i].y).reinterpret_as_int()+self.pos.y.to_int()
-        for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
-            xo=(obj.frame.sprite[j].x).reinterpret_as_int()+obj.pos.x.to_int()
-            yo=(obj.frame.sprite[j].y).reinterpret_as_int()+obj.pos.y.to_int()
-            if(xs==xo&&yo==ys) {ans=true}
-        }
-    }
-    if(ans){
-        obj.hp=obj.hp-self.harm
-    }
-    ans
-}
+// pub fn crash(self:Bullet,obj:Aircraft)->Bool{
+//     let mut xs:Int=0
+//     let mut ys:Int=0
+//     let mut xo:Int=0
+//     let mut yo:Int=0
+//     let mut ans=false
+//     for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
+//         xs=(self.frame.sprite[i].x).reinterpret_as_int()+self.pos.x.to_int()
+//         ys=(self.frame.sprite[i].y).reinterpret_as_int()+self.pos.y.to_int()
+//         for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
+//             xo=(obj.frame.sprite[j].x).reinterpret_as_int()+obj.pos.x.to_int()
+//             yo=(obj.frame.sprite[j].y).reinterpret_as_int()+obj.pos.y.to_int()
+//             if(xs==xo&&yo==ys) {ans=true}
+//         }
+//     }
+//     if(ans){
+//         obj.hp=obj.hp-self.harm
+//     }
+//     ans
+// }
 
-pub fn crash(self:Aircraft,obj:Aircraft)->Bool{
-    let mut xs:Int=0
-    let mut ys:Int=0
-    let mut xo:Int=0
-    let mut yo:Int=0
-    let mut ans=false
-    for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
-        xs=(self.frame.sprite[i].x).reinterpret_as_int()+self.pos.x.to_int()
-        ys=(self.frame.sprite[i].y).reinterpret_as_int()+self.pos.y.to_int()
-        for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
-            xo=(obj.frame.sprite[j].x).reinterpret_as_int()+obj.pos.x.to_int()
-            yo=(obj.frame.sprite[j].y).reinterpret_as_int()+obj.pos.y.to_int()
-            if(xs==xo&&yo==ys) {ans=true}
-        }
-    }
-    if(ans){
-        obj.hp=0
-    }
-    ans
-}
+// pub fn crash(self:Aircraft,obj:Aircraft)->Bool{
+//     let mut xs:Int=0
+//     let mut ys:Int=0
+//     let mut xo:Int=0
+//     let mut yo:Int=0
+//     let mut ans=false
+//     for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
+//         xs=(self.frame.sprite[i].x).reinterpret_as_int()+self.pos.x.to_int()
+//         ys=(self.frame.sprite[i].y).reinterpret_as_int()+self.pos.y.to_int()
+//         for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
+//             xo=(obj.frame.sprite[j].x).reinterpret_as_int()+obj.pos.x.to_int()
+//             yo=(obj.frame.sprite[j].y).reinterpret_as_int()+obj.pos.y.to_int()
+//             if(xs==xo&&yo==ys) {ans=true}
+//         }
+//     }
+//     if(ans){
+//         obj.hp=0
+//     }
+//     ans
+// }
 
-pub fn crash(self:Cartridge,obj:Aircraft)->Bool{
-    let mut xs:Int=0
-    let mut ys:Int=0
-    let mut xo:Int=0
-    let mut yo:Int=0
-    let mut ans=false
-    for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
-        xs=(self.frame.sprite[i].x).reinterpret_as_int()+self.pos.x.to_int()
-        ys=(self.frame.sprite[i].y).reinterpret_as_int()+self.pos.y.to_int()
-        for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
-            xo=(obj.frame.sprite[j].x).reinterpret_as_int()+obj.pos.x.to_int()
-            yo=(obj.frame.sprite[j].y).reinterpret_as_int()+obj.pos.y.to_int()
-            if(xs==xo&&yo==ys) {ans=true}
-        }
-    }
-    if(ans){
-        self.take_effect(obj)
-    }
-    ans
-}
+// pub fn crash(self:Cartridge,obj:Aircraft)->Bool{
+//     let mut xs:Int=0
+//     let mut ys:Int=0
+//     let mut xo:Int=0
+//     let mut yo:Int=0
+//     let mut ans=false
+//     for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
+//         xs=(self.frame.sprite[i].x).reinterpret_as_int()+self.pos.x.to_int()
+//         ys=(self.frame.sprite[i].y).reinterpret_as_int()+self.pos.y.to_int()
+//         for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
+//             xo=(obj.frame.sprite[j].x).reinterpret_as_int()+obj.pos.x.to_int()
+//             yo=(obj.frame.sprite[j].y).reinterpret_as_int()+obj.pos.y.to_int()
+//             if(xs==xo&&yo==ys) {ans=true}
+//         }
+//     }
+//     if(ans){
+//         self.take_effect(obj)
+//     }
+//     ans
+// }
 
 //检测撞击#################################################################################
 

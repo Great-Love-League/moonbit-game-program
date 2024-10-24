@@ -26,7 +26,7 @@ pub fn Bitset::new(per_size:Int,string:String)->Bitset{
   ans
 }
 
-pub fn op_get(self:Bitset,index:Int)->Int{
+pub fn op_get(self:Bitset,index:Int)->UInt{
   let indexx=index*self.per_size
   let mut block=indexx/up_bit
   let mut move=indexx-block*up_bit
@@ -39,7 +39,7 @@ pub fn op_get(self:Bitset,index:Int)->Int{
     ans=ans|(((self.bits[block]>>move)&1)<<i)
     move=move+1;
   }
-  ans.reinterpret_as_int()
+  ans
 }
 
 pub fn push(self:Bitset,input:UInt)->Unit{
