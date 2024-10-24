@@ -300,9 +300,6 @@ pub let player_Plane:Aircraft={
 	hp:100
 }
 
-pub let plans:Map[Int,Aircraft]={3:player_Plane,4:small_plane,5:middle_plane}
-
-
 pub let bullet1_:Frame_effects={
 	begin_time:0,
 	end_time:0,
@@ -362,8 +359,94 @@ pub let bullet2:Bullet={
 	frame:bullet2_
 }
 
-pub let bullet:Map[Int,Bullet]={9:bullet1,1:bullet2}
+pub let hp_recovery_pack:Cartridge={
+	type_:8,
+	pos:Location::new(8),
+	speed:0.5,
+	dir:90,
+	effect:50,
+	frame:hp_recovery_pack_
+}
 
+pub let hp_recovery_pack_:Frame_effects={
+	sprite:[
+		{x:0,y:0,color:2},
+		{x:1,y:0,color:4},
+		{x:2,y:0,color:4},
+		{x:3,y:0,color:2},
+		{x:4,y:0,color:2},
+		{x:5,y:0,color:4},
+		{x:6,y:0,color:4},
+		{x:7,y:0,color:2},
+		{x:0,y:1,color:4},
+		{x:1,y:1,color:2},
+		{x:2,y:1,color:3},
+		{x:3,y:1,color:4},
+		{x:4,y:1,color:4},
+		{x:5,y:1,color:3},
+		{x:6,y:1,color:2},
+		{x:7,y:1,color:4},
+		{x:0,y:2,color:4},
+		{x:1,y:2,color:3},
+		{x:2,y:2,color:2},
+		{x:3,y:2,color:3},
+		{x:4,y:2,color:3},
+		{x:5,y:2,color:2},
+		{x:6,y:2,color:3},
+		{x:7,y:2,color:4},
+		{x:0,y:3,color:4},
+		{x:1,y:3,color:3},
+		{x:2,y:3,color:2},
+		{x:3,y:3,color:2},
+		{x:4,y:3,color:2},
+		{x:5,y:3,color:2},
+		{x:6,y:3,color:3},
+		{x:7,y:3,color:4},
+		{x:0,y:4,color:2},
+		{x:1,y:4,color:4},
+		{x:2,y:4,color:3},
+		{x:3,y:4,color:2},
+		{x:4,y:4,color:2},
+		{x:5,y:4,color:3},
+		{x:6,y:4,color:4},
+		{x:7,y:4,color:2},
+		{x:0,y:5,color:2},
+		{x:1,y:5,color:4},
+		{x:2,y:5,color:3},
+		{x:3,y:5,color:2},
+		{x:4,y:5,color:2},
+		{x:5,y:5,color:3},
+		{x:6,y:5,color:4},
+		{x:7,y:5,color:2},
+		{x:0,y:6,color:2},
+		{x:1,y:6,color:2},
+		{x:2,y:6,color:4},
+		{x:3,y:6,color:3},
+		{x:4,y:6,color:3},
+		{x:5,y:6,color:4},
+		{x:6,y:6,color:2},
+		{x:7,y:6,color:2},
+		{x:0,y:7,color:2},
+		{x:1,y:7,color:2},
+		{x:2,y:7,color:2},
+		{x:3,y:7,color:4},
+		{x:4,y:7,color:4},
+		{x:5,y:7,color:2},
+		{x:6,y:7,color:2},
+		{x:7,y:7,color:2}
+	],
+	xlen:8,
+	ylen:8,
+	x:0,
+	y:0,
+	begin_time:0,
+	end_time:0
+}
+
+pub let bullet:Map[Int,Bullet]={9:bullet1,1:bullet2}
+pub let plans:Map[Int,Aircraft]={3:player_Plane,4:small_plane,5:middle_plane}
+pub let cartridge:Map[Int,Cartridge]={8:hp_recovery_pack}
+pub let default_bullet:Map[Int,Int]={3:1,5:9}
 
 //pub var of music
 pub let adsrSTD:@wasm4.ADSR=@wasm4.ADSR::new(attack=0, decay=0,30, release=0);//ADSR指播放时声音的变化形式，具体自己查
