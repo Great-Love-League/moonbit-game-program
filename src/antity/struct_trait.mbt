@@ -119,14 +119,6 @@ pub fn Bullet::is_out_all(self:Bullet)->Bool{
     let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
     let x=self.pos.x.to_int()
     let y=self.pos.y.to_int()
-    // if(tttt.val){
-    //     @wasm4.text(self.type_.to_string(),0,0)
-    //     @wasm4.text(x.to_string(),0,8)
-    //     @wasm4.text(y.to_string(),0,16)
-    //     @wasm4.text(xl.to_string(),0,24)
-    //     @wasm4.text(yl.to_string(),0,32)
-    //     tttt.val=false
-    // }
     if((x>=160||xl<0)||(y<0||yl>=low_y)) {true}
     else {false}
 }
@@ -136,14 +128,6 @@ pub fn Cartridge::is_out_all(self:Cartridge)->Bool{
     let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
     let x=self.pos.x.to_int()
     let y=self.pos.y.to_int()
-    // if(tttt.val){
-    //     // @wasm4.text(self.type_.to_string(),0,0)
-    //     @wasm4.text(y.to_string(),0,16)
-    //     @wasm4.text(xl.to_string(),0,24)
-    //     @wasm4.text(yl.to_string(),0,32)
-    //     @wasm4.text(x.to_string(),0,40)
-    //     tttt.val=false
-    // }
     if((x>=160||xl<0)||(y<0||yl>=low_y)) {true}
     else {false}
 }
@@ -169,68 +153,68 @@ pub fn die(self:Aircraft)->Bool{
 
 //检测撞击#################################################################################
 
-// pub fn crash(self:Bullet,obj:Aircraft)->Bool{
-//     let mut xs:Int=0
-//     let mut ys:Int=0
-//     let mut xo:Int=0
-//     let mut yo:Int=0
-//     let mut ans=false
-//     for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
-//         xs=(self.frame.sprite[i].x).reinterpret_as_int()+self.pos.x.to_int()
-//         ys=(self.frame.sprite[i].y).reinterpret_as_int()+self.pos.y.to_int()
-//         for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
-//             xo=(obj.frame.sprite[j].x).reinterpret_as_int()+obj.pos.x.to_int()
-//             yo=(obj.frame.sprite[j].y).reinterpret_as_int()+obj.pos.y.to_int()
-//             if(xs==xo&&yo==ys) {ans=true}
-//         }
-//     }
-//     if(ans){
-//         obj.hp=obj.hp-self.harm
-//     }
-//     ans
-// }
+pub fn crash(self:Bullet,obj:Aircraft)->Bool{
+    let mut xs:Int=0
+    let mut ys:Int=0
+    let mut xo:Int=0
+    let mut yo:Int=0
+    let mut ans=false
+    for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
+        xs=i%self.frame.xlen.reinterpret_as_int()+self.pos.x.to_int()
+        ys=i/self.frame.xlen.reinterpret_as_int()+self.pos.y.to_int()
+        for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
+            xo=j%obj.frame.xlen.reinterpret_as_int()+obj.pos.x.to_int()
+            yo=j%obj.frame.ylen.reinterpret_as_int()+obj.pos.y.to_int()
+            if(xs==xo&&yo==ys) {ans=true}
+        }
+    }
+    if(ans){
+        obj.hp=obj.hp-self.harm
+    }
+    ans
+}
 
-// pub fn crash(self:Aircraft,obj:Aircraft)->Bool{
-//     let mut xs:Int=0
-//     let mut ys:Int=0
-//     let mut xo:Int=0
-//     let mut yo:Int=0
-//     let mut ans=false
-//     for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
-//         xs=(self.frame.sprite[i].x).reinterpret_as_int()+self.pos.x.to_int()
-//         ys=(self.frame.sprite[i].y).reinterpret_as_int()+self.pos.y.to_int()
-//         for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
-//             xo=(obj.frame.sprite[j].x).reinterpret_as_int()+obj.pos.x.to_int()
-//             yo=(obj.frame.sprite[j].y).reinterpret_as_int()+obj.pos.y.to_int()
-//             if(xs==xo&&yo==ys) {ans=true}
-//         }
-//     }
-//     if(ans){
-//         obj.hp=0
-//     }
-//     ans
-// }
+pub fn crash(self:Aircraft,obj:Aircraft)->Bool{
+    let mut xs:Int=0
+    let mut ys:Int=0
+    let mut xo:Int=0
+    let mut yo:Int=0
+    let mut ans=false
+    for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
+        xs=i%self.frame.xlen.reinterpret_as_int()+self.pos.x.to_int()
+        ys=i/self.frame.xlen.reinterpret_as_int()+self.pos.y.to_int()
+        for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
+            xo=j%obj.frame.xlen.reinterpret_as_int()+obj.pos.x.to_int()
+            yo=j%obj.frame.ylen.reinterpret_as_int()+obj.pos.y.to_int()
+            if(xs==xo&&yo==ys) {ans=true}
+        }
+    }
+    if(ans){
+        obj.hp=0
+    }
+    ans
+}
 
-// pub fn crash(self:Cartridge,obj:Aircraft)->Bool{
-//     let mut xs:Int=0
-//     let mut ys:Int=0
-//     let mut xo:Int=0
-//     let mut yo:Int=0
-//     let mut ans=false
-//     for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
-//         xs=(self.frame.sprite[i].x).reinterpret_as_int()+self.pos.x.to_int()
-//         ys=(self.frame.sprite[i].y).reinterpret_as_int()+self.pos.y.to_int()
-//         for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
-//             xo=(obj.frame.sprite[j].x).reinterpret_as_int()+obj.pos.x.to_int()
-//             yo=(obj.frame.sprite[j].y).reinterpret_as_int()+obj.pos.y.to_int()
-//             if(xs==xo&&yo==ys) {ans=true}
-//         }
-//     }
-//     if(ans){
-//         self.take_effect(obj)
-//     }
-//     ans
-// }
+pub fn crash(self:Cartridge,obj:Aircraft)->Bool{
+    let mut xs:Int=0
+    let mut ys:Int=0
+    let mut xo:Int=0
+    let mut yo:Int=0
+    let mut ans=false
+    for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
+        xs=i%self.frame.xlen.reinterpret_as_int()+self.pos.x.to_int()
+        ys=i/self.frame.xlen.reinterpret_as_int()+self.pos.y.to_int()
+        for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
+            xo=j%obj.frame.xlen.reinterpret_as_int()+obj.pos.x.to_int()
+            yo=j%obj.frame.ylen.reinterpret_as_int()+obj.pos.y.to_int()
+            if(xs==xo&&yo==ys) {ans=true}
+        }
+    }
+    if(ans){
+        self.take_effect(obj)
+    }
+    ans
+}
 
 //检测撞击#################################################################################
 
