@@ -23,8 +23,8 @@ pub struct Location{
 // }
 
 pub struct Frame_time_config{
-	mut begin:Int64
-	mut end:Int64
+	mut begin:Int
+	mut end:Int
 }
 
 pub struct Frame_effects{
@@ -32,6 +32,14 @@ pub struct Frame_effects{
 	ylen:UInt
 	sprite:@bitset.Bitset
 	back_ground:@bitset.Bitset
+}
+
+pub struct Frame_effects_{
+	mut begin:UInt
+	xlen:UInt
+	ylen:UInt
+	sprite:Array[@bitset.Bitset]
+	back_ground:Array[@bitset.Bitset]
 }
 
 // pub struct Frame_effects_{
