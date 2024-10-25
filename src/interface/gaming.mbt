@@ -10,6 +10,8 @@ let laser:Array[@antity.Laser]=[]
 let cartridge:Array[@antity.Cartridge]=[]
 let player_plane=@antity.player_Plane
 let died:Ref[Bool]=Ref::new(false)
+
+// let 
 fn gaming_logic()->Unit{
 	if(died.val){
 		if(((@time_cnt.get_time()-@antity.player_Plane_effect.begin)/16).to_int()<4){
@@ -43,6 +45,7 @@ fn gaming_logic()->Unit{
 		}
 		//判断碰撞####################################################################################################################
 		for i=0;i<laser.length();i=i+1{
+
 
 		}
 		let bullet_crashed:Array[Int]=[]
@@ -116,6 +119,7 @@ fn gaming_logic()->Unit{
 		
 		//生成##############################################################################################################
 
+
 		if(random.uint()%500<=1){
 			generate_plane(5)
 		}
@@ -162,11 +166,11 @@ fn gaming_logic()->Unit{
 //生成################################################################################################################################################
 fn generate_plane(type_:Int)->Unit{
   let x={
-    ..@antity.plans[type_].unwrap(),
+    ..@antity.plans(type_),
     pos:@antity.Location::new(
       x=(random.uint()%160).to_float().to_double(),
       y=0,type_.reinterpret_as_uint()
-    )
+    ),
   }
   while(x.is_out_partly()) {
     x.pos.x=(random.uint()%160).to_float().to_double()
@@ -179,38 +183,91 @@ fn shoot(plane:@antity.Aircraft)->Unit{
     if(plane.bullet_exit_point[i].last_shoot>=plane.bullet_exit_point[i].shoot_speed) {
       if(plane.type_==3) {
         bullet_my.push({
-          ..@antity.bullet[plane.bullet_exit_point[i].type_].unwrap(),
+          ..@antity.bullet(plane.bullet_exit_point[i].type_),
           pos:@antity.Location::new(
             x=plane.bullet_exit_point[i].x.to_double()+plane.pos.x,
             y=plane.bullet_exit_point[i].y.to_double()+plane.pos.y,
             plane.bullet_exit_point[i].type_.reinterpret_as_uint())
           })}
-      else {bullet.push({
-        ..@antity.bullet[plane.bullet_exit_point[i].type_].unwrap(),
+      else {
+        let mut omg:Double=@math.atan((plane.bullet_exit_point[i].y.to_double()+plane.pos.y-player_plane.pos.y)/(plane.bullet_exit_point[i].x.to_double()+plane.pos.x-player_plane.pos.x))*57.30
+        if(plane.pos.x>=player_plane.pos.x){ omg=omg+180}
+        bullet.push({
+        ..@antity.bullet(plane.bullet_exit_point[i].type_),
         pos:@antity.Location::new(
           x=plane.bullet_exit_point[i].x.to_double()+plane.pos.x,
           y=plane.bullet_exit_point[i].y.to_double()+plane.pos.y,
-          plane.bullet_exit_point[i].type_.reinterpret_as_uint())
-          })}
+          plane.bullet_exit_point[i].type_.reinterpret_as_uint()),
+          dir:omg})}
       plane.bullet_exit_point[i].last_shoot=plane.bullet_exit_point[i].last_shoot%plane.bullet_exit_point[i].shoot_speed
+      update_shoot(plane)
     }
     else {plane.bullet_exit_point[i].last_shoot=plane.bullet_exit_point[i].last_shoot+1}
   }
 }
 
+fn update_shoot(plane:@antity.Aircraft)->Unit{
+  if(plane.type_==4) {return}
+  for i=plane.bullet_exit_point.length()-1;i>=0;i=i-1{
+    if(plane.bullet_exit_point[i].limit==0){
+      plane.bullet_exit_point.remove(i) |> ignore
+      continue;
+    }
+    if(plane.bullet_exit_point[i].limit==-1) {continue;}
+    plane.bullet_exit_point[i].limit=plane.bullet_exit_point[i].limit-1;
+  }
+  if(plane.bullet_exit_point.length()==0){
+    let lin=@antity.default_bullet(plane.type_)
+    plane.bullet_exit_point.resize(lin.length(),@antity.Bullet_exit_point::new(1,1,1,1,1))
+    for i=plane.bullet_exit_point.length()-1;i>=0;i=i-1{
+      plane.bullet_exit_point[i]={..@antity.default_bullet(plane.type_)[i]}
+    }
+  }
+}
+
 fn generate_cartridge()->Unit{
-  let x={
-    ..@antity.cartridge[8].unwrap(),
-    pos:@antity.Location::new(
-      x=(random.uint()%160).to_float().to_double(),
-      y=0,
-      8
-    )
+  if(random.uint()%100<=20){
+    let x={
+      ..@antity.cartridge(8),
+      pos:@antity.Location::new(
+        x=(random.uint()%160).to_float().to_double(),
+        y=0,
+        8
+      )
+    }
+    while(x.is_out_partly()) {
+      x.pos.x=(random.uint()%160).to_float().to_double()
+    }
+    cartridge.push(x)
   }
-  while(x.is_out_partly()) {
-    x.pos.x=(random.uint()%160).to_float().to_double()
+  if(random.uint()%100<=20){
+    let x={
+      ..@antity.cartridge(6),
+      pos:@antity.Location::new(
+        x=(random.uint()%160).to_float().to_double(),
+        y=0,
+        6
+      )
+    }
+    while(x.is_out_partly()) {
+      x.pos.x=(random.uint()%160).to_float().to_double()
+    }
+    cartridge.push(x)
   }
-  cartridge.push(x)
+  if(random.uint()%100<=20){
+    let x={
+      ..@antity.cartridge(7),
+      pos:@antity.Location::new(
+        x=(random.uint()%160).to_float().to_double(),
+        y=0,
+        7
+      )
+    }
+    while(x.is_out_partly()) {
+      x.pos.x=(random.uint()%160).to_float().to_double()
+    }
+    cartridge.push(x)
+  }
 }
 
 //生成################################################################################################################################################
