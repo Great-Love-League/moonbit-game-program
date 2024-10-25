@@ -40,6 +40,26 @@ pub fn show(self:Frame_effects,x:Int,y:Int)->Unit{
         posy=posy+1
     }
 }
+
+pub fn showp(self:Frame_effects_,x:Int,y:Int,t:Int)->Unit{
+    let len=self.sprite[t].length()
+    let mut index=0
+    let mut posx=x
+    let mut posy=y
+    for i=0U;i<self.ylen;i=i+1{
+        for e=0U;e<self.xlen;e=e+1{
+            if((self.back_ground[t][index]==1||posx>=160||posx<0||posy<0||posy>low_y).not()){
+                @wasm4.set_frame_buffer(get_index(posx.reinterpret_as_uint(),posy.reinterpret_as_uint()),self.sprite[t][index]+1)
+            }
+            index=index+1
+            posx=posx+1
+        }
+        posx=x
+        posy=posy+1
+    }
+}
+
+
 pub fn print(self:Aircraft)->Unit{
     self.frame.show(self.pos.x.to_int(),self.pos.y.to_int())
 }
