@@ -62,11 +62,11 @@ inline void ban_ground(){
     queue<pair<int,int> > p;
     for(int i=0;i<height;i++){
         if(color[i][0]==0) p.push(make_pair(i,0)),color[i][0]=-1;
-        if(color[i][width-1]==0) p.push(make_pair(i,0)),color[i][width-1]=-1;
+        if(color[i][width-1]==0) p.push(make_pair(i,width-1)),color[i][width-1]=-1;
     }
     for(int i=0;i<width;i++){
-        if(color[0][i]==0) p.push(make_pair(i,0)),color[0][i]=-1;
-        if(color[height-1][i]==0) p.push(make_pair(i,0)),color[height-1][i]=-1;
+        if(color[0][i]==0) p.push(make_pair(0,i)),color[0][i]=-1;
+        if(color[height-1][i]==0) p.push(make_pair(height-1,i)),color[height-1][i]=-1;
     }
     int move_y[4]={0,-1,0,1};
     int move_x[4]={1,0,-1,0};
