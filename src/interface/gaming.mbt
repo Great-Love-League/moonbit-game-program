@@ -309,7 +309,9 @@ fn update_self()->Unit{
 let sorce=0
 let time=0
 fn game_over()->Unit{
-  @wasm4.text("Score:"+sorce.to_string(),27,34)
+  @wasm4.text("Score:"+sorce.to_string(),2,55)
+  @wasm4.text("Time:"+time.to_string(),2,68)
+  @wasm4.text("Press R to restart.",2,82)
 }
 
 //Game Over#########################################################################################################################################################################
