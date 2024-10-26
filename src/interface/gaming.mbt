@@ -13,6 +13,9 @@ let player_plane:@antity.Aircraft=@antity.player_Plane()
 let died:Ref[Bool]=Ref::new(false)
 let updated:Ref[Bool]=Ref::new(false)
 let player_Plane_effect:@antity.Frame_effects_=@antity.player_Plane_effect()
+let score:Ref[Int]=Ref::new(0)
+let ttime:Ref[Int]=Ref::new(0)
+
 fn gaming_logic()->Unit{
 	if(died.val){
 		if(updated.val.not()){
@@ -29,7 +32,7 @@ fn gaming_logic()->Unit{
 		}
 	}
 	else{
-		
+		ttime.val=@time_cnt.get_time().to_int()
 		//get_next_pos################################################################################################################
 		//self_plane_update_pos
 		if (button_state.val.button_down||button_state.val.button_up||button_state.val.button_left||button_state.val.button_right)&&(button_state.val.button_down&&button_state.val.button_up&&button_state.val.button_left&&button_state.val.button_right).not()&&((button_state.val.button_down&&button_state.val.button_up)&&button_state.val.button_left.not()&&button_state.val.button_right.not()).not()&&(button_state.val.button_down.not()&&button_state.val.button_up.not()&&(button_state.val.button_left&&button_state.val.button_right)).not(){
@@ -97,6 +100,7 @@ fn gaming_logic()->Unit{
 				aircraft.remove(i)|> ignore
 			}
 			else if(aircraft[i].die()){
+				score.val=score.val+@antity.get_score(aircraft[i].type_)
 				aircraft.remove(i)|> ignore
 				//特效
 			}
@@ -143,6 +147,8 @@ fn gaming_logic()->Unit{
 		@wasm4.text(player_plane.hp.to_string(),0,24)
 		@wasm4.text(bullet_crashed_my.length().to_string(),0,32)
 		@wasm4.text(bullet_crashed.length().to_string(),0,40)
+		@wasm4.text(score.val.to_string(),0,48)
+		@wasm4.text(ttime.val.to_string(),0,56)
 	}
   //打印##############################################################################################################
   for i=bullet.length()-1;i>=0;i=i-1{
