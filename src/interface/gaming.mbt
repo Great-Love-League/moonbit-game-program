@@ -314,7 +314,7 @@ fn update_self()->Unit{
 //Game Over#########################################################################################################################################################################
 fn game_over()->Unit{
   @wasm4.text("Score:"+score.val.to_string(),2,55)
-  @wasm4.text("Time:"+(ttime.val.to_double()/60.0).to_string()+"s",2,68)
+  @wasm4.text("Time:"+(((ttime.val.to_double()/60.0*100).to_int()).to_double()/100).to_string()+"s",2,68)
   @wasm4.text("Press R to restart.",2,82)
 }
 
