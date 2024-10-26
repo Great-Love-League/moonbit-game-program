@@ -2,7 +2,7 @@ fn gaming1()->Unit{
   gaming_logic()
   // @antity.player_Plane_1.print()
 }
-let random:@random.Rand=@random.Rand::new(seed=b"ABCDEFGHIJKSMNOPQRSTUVWXYZ123456")
+let random:@random.Rand=@random.Rand::new()
 let aircraft:Array[@antity.Aircraft]=[]
 let bullet:Array[@antity.Bullet]=[]
 let bullet_my:Array[@antity.Bullet]=[]
