@@ -6,20 +6,21 @@ let random:@random.Rand=@random.Rand::new()
 let aircraft:Array[@antity.Aircraft]=[]
 let bullet:Array[@antity.Bullet]=[]
 let bullet_my:Array[@antity.Bullet]=[]
-let laser:Array[@antity.Laser]=[]
+// let laser:Array[@antity.Laser]=
+// let a:FixedArray[@antity.Laser]=FixedArray::new(200,)
 let cartridge:Array[@antity.Cartridge]=[]
-let player_plane=@antity.player_Plane
+let player_plane:@antity.Aircraft=@antity.player_Plane()
 let died:Ref[Bool]=Ref::new(false)
 let updated:Ref[Bool]=Ref::new(false)
-// let 
+let player_Plane_effect:@antity.Frame_effects_=@antity.player_Plane_effect()
 fn gaming_logic()->Unit{
 	if(died.val){
 		if(updated.val.not()){
-			@antity.player_Plane_effect.begin=@time_cnt.get_time()+1
+			player_Plane_effect.begin=@time_cnt.get_time()+1
 			updated.val=true
 		}
-		if(((@time_cnt.get_time()-@antity.player_Plane_effect.begin)/16).to_int()<4){
-			@antity.showp(@antity.player_Plane_effect,(player_plane.pos.x-3).to_int(),(player_plane.pos.y).to_int(),((@time_cnt.get_time()-@antity.player_Plane_effect.begin)/16).to_int());
+		if(((@time_cnt.get_time()-player_Plane_effect.begin)/16).to_int()<4){
+			@antity.showp(player_Plane_effect,(player_plane.pos.x-3).to_int(),(player_plane.pos.y).to_int(),((@time_cnt.get_time()-player_Plane_effect.begin)/16).to_int());
 		}
 		else{
 			//Game Over
@@ -44,14 +45,14 @@ fn gaming_logic()->Unit{
 		for i=cartridge.length()-1;i>=0;i=i-1{
 			cartridge[i].update_pos()
 		}
-		for i=laser.length();i>=0;i=i-1{
-			//waiting
-		}
-		//判断碰撞####################################################################################################################
-		for i=0;i<laser.length();i=i+1{
+		// for i=laser.length();i>=0;i=i-1{
+		// 	//waiting
+		// }
+		// //判断碰撞####################################################################################################################
+		// for i=0;i<laser.length();i=i+1{
 
 
-		}
+		// }
 		let bullet_crashed:Array[Int]=[]
 		let bullet_crashed_my:Array[Int]=[]
 		for i=bullet.length()-1;i>=0;i=i-1{
@@ -77,9 +78,9 @@ fn gaming_logic()->Unit{
 				cartridge.remove(i)|> ignore
 			}
 		}
-		for i=0;i<laser.length();i=i+1{
-			//waiting
-		}
+		// for i=0;i<laser.length();i=i+1{
+		// 	//waiting
+		// }
 		//淘汰#########################################################################################################################
 		for i=bullet_crashed_my.length()-1;i>=0;i=i-1{
 			bullet_my.remove(bullet_crashed_my[i]) |> ignore
@@ -113,9 +114,9 @@ fn gaming_logic()->Unit{
 				cartridge.remove(i)|> ignore
 			}
 		}
-		for i=laser.length()-1;i>=0;i=i-1{
-			//waiting
-		}
+		// for i=laser.length()-1;i>=0;i=i-1{
+		// 	//waiting
+		// }
 		
 		//生成##############################################################################################################
 
@@ -152,9 +153,9 @@ fn gaming_logic()->Unit{
   for i=aircraft.length()-1;i>=0;i=i-1{
     aircraft[i].print()
   }
-  for i=laser.length()-1;i>=0;i=i-1{
-    laser[i].print()
-  }
+  // for i=laser.length()-1;i>=0;i=i-1{
+  //   laser[i].print()
+  // }
   for i=cartridge.length()-1;i>=0;i=i-1{
     cartridge[i].print()
   }
