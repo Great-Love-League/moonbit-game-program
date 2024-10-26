@@ -10,10 +10,14 @@ let laser:Array[@antity.Laser]=[]
 let cartridge:Array[@antity.Cartridge]=[]
 let player_plane=@antity.player_Plane
 let died:Ref[Bool]=Ref::new(false)
-
+let updated:Ref[Bool]=Ref::new(false)
 // let 
 fn gaming_logic()->Unit{
 	if(died.val){
+		if(updated.val.not()){
+			@antity.player_Plane_effect.begin=@time_cnt.get_time()+1
+			updated.val=true
+		}
 		if(((@time_cnt.get_time()-@antity.player_Plane_effect.begin)/16).to_int()<4){
 			@antity.showp(@antity.player_Plane_effect,(player_plane.pos.x-3).to_int(),(player_plane.pos.y).to_int(),((@time_cnt.get_time()-@antity.player_Plane_effect.begin)/16).to_int());
 		}
@@ -67,10 +71,6 @@ fn gaming_logic()->Unit{
 				died.val=true
 				aircraft.remove(i) |> ignore
 			}
-		}
-		if(died.val){
-			@antity.player_Plane_effect.begin=@time_cnt.get_time()+1
-			return 
 		}
 		for i=cartridge.length()-1;i>=0;i=i-1{
 			if(cartridge[i].crash(player_plane)){

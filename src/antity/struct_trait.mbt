@@ -343,7 +343,7 @@ fn play_tone(params: ToneParams) -> Unit {
     @wasm4.tone(params.frequency, params.adsr, params.volume, params.channel);
 }
 pub fn musicplay() -> Unit {
-    let frame_counter :UInt= @time_cnt.get_time();
+    let frame_counter :UInt64= @time_cnt.get_time().to_uint64();
 		    // 每秒运行60次，假设每个音调播放0.5秒（30帧）
     let tone_duration :Int= 30;
     let index :Int= ((frame_counter.reinterpret_as_int() / tone_duration) % 8);
