@@ -83,7 +83,7 @@ pub fn Location::new(~x:Double=0,~y:Double=0,type_:UInt)->Location{
     {x,y,type_}
 }
 
-pub fn Bullet_exit_point::new(x:Int,y:Int,type_:Int,last_shoot:Int64,shoot_speed:Int64,~limit:Int=-1)->Bullet_exit_point{
+pub fn Bullet_exit_point::new(x:Int,y:Int,type_:Int,last_shoot:Int,shoot_speed:Int,~limit:Int=-1)->Bullet_exit_point{
     {x,y,type_,last_shoot,shoot_speed,limit}
 }
 //构造函数#############################################
@@ -244,6 +244,13 @@ pub fn crash(self:Cartridge,obj:Aircraft)->Bool{
 fn take_effect(self:Cartridge,obj:Aircraft)->Unit{
     if(self.type_==8){
         obj.hp=obj.hp+self.effect
+    }
+    else if(self.type_==7||self.type_==6){
+        obj.bullet_exit_point.clear();
+        let len=default_bullet(self.type_).length()
+        for i=len-1;i>=0;i=i-1{
+            obj.bullet_exit_point.push(default_bullet(self.type_)[i])
+        }
     }
 }
 
