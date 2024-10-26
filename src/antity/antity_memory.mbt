@@ -240,6 +240,13 @@ pub fn default_bullet(n:Int)->Array[Bullet_exit_point]{
 	}
 }
 
+pub fn get_score(n:Int)->Int{
+	match n{
+		4 => return 10
+		5 => return 50
+	}
+}
+
 //pub var of music
 pub let adsrSTD:@wasm4.ADSR=@wasm4.ADSR::new(attack=0, decay=0,30, release=0);//ADSR指播放时声音的变化形式，具体自己查
 pub let volumeSTD:@wasm4.ADSRVolume=@wasm4.ADSRVolume::new(100,peak=100);//音量
