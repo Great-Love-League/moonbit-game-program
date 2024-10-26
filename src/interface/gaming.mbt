@@ -19,10 +19,12 @@ fn gaming_logic()->Unit{
 			player_Plane_effect.begin=@time_cnt.get_time()+1
 			updated.val=true
 		}
-		if(((@time_cnt.get_time()-player_Plane_effect.begin)/16).to_int()<4){
+		else if(((@time_cnt.get_time()-player_Plane_effect.begin)/16).to_int()<4){
 			@antity.showp(player_Plane_effect,(player_plane.pos.x-3).to_int(),(player_plane.pos.y).to_int(),((@time_cnt.get_time()-player_Plane_effect.begin)/16).to_int());
 		}
 		else{
+      game_over()
+      return;
 			//Game Over
 		}
 	}
@@ -302,3 +304,12 @@ fn update_self()->Unit{
   player_plane.update_pos()
 }
 //自身飞机操作控制########################################################################################################################################
+
+//Game Over#########################################################################################################################################################################
+let sorce=0
+let time=0
+fn game_over()->Unit{
+  @wasm4.text("Score:"+sorce.to_string(),27,34)
+}
+
+//Game Over#########################################################################################################################################################################
