@@ -61,19 +61,19 @@ pub fn showp(self:Frame_effects_,x:Int,y:Int,t:Int)->Unit{
 
 
 pub fn print(self:Aircraft)->Unit{
-    self.frame.show(self.pos.x.to_int(),self.pos.y.to_int())
+    ffp[self.fp].show(self.pos.x.to_int(),self.pos.y.to_int())
 }
 
 pub fn print(self:Bullet)->Unit{
-    self.frame.show(self.pos.x.to_int(),self.pos.y.to_int())
+    ffp[self.fp].show(self.pos.x.to_int(),self.pos.y.to_int())
 }
 
 pub fn print(self:Laser)->Unit{
-    // self.frame.show(self.pos.x.to_int(),self.pos.y.to_int())
+    // ffp[self.fp].show(self.pos.x.to_int(),self.pos.y.to_int())
 }
 
 pub fn print(self:Cartridge)->Unit{
-    self.frame.show(self.pos.x.to_int(),self.pos.y.to_int())
+    ffp[self.fp].show(self.pos.x.to_int(),self.pos.y.to_int())
 }
 
 //展示函数#############################################
@@ -116,8 +116,8 @@ pub fn Cartridge::update_pos(self:Cartridge)->Unit{
 
 //检测是否出界#########################################
 pub fn Aircraft::is_out_partly(self:Aircraft)->Bool{
-    let xl=self.pos.x.to_int()+self.frame.xlen.reinterpret_as_int()-1
-    let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
+    let xl=self.pos.x.to_int()+ffp[self.fp].xlen.reinterpret_as_int()-1
+    let yl=self.pos.y.to_int()+ffp[self.fp].ylen.reinterpret_as_int()-1
     let x=self.pos.x
     let y=self.pos.y
     if(((x<160&&xl>=160)||(y>low_y.to_double()&&yl>=low_y)||(x<0&&xl>=0)||(y<0&&yl>=0))||self.is_out_all()) {true}
@@ -125,8 +125,8 @@ pub fn Aircraft::is_out_partly(self:Aircraft)->Bool{
 }
 
 pub fn Aircraft::is_out_all(self:Aircraft)->Bool{
-    let xl=self.pos.x.to_int()+self.frame.xlen.reinterpret_as_int()-1
-    let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
+    let xl=self.pos.x.to_int()+ffp[self.fp].xlen.reinterpret_as_int()-1
+    let yl=self.pos.y.to_int()+ffp[self.fp].ylen.reinterpret_as_int()-1
     let x=self.pos.x.to_int()
     let y=self.pos.y.to_int()
     if((x>=160||xl<0)||(y<0||yl>=low_y)) {true}
@@ -135,8 +135,8 @@ pub fn Aircraft::is_out_all(self:Aircraft)->Bool{
 
 
 pub fn Bullet::is_out_all(self:Bullet)->Bool{
-    let xl=self.pos.x.to_int()+self.frame.xlen.reinterpret_as_int()-1
-    let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
+    let xl=self.pos.x.to_int()+ffp[self.fp].xlen.reinterpret_as_int()-1
+    let yl=self.pos.y.to_int()+ffp[self.fp].ylen.reinterpret_as_int()-1
     let x=self.pos.x.to_int()
     let y=self.pos.y.to_int()
     if((x>=160||xl<0)||(y<0||yl>=low_y)) {true}
@@ -144,8 +144,8 @@ pub fn Bullet::is_out_all(self:Bullet)->Bool{
 }
 
 pub fn Cartridge::is_out_all(self:Cartridge)->Bool{
-    let xl=self.pos.x.to_int()+self.frame.xlen.reinterpret_as_int()-1
-    let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
+    let xl=self.pos.x.to_int()+ffp[self.fp].xlen.reinterpret_as_int()-1
+    let yl=self.pos.y.to_int()+ffp[self.fp].ylen.reinterpret_as_int()-1
     let x=self.pos.x.to_int()
     let y=self.pos.y.to_int()
     if((x>=160||xl<0)||(y<0||yl>=low_y)) {true}
@@ -153,8 +153,8 @@ pub fn Cartridge::is_out_all(self:Cartridge)->Bool{
 }
 
 pub fn Cartridge::is_out_partly(self:Cartridge)->Bool{
-    let xl=self.pos.x.to_int()+self.frame.xlen.reinterpret_as_int()-1
-    let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
+    let xl=self.pos.x.to_int()+ffp[self.fp].xlen.reinterpret_as_int()-1
+    let yl=self.pos.y.to_int()+ffp[self.fp].ylen.reinterpret_as_int()-1
     let x=self.pos.x
     let y=self.pos.y
     if(((x<160&&xl>=160)||(y>low_y.to_double()&&yl>=low_y)||(x<0&&xl>=0)||(y<0&&yl>=0))||self.is_out_all()) {true}
@@ -179,12 +179,12 @@ pub fn crash(self:Bullet,obj:Aircraft)->Bool{
     let mut xo:Int=0
     let mut yo:Int=0
     let mut ans=false
-    for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
-        xs=i%self.frame.xlen.reinterpret_as_int()+self.pos.x.to_int()
-        ys=i/self.frame.xlen.reinterpret_as_int()+self.pos.y.to_int()
-        for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
-            xo=j%obj.frame.xlen.reinterpret_as_int()+obj.pos.x.to_int()
-            yo=j%obj.frame.ylen.reinterpret_as_int()+obj.pos.y.to_int()
+    for i=ffp[self.fp].sprite.length()-1;i>=0&&ans.not();i=i-1{
+        xs=i%ffp[self.fp].xlen.reinterpret_as_int()+self.pos.x.to_int()
+        ys=i/ffp[self.fp].xlen.reinterpret_as_int()+self.pos.y.to_int()
+        for j=ffp[obj.fp].sprite.length()-1;j>=0&&ans.not();j=j-1{
+            xo=j%ffp[obj.fp].xlen.reinterpret_as_int()+obj.pos.x.to_int()
+            yo=j%ffp[obj.fp].ylen.reinterpret_as_int()+obj.pos.y.to_int()
             if(xs==xo&&yo==ys) {ans=true}
         }
     }
@@ -200,12 +200,12 @@ pub fn crash(self:Aircraft,obj:Aircraft)->Bool{
     let mut xo:Int=0
     let mut yo:Int=0
     let mut ans=false
-    for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
-        xs=i%self.frame.xlen.reinterpret_as_int()+self.pos.x.to_int()
-        ys=i/self.frame.xlen.reinterpret_as_int()+self.pos.y.to_int()
-        for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
-            xo=j%obj.frame.xlen.reinterpret_as_int()+obj.pos.x.to_int()
-            yo=j%obj.frame.ylen.reinterpret_as_int()+obj.pos.y.to_int()
+    for i=ffp[self.fp].sprite.length()-1;i>=0&&ans.not();i=i-1{
+        xs=i%ffp[self.fp].xlen.reinterpret_as_int()+self.pos.x.to_int()
+        ys=i/ffp[self.fp].xlen.reinterpret_as_int()+self.pos.y.to_int()
+        for j=ffp[obj.fp].sprite.length()-1;j>=0&&ans.not();j=j-1{
+            xo=j%ffp[obj.fp].xlen.reinterpret_as_int()+obj.pos.x.to_int()
+            yo=j%ffp[obj.fp].ylen.reinterpret_as_int()+obj.pos.y.to_int()
             if(xs==xo&&yo==ys) {ans=true}
         }
     }
@@ -221,12 +221,12 @@ pub fn crash(self:Cartridge,obj:Aircraft)->Bool{
     let mut xo:Int=0
     let mut yo:Int=0
     let mut ans=false
-    for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
-        xs=i%self.frame.xlen.reinterpret_as_int()+self.pos.x.to_int()
-        ys=i/self.frame.xlen.reinterpret_as_int()+self.pos.y.to_int()
-        for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
-            xo=j%obj.frame.xlen.reinterpret_as_int()+obj.pos.x.to_int()
-            yo=j%obj.frame.ylen.reinterpret_as_int()+obj.pos.y.to_int()
+    for i=ffp[self.fp].sprite.length()-1;i>=0&&ans.not();i=i-1{
+        xs=i%ffp[self.fp].xlen.reinterpret_as_int()+self.pos.x.to_int()
+        ys=i/ffp[self.fp].xlen.reinterpret_as_int()+self.pos.y.to_int()
+        for j=ffp[obj.fp].sprite.length()-1;j>=0&&ans.not();j=j-1{
+            xo=j%ffp[obj.fp].xlen.reinterpret_as_int()+obj.pos.x.to_int()
+            yo=j%ffp[obj.fp].ylen.reinterpret_as_int()+obj.pos.y.to_int()
             if(xs==xo&&yo==ys) {ans=true}
         }
     }
@@ -258,104 +258,104 @@ fn take_effect(self:Cartridge,obj:Aircraft)->Unit{
 
 
 //function of music 
-pub fn setup_tone_params() -> Array[ToneParams] {
-    let adsr = @wasm4.ADSR::new(attack=0, decay=0,30, release=0);
-    let volume = @wasm4.ADSRVolume::new(100,peak=100);
+// pub fn setup_tone_params() -> Array[ToneParams] {
+//     let adsr = @wasm4.ADSR::new(attack=0, decay=0,30, release=0);
+//     let volume = @wasm4.ADSRVolume::new(100,peak=100);
 
-    let channel1 = @wasm4.ToneFlag::new(
-        channel = @wasm4.ToneChannel::Triangle,
-        mode = @wasm4.ToneMode::Duty_1_4,
-        pan = @wasm4.TonePan::Left
-    );
+//     let channel1 = @wasm4.ToneFlag::new(
+//         channel = @wasm4.ToneChannel::Triangle,
+//         mode = @wasm4.ToneMode::Duty_1_4,
+//         pan = @wasm4.TonePan::Left
+//     );
 
-    let channel2 = @wasm4.ToneFlag::new(
-        channel = @wasm4.ToneChannel::Triangle,
-        mode = @wasm4.ToneMode::Duty_1_2,
-        pan = @wasm4.TonePan::Right
-    );
+//     let channel2 = @wasm4.ToneFlag::new(
+//         channel = @wasm4.ToneChannel::Triangle,
+//         mode = @wasm4.ToneMode::Duty_1_2,
+//         pan = @wasm4.TonePan::Right
+//     );
 
-    let channel3 = @wasm4.ToneFlag::new(
-        channel = @wasm4.ToneChannel::Triangle,
-        mode = @wasm4.ToneMode::Duty_1_2,
-        pan = @wasm4.TonePan::Center
-    );
+//     let channel3 = @wasm4.ToneFlag::new(
+//         channel = @wasm4.ToneChannel::Triangle,
+//         mode = @wasm4.ToneMode::Duty_1_2,
+//         pan = @wasm4.TonePan::Center
+//     );
 
-    let tone1 = {
-        frequency: (261, 523),
-        adsr: adsr,
-        volume: volume,
-        channel: channel1
-    };
+//     let tone1 = {
+//         frequency: (261, 523),
+//         adsr: adsr,
+//         volume: volume,
+//         channel: channel1
+//     };
 
-    let tone2 = {
-        frequency: (293, 587),
-        adsr: adsr,
-        volume: volume,
-        channel: channel2
-    };
+//     let tone2 = {
+//         frequency: (293, 587),
+//         adsr: adsr,
+//         volume: volume,
+//         channel: channel2
+//     };
 
-    let tone3 = {
-        frequency: (329, 659),
-        adsr: adsr,
-        volume: volume,
-        channel: channel3
-    };
+//     let tone3 = {
+//         frequency: (329, 659),
+//         adsr: adsr,
+//         volume: volume,
+//         channel: channel3
+//     };
 
-    let tone4 = {
-        frequency: (349, 698),
-        adsr: adsr,
-        volume: volume,
-        channel: channel1
-    };
+//     let tone4 = {
+//         frequency: (349, 698),
+//         adsr: adsr,
+//         volume: volume,
+//         channel: channel1
+//     };
 
-    let tone5 =  {
-        frequency: (392, 784),
-        adsr: adsr,
-        volume: volume,
-        channel: channel2
-    };
+//     let tone5 =  {
+//         frequency: (392, 784),
+//         adsr: adsr,
+//         volume: volume,
+//         channel: channel2
+//     };
 
-    let tone6 = {
-        frequency: (440, 880),
-        adsr: adsr,
-        volume: volume,
-        channel: channel3
-    };
+//     let tone6 = {
+//         frequency: (440, 880),
+//         adsr: adsr,
+//         volume: volume,
+//         channel: channel3
+//     };
 
-    let tone7 = {
-        frequency: (493, 987),
-        adsr: adsr,
-        volume: volume,
-        channel: channel1
-    };
+//     let tone7 = {
+//         frequency: (493, 987),
+//         adsr: adsr,
+//         volume: volume,
+//         channel: channel1
+//     };
 
-    let tone8 = {
-        frequency: (523, 1046),
-        adsr: adsr,
-        volume: volume,
-        channel: channel2
-    };
+//     let tone8 = {
+//         frequency: (523, 1046),
+//         adsr: adsr,
+//         volume: volume,
+//         channel: channel2
+//     };
 
-    return [tone1, tone2, tone3, tone4, tone5, tone6, tone7, tone8];
-}
+//     return [tone1, tone2, tone3, tone4, tone5, tone6, tone7, tone8];
+// }
 
-fn play_tone(params: ToneParams) -> Unit {
-    @wasm4.tone(params.frequency, params.adsr, params.volume, params.channel);
-}
-pub fn musicplay() -> Unit {
-    let frame_counter :UInt64= @time_cnt.get_time().to_uint64();
-		    // 每秒运行60次，假设每个音调播放0.5秒（30帧）
-    let tone_duration :Int= 30;
-    let index :Int= ((frame_counter.to_int() / tone_duration) % 8);
-    // 根据frame_counter的值播放不同的音调
-    let index=index;
-    play_tone(tones[index])
-}
-//play_tone的用法如下:
-//let toneExample = {
-//    frequency: (261, 523),//frequency可以自己定义,其他有需求再定义
-//    adsr: adsrSTD,
-//    volume: volumeSTD,
-//    channel: channelSTD
-//};//这里的adsrSTD,volumeSTD,channelSTD是在antity_memory.mbt中定义的标准量
-//play_tone(toneExample)
+// fn play_tone(params: ToneParams) -> Unit {
+//     @wasm4.tone(params.frequency, params.adsr, params.volume, params.channel);
+// }
+// pub fn musicplay() -> Unit {
+//     let frame_counter :UInt64= @time_cnt.get_time().to_uint64();
+// 		    // 每秒运行60次，假设每个音调播放0.5秒（30帧）
+//     let tone_duration :Int= 30;
+//     let index :Int= ((frame_counter.to_int() / tone_duration) % 8);
+//     // 根据frame_counter的值播放不同的音调
+//     let index=index;
+//     play_tone(tones[index])
+// }
+// //play_tone的用法如下:
+// //let toneExample = {
+// //    frequency: (261, 523),//frequency可以自己定义,其他有需求再定义
+// //    adsr: adsrSTD,
+// //    volume: volumeSTD,
+// //    channel: channelSTD
+// //};//这里的adsrSTD,volumeSTD,channelSTD是在antity_memory.mbt中定义的标准量
+// //play_tone(toneExample)

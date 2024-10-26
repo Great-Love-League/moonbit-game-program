@@ -21,26 +21,69 @@ pub let player_Plane_effect:Frame_effects_={
 }
 
 // 玩家飞机正常一般形态
-pub let player_Plane_1_frame : Frame_effects={
+pub let ffp:FixedArray[Frame_effects]=[
+{
   xlen:13,
   ylen:15,
   sprite:@bitset.Bitset::new(2,"000000000000110000000000000000000000001100000000000000000000000011000000000000000000000000110000000000000000000000111111000000000000000000001110110000000000000000000011001100000000000000000011101010110000000000001111100010001011110000001110100010101000101011001111111111100010111111111111000000001110110000000011000000001110101011000000000000000011111111110000000000000011110100011111000000"),
   back_ground:@bitset.Bitset::new(1,"111111011111111111101111111111110111111111111011111111111000111111111100011111111110001111111110000011111100000000011100000000000100000000000000111100011110111100000111111110000011111110001000111")
-}
-
-pub let small_plane_:Frame_effects={
+},
+{
   xlen:7,
   ylen:9,
   sprite:@bitset.Bitset::new(2,"000001000100000010110011100000001011100000000010111000001011001100111000101100111000000010001000000000101110000000000010000000"),
   back_ground:@bitset.Bitset::new(1,"110101110000011100001110000100000001000001110000111000011110111")
-}
-
-pub let middle_plane_:Frame_effects={
+},
+{
   xlen:11,
   ylen:17,
   sprite:@bitset.Bitset::new(2,"00000001000000010000000000000100000001000000000001010000000101000000101110000000101110000000101110001011100000000010111110111110000000000010101110100000001000001011001110000010100010110000001110001011101110001100101110111011101000000010101110001011101000101011100000001011000000111000000000001011001110000000000000101100111000000000000000101110000000000000000000100000000000"),
   back_ground:@bitset.Bitset::new(1,"1110111011111100000001110000000011000000000111000000001110000000011110000000101100000000010000000000000000000000000000000100000000011100000000111100000001111000000011111000000111111011111")
+},
+//bullet
+{
+  xlen:3,
+  ylen:3,
+  sprite:@bitset.Bitset::new(2,"010101010101010101"),
+  back_ground:@bitset.Bitset::new(1,"000000000")
+},
+{
+  xlen:3,
+  ylen:3,
+  sprite:@bitset.Bitset::new(2,"111111111111111111"),
+  back_ground:@bitset.Bitset::new(1,"000000000")
+},
+{
+  xlen:3,
+  ylen:3,
+  sprite:@bitset.Bitset::new(2,"111011100110111011"),
+  back_ground:@bitset.Bitset::new(1,"000000000")
+},
+{
+  xlen:3,
+  ylen:3,
+  sprite:@bitset.Bitset::new(2,"111011100110111011"),
+  back_ground:@bitset.Bitset::new(1,"000000000")
+},
+{
+  xlen:8,
+  ylen:8,
+  sprite:@bitset.Bitset::new(2,"10100000000010101010111111111010101000010100101010100001010010101010000101001010101000010100101010101111111110101010000000001010"),
+  back_ground:@bitset.Bitset::new(1,"0011110000000000000000000000000000000000000000000000000000111100")
+},
+{
+  xlen:8,
+  ylen:8,
+  sprite:@bitset.Bitset::new(2,"01111101011111011101101111100111111001101001101111100101010110110111100101101101011110010110110101011110101101010101011111010101"),
+  back_ground:@bitset.Bitset::new(1,"0000000000000000000000000000000000000000000000000000000000000000")
+},
+{
+  xlen:8,
+  ylen:8,
+  sprite:@bitset.Bitset::new(2,"10100000000010101010010101011010101011101011101010101110101110101010111010111010101011101011101010100101010110101010000000001010"),
+  back_ground:@bitset.Bitset::new(1,"0011110000000000000000000000000000000000000000000000000000111100")
 }
+]
 
 pub let small_plane:Aircraft={
 	type_:4,
@@ -48,7 +91,7 @@ pub let small_plane:Aircraft={
 	bullet_exit_point:[],
 	speed:1.2666666666666667,
 	dir:90,
-	frame:small_plane_,
+	fp:1,
 	hp:10
 }
 
@@ -58,7 +101,7 @@ pub let middle_plane:Aircraft={
 	bullet_exit_point:[Bullet_exit_point::new(4,17,1,95,90)],
 	speed:0.6666666666666667,
 	dir:90,
-	frame:middle_plane_,
+	fp:2,
 	hp:40
 }
 
@@ -68,24 +111,9 @@ pub let player_Plane:Aircraft={
 	bullet_exit_point:[Bullet_exit_point::new(5,5,9,0,10)],
 	speed:0.8666666666666667,
 	dir:180,
-	frame:player_Plane_1_frame,
+	fp:0,
 	hp:100
 }
-
-pub let bullet1_:Frame_effects={
-  xlen:3,
-  ylen:3,
-  sprite:@bitset.Bitset::new(2,"010101010101010101"),
-  back_ground:@bitset.Bitset::new(1,"000000000")
-}
-
-pub let bullet2_:Frame_effects={
-  xlen:3,
-  ylen:3,
-  sprite:@bitset.Bitset::new(2,"111111111111111111"),
-  back_ground:@bitset.Bitset::new(1,"000000000")
-}
-
 
 pub let bullet1:Bullet={
 	type_:9,
@@ -93,7 +121,7 @@ pub let bullet1:Bullet={
 	pos:Location::new(9),
 	dir:270,
 	speed:1,
-	frame:bullet1_
+	fp:3,
 }
 
 pub let bullet2:Bullet={
@@ -102,21 +130,7 @@ pub let bullet2:Bullet={
 	pos:Location::new(1),
 	dir:90,
 	speed:1,
-	frame:bullet2_
-}
-
-pub let high_explosive_en_:Frame_effects={
-  xlen:3,
-  ylen:3,
-  sprite:@bitset.Bitset::new(2,"101110110111101110"),
-  back_ground:@bitset.Bitset::new(1,"000000000")
-}
-
-pub let high_explosive_my_:Frame_effects={
-  xlen:3,
-  ylen:3,
-  sprite:@bitset.Bitset::new(2,"111011100110111011"),
-  back_ground:@bitset.Bitset::new(1,"000000000")
+	fp:4,
 }
 
 pub let high_explosive_my:Bullet={
@@ -125,7 +139,7 @@ pub let high_explosive_my:Bullet={
 	pos:Location::new(2),
 	dir:270,
 	speed:1,
-	frame:high_explosive_my_
+	fp:6,
 }
 
 pub let high_explosive_en:Bullet={
@@ -134,15 +148,9 @@ pub let high_explosive_en:Bullet={
 	pos:Location::new(11),
 	dir:90,
 	speed:1,
-	frame:high_explosive_en_
+	fp:5,
 }
 
-pub let high_explosive_cartridge_:Frame_effects={
-  xlen:8,
-  ylen:8,
-  sprite:@bitset.Bitset::new(2,"10100000000010101010111111111010101000010100101010100001010010101010000101001010101000010100101010101111111110101010000000001010"),
-  back_ground:@bitset.Bitset::new(1,"0011110000000000000000000000000000000000000000000000000000111100")
-}
 
 pub let high_explosive_cartridge:Cartridge={
 	type_:6,
@@ -150,7 +158,7 @@ pub let high_explosive_cartridge:Cartridge={
 	speed:0.5,
 	dir:90,
 	effect:0,
-	frame:high_explosive_cartridge_
+	fp:7,
 }
 
 pub let hp_recovery_pack:Cartridge={
@@ -159,14 +167,7 @@ pub let hp_recovery_pack:Cartridge={
 	speed:0.5,
 	dir:90,
 	effect:50,
-	frame:hp_recovery_pack_
-}
-
-pub let hp_recovery_pack_:Frame_effects={
-  xlen:8,
-  ylen:8,
-  sprite:@bitset.Bitset::new(2,"01111101011111011101101111100111111001101001101111100101010110110111100101101101011110010110110101011110101101010101011111010101"),
-  back_ground:@bitset.Bitset::new(1,"0000000000000000000000000000000000000000000000000000000000000000")
+	fp:8
 }
 
 pub let double_cartridge:Cartridge={
@@ -175,16 +176,8 @@ pub let double_cartridge:Cartridge={
 	speed:0.5,
 	dir:90,
 	effect:0,
-	frame:double_cartridge_
+	fp:10
 }
-
-pub let double_cartridge_:Frame_effects={
-  xlen:8,
-  ylen:8,
-  sprite:@bitset.Bitset::new(2,"10100000000010101010010101011010101011101011101010101110101110101010111010111010101011101011101010100101010110101010000000001010"),
-  back_ground:@bitset.Bitset::new(1,"0011110000000000000000000000000000000000000000000000000000111100")
-}
-
 // pub let bullet:Map[Int,Bullet]={9:bullet1,1:bullet2,2:high_explosive_my,11:high_explosive_en}
 // pub let plans:Map[Int,Aircraft]={3:player_Plane,4:small_plane,5:middle_plane}
 // pub let cartridge:Map[Int,Cartridge]={6:high_explosive_cartridge,8:hp_recovery_pack,7:double_cartridge}
@@ -242,4 +235,4 @@ pub let channelSTD:@wasm4.ToneFlag=@wasm4.ToneFlag::new(
         pan = @wasm4.TonePan::Center//左右，中心声道
     );
 //音乐用途tones数组
-pub let tones: Array[ToneParams] = setup_tone_params();
+//pub let tones: Array[ToneParams] = setup_tone_params();

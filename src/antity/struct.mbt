@@ -70,7 +70,7 @@ pub struct Bullet{
 	pos:Location
 	dir:Double
 	speed:Double
-	frame:Frame_effects
+	fp:Int
 }
 
 pub struct Laser{
@@ -99,7 +99,7 @@ pub struct Aircraft{
   pos:Location
   speed:Double
   mut dir:Double
-  frame:Frame_effects
+  fp:Int
   mut hp:Double
   bullet_exit_point:Array[Bullet_exit_point]
 }
@@ -112,7 +112,7 @@ pub struct Cartridge{
   mut speed:Double
   dir:Double
 	effect:Double
-  frame:Frame_effects
+  fp:Int
 }
 
 // type_ 分配规则
