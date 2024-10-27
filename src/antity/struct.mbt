@@ -23,8 +23,8 @@ pub struct Location{
 // }
 
 pub struct Frame_time_config{
-	mut begin:Int64
-	mut end:Int64
+	mut begin:Int
+	mut end:Int
 }
 
 pub struct Frame_effects{
@@ -32,6 +32,14 @@ pub struct Frame_effects{
 	ylen:UInt
 	sprite:@bitset.Bitset
 	back_ground:@bitset.Bitset
+}
+
+pub struct Frame_effects_{
+	mut begin:UInt
+	xlen:UInt
+	ylen:UInt
+	sprite:Array[@bitset.Bitset]
+	back_ground:Array[@bitset.Bitset]
 }
 
 // pub struct Frame_effects_{
@@ -81,13 +89,13 @@ pub struct Bullet_exit_point{
 	x:Int
 	y:Int
 	type_:Int
-	mut last_shoot:Int64
-	shoot_speed:Int64
-	limit:Int
+	mut last_shoot:Int
+	shoot_speed:Int
+	mut limit:Int
 }
 
 pub struct Aircraft{
-  type_:UInt
+  type_:Int
   pos:Location
   speed:Double
   mut dir:Double
@@ -99,7 +107,7 @@ pub struct Aircraft{
 //weapon 1是单发 2是双发
 //speed 是每帧速度
 pub struct Cartridge{
-  type_:UInt
+  type_:Int
   pos:Location
   mut speed:Double
   dir:Double
@@ -110,10 +118,11 @@ pub struct Cartridge{
 // type_ 分配规则
 // 普通子弹_敌人 1
 // 普通子弹_自己 9
-// 高爆子弹 2
+// 高爆子弹_自己 2
+// 高爆子弹_敌人 11
 // 自机 3
 // 敌机小型机 4
-// 敌机中型机 5
+// 敌机中型机_普通子弹版 5
 // 高爆子弹包 6
 // 双倍子弹包 7
 // 血量恢复包 8

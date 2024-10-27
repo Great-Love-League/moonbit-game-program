@@ -2,157 +2,197 @@ fn gaming1()->Unit{
   gaming_logic()
   // @antity.player_Plane_1.print()
 }
-let random:@random.Rand=@random.Rand::new(seed=b"ABCDEFGHIJKSMNOPQRSTUVWXYZ123456")
+let random:@random.Rand=@random.Rand::new()
 let aircraft:Array[@antity.Aircraft]=[]
 let bullet:Array[@antity.Bullet]=[]
 let bullet_my:Array[@antity.Bullet]=[]
-let laser:Array[@antity.Laser]=[]
+// let laser:Array[@antity.Laser]=
+// let a:FixedArray[@antity.Laser]=FixedArray::new(200,)
 let cartridge:Array[@antity.Cartridge]=[]
-let player_plane=@antity.player_Plane
+let player_plane:@antity.Aircraft=@antity.player_Plane()
 let died:Ref[Bool]=Ref::new(false)
+let updated:Ref[Bool]=Ref::new(false)
+let player_Plane_effect:@antity.Frame_effects_=@antity.player_Plane_effect()
+let score:Ref[Int]=Ref::new(0)
+let ttime:Ref[Int]=Ref::new(0)
+// let playerHP:String=player_plane.hp.to_string()
+// let hpWord:String="HP: "
+// let time_gone:Int= @time_cnt.get_time().to_int()/60
+// let time_trans:Double=time_gone.to_double()/60.0
+
 fn gaming_logic()->Unit{
-  //get_next_pos################################################################################################################
-  //self_plane_update_pos
-  if (button_state.val.button_down||button_state.val.button_up||button_state.val.button_left||button_state.val.button_right)&&(button_state.val.button_down&&button_state.val.button_up&&button_state.val.button_left&&button_state.val.button_right).not()&&((button_state.val.button_down&&button_state.val.button_up)&&button_state.val.button_left.not()&&button_state.val.button_right.not()).not()&&(button_state.val.button_down.not()&&button_state.val.button_up.not()&&(button_state.val.button_left&&button_state.val.button_right)).not(){
-    update_self()
-  }
-  for i=aircraft.length()-1;i>=0;i=i-1{
-    aircraft[i].update_pos()
-  }
-  for i=bullet_my.length()-1;i>=0;i=i-1{
-    bullet_my[i].update_pos()
-  }
-  for i=bullet.length()-1;i>=0;i=i-1{
-    bullet[i].update_pos()
-  }
-  for i=cartridge.length()-1;i>=0;i=i-1{
-    cartridge[i].update_pos()
-  }
-  for i=laser.length();i>=0;i=i-1{
-    //waiting
-  }
-  //判断碰撞####################################################################################################################
-  for i=0;i<laser.length();i=i+1{
+	if(died.val){
+		if(updated.val.not()){
+			player_Plane_effect.begin=@time_cnt.get_time()+1
+			updated.val=true
+		}
+		else if(((@time_cnt.get_time()-player_Plane_effect.begin)/16).to_int()<4){
+			@antity.showp(player_Plane_effect,(player_plane.pos.x-3).to_int(),(player_plane.pos.y).to_int(),((@time_cnt.get_time()-player_Plane_effect.begin)/16).to_int());
+		}
+		else{
+      game_over()
+      return;
+			//Game Over
+		}
+	}
+	else{
+		ttime.val=@time_cnt.get_time().to_int()
+		//get_next_pos################################################################################################################
+		//self_plane_update_pos
+		if (button_state.val.button_down||button_state.val.button_up||button_state.val.button_left||button_state.val.button_right)&&(button_state.val.button_down&&button_state.val.button_up&&button_state.val.button_left&&button_state.val.button_right).not()&&((button_state.val.button_down&&button_state.val.button_up)&&button_state.val.button_left.not()&&button_state.val.button_right.not()).not()&&(button_state.val.button_down.not()&&button_state.val.button_up.not()&&(button_state.val.button_left&&button_state.val.button_right)).not(){
+			update_self()
+		}
+		for i=aircraft.length()-1;i>=0;i=i-1{
+			aircraft[i].update_pos()
+		}
+		for i=bullet_my.length()-1;i>=0;i=i-1{
+			bullet_my[i].update_pos()
+		}
+		for i=bullet.length()-1;i>=0;i=i-1{
+			bullet[i].update_pos()
+		}
+		for i=cartridge.length()-1;i>=0;i=i-1{
+			cartridge[i].update_pos()
+		}
+		// for i=laser.length();i>=0;i=i-1{
+		// 	//waiting
+		// }
+		// //判断碰撞####################################################################################################################
+		// for i=0;i<laser.length();i=i+1{
 
-  }
-  let bullet_crashed:Array[Int]=[]
-  let bullet_crashed_my:Array[Int]=[]
-  for i=bullet.length()-1;i>=0;i=i-1{
-    if(bullet[i].crash(player_plane)){
-      bullet_crashed.push(i)
-    }
-  }
-  for i=bullet_my.length()-1;i>=0;i=i-1{
-    for j=aircraft.length()-1;j>=0;j=j-1{
-      if(bullet_my[i].crash(aircraft[j])){
-        bullet_crashed_my.push(i)
-      }
-    }
-  }
-  for i=aircraft.length()-1;i>=0;i=i-1{
-    if(aircraft[i].crash(player_plane)){
-      died.val=true
-      aircraft.remove(i) |> ignore
-    }
-  }
-  for i=cartridge.length()-1;i>=0;i=i-1{
-    if(cartridge[i].crash(player_plane)){
-      cartridge.remove(i)|> ignore
-    }
-  }
-  for i=0;i<laser.length();i=i+1{
-    //waiting
-  }
-  //淘汰#########################################################################################################################
-  for i=bullet_crashed_my.length()-1;i>=0;i=i-1{
-    bullet_my.remove(bullet_crashed_my[i]) |> ignore
-    //加入子弹爆炸特效
-  }
-  for i=bullet_crashed.length()-1;i>=0;i=i-1{
-    bullet.remove(bullet_crashed[i]) |> ignore
-    //加入子弹爆炸特效
-  }
-  for i=aircraft.length()-1;i>=0;i=i-1{
-    if(aircraft[i].is_out_all()){
-      aircraft.remove(i)|> ignore
-    }
-    else if(aircraft[i].die()){
-      aircraft.remove(i)|> ignore
-      //特效
-    }
-  }
-  for i=bullet.length()-1;i>=0;i=i-1{
-    if(bullet[i].is_out_all()){
-      bullet.remove(i)|> ignore
-    }
-  }
-  for i=bullet_my.length()-1;i>=0;i=i-1{
-    if(bullet_my[i].is_out_all()){
-      bullet_my.remove(i)|> ignore
-    }
-  }
-  for i=cartridge.length()-1;i>=0;i=i-1{
-    if(cartridge[i].is_out_all()){
-      cartridge.remove(i)|> ignore
-    }
-  }
-  for i=laser.length()-1;i>=0;i=i-1{
-    //waiting
-  }
-  
-  //生成##############################################################################################################
 
-  if(random.uint()%500<=1){
-    generate_plane(5)
-  }
-  if(random.uint()%1000<=3){
-    generate_plane(4)
-  }
-  if(random.uint()%1000<=3){
-    generate_cartridge()
-  }
-  for i=aircraft.length()-1;i>=0;i=i-1{
-    shoot(aircraft[i])
-  }
-  shoot(player_plane)
-  //子弹袋生成！！！
+		// }
+		let bullet_crashed:Array[Int]=[]
+		let bullet_crashed_my:Array[Int]=[]
+		for i=bullet.length()-1;i>=0;i=i-1{
+			if(bullet[i].crash(player_plane)){
+				bullet_crashed.push(i)
+			}
+		}
+		for i=bullet_my.length()-1;i>=0;i=i-1{
+			for j=aircraft.length()-1;j>=0;j=j-1{
+				if(bullet_my[i].crash(aircraft[j])){
+					bullet_crashed_my.push(i)
+				}
+			}
+		}
+		for i=aircraft.length()-1;i>=0;i=i-1{
+			if(aircraft[i].crash(player_plane)){
+				died.val=true
+				aircraft.remove(i) |> ignore
+			}
+		}
+		for i=cartridge.length()-1;i>=0;i=i-1{
+			if(cartridge[i].crash(player_plane)){
+				cartridge.remove(i)|> ignore
+			}
+		}
+		// for i=0;i<laser.length();i=i+1{
+		// 	//waiting
+		// }
+		//淘汰#########################################################################################################################
+		for i=bullet_crashed_my.length()-1;i>=0;i=i-1{
+			bullet_my.remove(bullet_crashed_my[i]) |> ignore
+			//加入子弹爆炸特效
+		}
+		for i=bullet_crashed.length()-1;i>=0;i=i-1{
+			bullet.remove(bullet_crashed[i]) |> ignore
+			//加入子弹爆炸特效
+		}
+		for i=aircraft.length()-1;i>=0;i=i-1{
+			if(aircraft[i].is_out_all()){
+				aircraft.remove(i)|> ignore
+			}
+			else if(aircraft[i].die()){
+				score.val=score.val+@antity.get_score(aircraft[i].type_)
+				aircraft.remove(i)|> ignore
+				//特效
+			}
+		}
+		for i=bullet.length()-1;i>=0;i=i-1{
+			if(bullet[i].is_out_all()){
+				bullet.remove(i)|> ignore
+			}
+		}
+		for i=bullet_my.length()-1;i>=0;i=i-1{
+			if(bullet_my[i].is_out_all()){
+				bullet_my.remove(i)|> ignore
+			}
+		}
+		for i=cartridge.length()-1;i>=0;i=i-1{
+			if(cartridge[i].is_out_all()){
+				cartridge.remove(i)|> ignore
+			}
+		}
+		// for i=laser.length()-1;i>=0;i=i-1{
+		// 	//waiting
+		// }
+		
+		//生成##############################################################################################################
 
+
+		if(random.uint()%500<=1){
+			generate_plane(5)
+		}
+		if(random.uint()%1000<=3){
+			generate_plane(4)
+		}
+		if(random.uint()%1000<=3){
+			generate_cartridge()
+		}
+		for i=aircraft.length()-1;i>=0;i=i-1{
+			shoot(aircraft[i])
+		}
+		shoot(player_plane)
+		//子弹袋生成！！！
+    
+    //临时参数显示
+		// @wasm4.text(bullet_my.length().to_string(),0,0)
+		// @wasm4.text(bullet.length().to_string(),0,8)
+		// @wasm4.text(aircraft.length().to_string(),0,16)
+		// @wasm4.text(player_plane.hp.to_string(),0,24)
+		// @wasm4.text(bullet_crashed_my.length().to_string(),0,32)
+		// @wasm4.text(bullet_crashed.length().to_string(),0,40)
+		// @wasm4.text(ttime.val.to_string(),0,0)
+    
+	}
   //打印##############################################################################################################
-  @wasm4.text(bullet_my.length().to_string(),0,0)
-  @wasm4.text(bullet.length().to_string(),0,8)
-  @wasm4.text(aircraft.length().to_string(),0,16)
-  @wasm4.text(player_plane.hp.to_string(),0,24)
-  @wasm4.text(bullet_crashed_my.length().to_string(),0,32)
-  @wasm4.text(bullet_crashed.length().to_string(),0,40)
   for i=bullet.length()-1;i>=0;i=i-1{
     bullet[i].print()
   }
   for i=bullet_my.length()-1;i>=0;i=i-1{
     bullet_my[i].print()
   }
-  player_plane.print()
+  if(died.val.not()){player_plane.print()}
   for i=aircraft.length()-1;i>=0;i=i-1{
     aircraft[i].print()
   }
-  for i=laser.length()-1;i>=0;i=i-1{
-    laser[i].print()
-  }
+  // for i=laser.length()-1;i>=0;i=i-1{
+  //   laser[i].print()
+  // }
   for i=cartridge.length()-1;i>=0;i=i-1{
     cartridge[i].print()
   }
   died.val=died.val||player_plane.die()
-  //打印底部状态栏######################################################################################################
+  //状态栏######################################################################################################
   // column()
+  @wasm4.text(score.val.to_string(),0,10)
+  @wasm4.text("Score",0,0)
+  @wasm4.text("HP: ",0,150)
+  @wasm4.text(player_plane.hp.to_string(),20,150)
+  // @wasm4.text(ttime.val.to_string(),90,150)
+  // @wasm4.text("Frames",120,150)
+  @wasm4.text((((ttime.val.to_double()/60.0*100).to_int()).to_double()/100).to_string()+"s",110,150)
 }
 
 //生成################################################################################################################################################
 fn generate_plane(type_:Int)->Unit{
   let x={
-    ..@antity.plans[type_].unwrap(),
+    ..@antity.plans(type_),
     pos:@antity.Location::new(
       x=(random.uint()%160).to_float().to_double(),
       y=0,type_.reinterpret_as_uint()
-    )
+    ),
   }
   while(x.is_out_partly()) {
     x.pos.x=(random.uint()%160).to_float().to_double()
@@ -165,38 +205,91 @@ fn shoot(plane:@antity.Aircraft)->Unit{
     if(plane.bullet_exit_point[i].last_shoot>=plane.bullet_exit_point[i].shoot_speed) {
       if(plane.type_==3) {
         bullet_my.push({
-          ..@antity.bullet[plane.bullet_exit_point[i].type_].unwrap(),
+          ..@antity.bullet(plane.bullet_exit_point[i].type_),
           pos:@antity.Location::new(
             x=plane.bullet_exit_point[i].x.to_double()+plane.pos.x,
             y=plane.bullet_exit_point[i].y.to_double()+plane.pos.y,
             plane.bullet_exit_point[i].type_.reinterpret_as_uint())
           })}
-      else {bullet.push({
-        ..@antity.bullet[plane.bullet_exit_point[i].type_].unwrap(),
+      else {
+        let mut omg:Double=@math.atan((plane.bullet_exit_point[i].y.to_double()+plane.pos.y-player_plane.pos.y)/(plane.bullet_exit_point[i].x.to_double()+plane.pos.x-player_plane.pos.x))*57.30
+        if(plane.pos.x>=player_plane.pos.x){ omg=omg+180}
+        bullet.push({
+        ..@antity.bullet(plane.bullet_exit_point[i].type_),
         pos:@antity.Location::new(
           x=plane.bullet_exit_point[i].x.to_double()+plane.pos.x,
           y=plane.bullet_exit_point[i].y.to_double()+plane.pos.y,
-          plane.bullet_exit_point[i].type_.reinterpret_as_uint())
-          })}
+          plane.bullet_exit_point[i].type_.reinterpret_as_uint()),
+          dir:omg})}
       plane.bullet_exit_point[i].last_shoot=plane.bullet_exit_point[i].last_shoot%plane.bullet_exit_point[i].shoot_speed
+      update_shoot(plane)
     }
     else {plane.bullet_exit_point[i].last_shoot=plane.bullet_exit_point[i].last_shoot+1}
   }
 }
 
+fn update_shoot(plane:@antity.Aircraft)->Unit{
+  if(plane.type_==4) {return}
+  for i=plane.bullet_exit_point.length()-1;i>=0;i=i-1{
+    if(plane.bullet_exit_point[i].limit==0){
+      plane.bullet_exit_point.remove(i) |> ignore
+      continue;
+    }
+    if(plane.bullet_exit_point[i].limit==-1) {continue;}
+    plane.bullet_exit_point[i].limit=plane.bullet_exit_point[i].limit-1;
+  }
+  if(plane.bullet_exit_point.length()==0){
+    let lin=@antity.default_bullet(plane.type_)
+    plane.bullet_exit_point.resize(lin.length(),@antity.Bullet_exit_point::new(1,1,1,1,1))
+    for i=plane.bullet_exit_point.length()-1;i>=0;i=i-1{
+      plane.bullet_exit_point[i]={..@antity.default_bullet(plane.type_)[i]}
+    }
+  }
+}
+
 fn generate_cartridge()->Unit{
-  let x={
-    ..@antity.cartridge[8].unwrap(),
-    pos:@antity.Location::new(
-      x=(random.uint()%160).to_float().to_double(),
-      y=0,
-      8
-    )
+  if(random.uint()%100<=20){
+    let x={
+      ..@antity.cartridge(8),
+      pos:@antity.Location::new(
+        x=(random.uint()%160).to_float().to_double(),
+        y=0,
+        8
+      )
+    }
+    while(x.is_out_partly()) {
+      x.pos.x=(random.uint()%160).to_float().to_double()
+    }
+    cartridge.push(x)
   }
-  while(x.is_out_partly()) {
-    x.pos.x=(random.uint()%160).to_float().to_double()
+  if(random.uint()%100<=20){
+    let x={
+      ..@antity.cartridge(6),
+      pos:@antity.Location::new(
+        x=(random.uint()%160).to_float().to_double(),
+        y=0,
+        6
+      )
+    }
+    while(x.is_out_partly()) {
+      x.pos.x=(random.uint()%160).to_float().to_double()
+    }
+    cartridge.push(x)
   }
-  cartridge.push(x)
+  if(random.uint()%100<=20){
+    let x={
+      ..@antity.cartridge(7),
+      pos:@antity.Location::new(
+        x=(random.uint()%160).to_float().to_double(),
+        y=0,
+        7
+      )
+    }
+    while(x.is_out_partly()) {
+      x.pos.x=(random.uint()%160).to_float().to_double()
+    }
+    cartridge.push(x)
+  }
 }
 
 //生成################################################################################################################################################
@@ -230,3 +323,15 @@ fn update_self()->Unit{
   player_plane.update_pos()
 }
 //自身飞机操作控制########################################################################################################################################
+
+//Game Over#########################################################################################################################################################################
+fn game_over()->Unit{
+  @wasm4.text("Score:"+score.val.to_string(),2,55)
+  @wasm4.text("Time:"+(((ttime.val.to_double()/60.0*100).to_int()).to_double()/100).to_string()+"s",2,68)
+  @wasm4.text("Press R to restart.",2,82)
+  @wasm4.text("YOU DIED",50,30)
+  @wasm4.text("If you get a crush",8,120)
+  @wasm4.text("Kill more enemies.",10,130)
+}
+
+//Game Over#########################################################################################################################################################################

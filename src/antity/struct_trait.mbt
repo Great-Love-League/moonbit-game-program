@@ -40,6 +40,26 @@ pub fn show(self:Frame_effects,x:Int,y:Int)->Unit{
         posy=posy+1
     }
 }
+
+pub fn showp(self:Frame_effects_,x:Int,y:Int,t:Int)->Unit{
+    let len=self.sprite[t].length()
+    let mut index=0
+    let mut posx=x
+    let mut posy=y
+    for i=0U;i<self.ylen;i=i+1{
+        for e=0U;e<self.xlen;e=e+1{
+            if((self.back_ground[t][index]==1||posx>=160||posx<0||posy<0||posy>low_y).not()){
+                @wasm4.set_frame_buffer(get_index(posx.reinterpret_as_uint(),posy.reinterpret_as_uint()),self.sprite[t][index]+1)
+            }
+            index=index+1
+            posx=posx+1
+        }
+        posx=x
+        posy=posy+1
+    }
+}
+
+
 pub fn print(self:Aircraft)->Unit{
     self.frame.show(self.pos.x.to_int(),self.pos.y.to_int())
 }
@@ -63,7 +83,7 @@ pub fn Location::new(~x:Double=0,~y:Double=0,type_:UInt)->Location{
     {x,y,type_}
 }
 
-pub fn Bullet_exit_point::new(x:Int,y:Int,type_:Int,last_shoot:Int64,shoot_speed:Int64,~limit:Int=-1)->Bullet_exit_point{
+pub fn Bullet_exit_point::new(x:Int,y:Int,type_:Int,last_shoot:Int,shoot_speed:Int,~limit:Int=-1)->Bullet_exit_point{
     {x,y,type_,last_shoot,shoot_speed,limit}
 }
 //构造函数#############################################
@@ -225,6 +245,13 @@ fn take_effect(self:Cartridge,obj:Aircraft)->Unit{
     if(self.type_==8){
         obj.hp=obj.hp+self.effect
     }
+    else if(self.type_==7||self.type_==6){
+        obj.bullet_exit_point.clear();
+        let len=default_bullet(self.type_).length()
+        for i=len-1;i>=0;i=i-1{
+            obj.bullet_exit_point.push(default_bullet(self.type_)[i])
+        }
+    }
 }
 
 //弹药箱生效函数######################################################################################
@@ -316,12 +343,12 @@ fn play_tone(params: ToneParams) -> Unit {
     @wasm4.tone(params.frequency, params.adsr, params.volume, params.channel);
 }
 pub fn musicplay() -> Unit {
-    let frame_counter :UInt64= @time_cnt.get_time();
+    let frame_counter :UInt64= @time_cnt.get_time().to_uint64();
 		    // 每秒运行60次，假设每个音调播放0.5秒（30帧）
     let tone_duration :Int= 30;
-    let index :Int64= ((frame_counter.reinterpret_as_int64() / tone_duration.to_int64()) % 8);
+    let index :Int= ((frame_counter.to_int() / tone_duration) % 8);
     // 根据frame_counter的值播放不同的音调
-    let index=index.to_int();
+    let index=index;
     play_tone(tones[index])
 }
 //play_tone的用法如下:
