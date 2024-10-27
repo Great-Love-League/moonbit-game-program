@@ -13,21 +13,30 @@ let player_plane:@antity.Aircraft=@antity.player_Plane()
 let died:Ref[Bool]=Ref::new(false)
 let updated:Ref[Bool]=Ref::new(false)
 let player_Plane_effect:@antity.Frame_effects_=@antity.player_Plane_effect()
+let score:Ref[Int]=Ref::new(0)
+let ttime:Ref[Int]=Ref::new(0)
+// let playerHP:String=player_plane.hp.to_string()
+// let hpWord:String="HP: "
+// let time_gone:Int= @time_cnt.get_time().to_int()/60
+// let time_trans:Double=time_gone.to_double()/60.0
+
 fn gaming_logic()->Unit{
 	if(died.val){
 		if(updated.val.not()){
 			player_Plane_effect.begin=@time_cnt.get_time()+1
 			updated.val=true
 		}
-		if(((@time_cnt.get_time()-player_Plane_effect.begin)/16).to_int()<4){
+		else if(((@time_cnt.get_time()-player_Plane_effect.begin)/16).to_int()<4){
 			@antity.showp(player_Plane_effect,(player_plane.pos.x-3).to_int(),(player_plane.pos.y).to_int(),((@time_cnt.get_time()-player_Plane_effect.begin)/16).to_int());
 		}
 		else{
+      game_over()
+      return;
 			//Game Over
 		}
 	}
 	else{
-		
+		ttime.val=@time_cnt.get_time().to_int()
 		//get_next_pos################################################################################################################
 		//self_plane_update_pos
 		if (button_state.val.button_down||button_state.val.button_up||button_state.val.button_left||button_state.val.button_right)&&(button_state.val.button_down&&button_state.val.button_up&&button_state.val.button_left&&button_state.val.button_right).not()&&((button_state.val.button_down&&button_state.val.button_up)&&button_state.val.button_left.not()&&button_state.val.button_right.not()).not()&&(button_state.val.button_down.not()&&button_state.val.button_up.not()&&(button_state.val.button_left&&button_state.val.button_right)).not(){
@@ -95,6 +104,7 @@ fn gaming_logic()->Unit{
 				aircraft.remove(i)|> ignore
 			}
 			else if(aircraft[i].die()){
+				score.val=score.val+@antity.get_score(aircraft[i].type_)
 				aircraft.remove(i)|> ignore
 				//特效
 			}
@@ -135,12 +145,16 @@ fn gaming_logic()->Unit{
 		}
 		shoot(player_plane)
 		//子弹袋生成！！！
-		@wasm4.text(bullet_my.length().to_string(),0,0)
-		@wasm4.text(bullet.length().to_string(),0,8)
-		@wasm4.text(aircraft.length().to_string(),0,16)
-		@wasm4.text(player_plane.hp.to_string(),0,24)
-		@wasm4.text(bullet_crashed_my.length().to_string(),0,32)
-		@wasm4.text(bullet_crashed.length().to_string(),0,40)
+    
+    //临时参数显示
+		// @wasm4.text(bullet_my.length().to_string(),0,0)
+		// @wasm4.text(bullet.length().to_string(),0,8)
+		// @wasm4.text(aircraft.length().to_string(),0,16)
+		// @wasm4.text(player_plane.hp.to_string(),0,24)
+		// @wasm4.text(bullet_crashed_my.length().to_string(),0,32)
+		// @wasm4.text(bullet_crashed.length().to_string(),0,40)
+		// @wasm4.text(ttime.val.to_string(),0,0)
+    
 	}
   //打印##############################################################################################################
   for i=bullet.length()-1;i>=0;i=i-1{
@@ -160,8 +174,15 @@ fn gaming_logic()->Unit{
     cartridge[i].print()
   }
   died.val=died.val||player_plane.die()
-  //打印底部状态栏######################################################################################################
+  //状态栏######################################################################################################
   // column()
+  @wasm4.text(score.val.to_string(),0,10)
+  @wasm4.text("Score",0,0)
+  @wasm4.text("HP: ",0,150)
+  @wasm4.text(player_plane.hp.to_string(),20,150)
+  // @wasm4.text(ttime.val.to_string(),90,150)
+  // @wasm4.text("Frames",120,150)
+  @wasm4.text((((ttime.val.to_double()/60.0*100).to_int()).to_double()/100).to_string()+"s",110,150)
 }
 
 //生成################################################################################################################################################
@@ -302,3 +323,15 @@ fn update_self()->Unit{
   player_plane.update_pos()
 }
 //自身飞机操作控制########################################################################################################################################
+
+//Game Over#########################################################################################################################################################################
+fn game_over()->Unit{
+  @wasm4.text("Score:"+score.val.to_string(),2,55)
+  @wasm4.text("Time:"+(((ttime.val.to_double()/60.0*100).to_int()).to_double()/100).to_string()+"s",2,68)
+  @wasm4.text("Press R to restart.",2,82)
+  @wasm4.text("YOU DIED",50,30)
+  @wasm4.text("If you get a crush",8,120)
+  @wasm4.text("Kill more enemies.",10,130)
+}
+
+//Game Over#########################################################################################################################################################################
