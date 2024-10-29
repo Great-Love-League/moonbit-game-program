@@ -191,7 +191,7 @@ pub fn crash(self:Bullet,obj:Aircraft)->Bool{
     if(ans){
         obj.hp=obj.hp-self.harm
     }
-    ans
+    return ans;
 }
 
 pub fn crash(self:Aircraft,obj:Aircraft)->Bool{
@@ -256,10 +256,19 @@ fn take_effect(self:Cartridge,obj:Aircraft)->Unit{
 
 //弹药箱生效函数######################################################################################
 
+pub fn play_sound_effects(effects: Sound_effects) -> Unit {
+    //play_tone(tones.effects[1]);
+    let mut startcnt=@time_cnt.get_time();
+    for effect in effects.effects {
+        let tone_for_pub = { tone: effect, startfps: startcnt };
+        pubsound_effects.push(tone_for_pub);
+        //if(pubsound_effects.length()>0){player_Plane_1_frame.show(50,50)}
+        startcnt+=(effect.adsr.release+effect.adsr.attack+effect.adsr.decay+effect.adsr.sustain);
+    }
+}
 
-//function of music 
 pub fn setup_tone_params() -> Array[ToneParams] {
-    let adsr = @wasm4.ADSR::new(attack=0, decay=0,30, release=0);
+    let adsr = @wasm4.ADSR::new(attack=0, decay=0,10, release=0);
     let volume = @wasm4.ADSRVolume::new(100,peak=100);
 
     let channel1 = @wasm4.ToneFlag::new(
@@ -280,76 +289,97 @@ pub fn setup_tone_params() -> Array[ToneParams] {
         pan = @wasm4.TonePan::Center
     );
 
-    let tone1 = {
-        frequency: (261, 523),
+    let toneC = {
+        frequency: (261, 262),
         adsr: adsr,
         volume: volume,
         channel: channel1
     };
 
-    let tone2 = {
-        frequency: (293, 587),
+    let toneD = {
+        frequency: (293, 294),
         adsr: adsr,
         volume: volume,
         channel: channel2
     };
 
-    let tone3 = {
-        frequency: (329, 659),
+    let toneE = {
+        frequency: (329, 330),
         adsr: adsr,
         volume: volume,
         channel: channel3
     };
 
-    let tone4 = {
-        frequency: (349, 698),
+    let toneF = {
+        frequency: (349, 350),
         adsr: adsr,
         volume: volume,
         channel: channel1
     };
 
-    let tone5 =  {
-        frequency: (392, 784),
+    let toneG =  {
+        frequency: (392, 393),
         adsr: adsr,
         volume: volume,
         channel: channel2
     };
 
-    let tone6 = {
-        frequency: (440, 880),
+    let toneA = {
+        frequency: (440,441),
         adsr: adsr,
         volume: volume,
         channel: channel3
     };
 
-    let tone7 = {
-        frequency: (493, 987),
+    let toneB = {
+        frequency: (493, 494),
         adsr: adsr,
         volume: volume,
         channel: channel1
     };
 
-    let tone8 = {
-        frequency: (523, 1046),
-        adsr: adsr,
-        volume: volume,
-        channel: channel2
-    };
-
-    return [tone1, tone2, tone3, tone4, tone5, tone6, tone7, tone8];
+    return [toneE, toneE, toneF, toneG,
+            toneA, toneG, toneF, toneE,
+            toneD, toneD, toneE, toneF,
+            toneG, toneF, toneE, toneD,
+            toneC, toneC, toneD, toneE,
+            toneF, toneE, toneD, toneC,
+            toneB, toneB, toneC, toneD,
+            toneE, toneD, toneC, toneB];
+}
+pub fn generate_noise() -> Array[ToneParams] {
+    let r = @random.new();
+    let channel1 = @wasm4.ToneFlag::new(
+        channel = @wasm4.ToneChannel::Noise,
+        mode = @wasm4.ToneMode::Duty_1_2,
+        pan = @wasm4.TonePan::Center
+    );
+    let adsr = @wasm4.ADSR::new(attack=0, decay=0,50, release=0);
+    let noise:Array[ToneParams] = [];
+    for i = 0; i < 2; i = i + 1 {
+        let random_frequency :UInt= 100; // 随机频率在100到2100之间
+        let random_volume =1000; // 随机音量在0.0到1.0之间
+        let tone = {
+            frequency: (random_frequency, random_frequency + 1),
+            adsr: adsr,
+            volume: @wasm4.ADSRVolume::new(random_volume.to_uint(), peak=1000),
+            channel: channel1
+        };
+        noise.push(tone);
+    }
+    return noise;
 }
 
-fn play_tone(params: ToneParams) -> Unit {
+pub fn play_tone(params: ToneParams) -> Unit {
     @wasm4.tone(params.frequency, params.adsr, params.volume, params.channel);
 }
 pub fn musicplay() -> Unit {
     let frame_counter :UInt= @time_cnt.get_time();
 		    // 每秒运行60次，假设每个音调播放0.5秒（30帧）
-    let tone_duration :Int= 30;
-    let index :Int= ((frame_counter.reinterpret_as_int() / tone_duration) % 8);
+    let tone_duration :Int= 10;
+    let index = ((frame_counter.to_int() / tone_duration) % tones.effects.length());  
     // 根据frame_counter的值播放不同的音调
-    let index=index;
-    play_tone(tones[index])
+    play_tone(tones.effects[index])
 }
 //play_tone的用法如下:
 //let toneExample = {
@@ -359,3 +389,10 @@ pub fn musicplay() -> Unit {
 //    channel: channelSTD
 //};//这里的adsrSTD,volumeSTD,channelSTD是在antity_memory.mbt中定义的标准量
 //play_tone(toneExample)
+pub fn compare(self:ToneForPub,other:ToneForPub)->Int{
+    self.startfps.compare(other.startfps)
+}
+
+pub fn op_equal(self: ToneForPub, other: ToneForPub) -> Bool {
+    self.startfps == other.startfps
+}

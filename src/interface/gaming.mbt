@@ -53,18 +53,23 @@ fn gaming_logic()->Unit{
 		for i=bullet.length()-1;i>=0;i=i-1{
 			if(bullet[i].crash(player_plane)){
 				bullet_crashed.push(i)
+        @antity.play_sound_effects({effects:@antity.generate_noise()})
 			}
 		}
 		for i=bullet_my.length()-1;i>=0;i=i-1{
 			for j=aircraft.length()-1;j>=0;j=j-1{
+        //@antity.play_tone(@antity.tones.effects[1])
 				if(bullet_my[i].crash(aircraft[j])){
 					bullet_crashed_my.push(i)
+          @antity.play_sound_effects({effects:@antity.generate_noise()})
+          //@antity.play_tone(@antity.tones.effects[1])
 				}
 			}
 		}
 		for i=aircraft.length()-1;i>=0;i=i-1{
 			if(aircraft[i].crash(player_plane)){
 				died.val=true
+        @antity.play_sound_effects({effects:@antity.generate_noise()})
 				aircraft.remove(i) |> ignore
 			}
 		}
@@ -83,10 +88,12 @@ fn gaming_logic()->Unit{
 		//淘汰#########################################################################################################################
 		for i=bullet_crashed_my.length()-1;i>=0;i=i-1{
 			bullet_my.remove(bullet_crashed_my[i]) |> ignore
+      @antity.play_sound_effects({effects:@antity.generate_noise()})
 			//加入子弹爆炸特效
 		}
 		for i=bullet_crashed.length()-1;i>=0;i=i-1{
 			bullet.remove(bullet_crashed[i]) |> ignore
+      @antity.play_sound_effects({effects:@antity.generate_noise()})
 			//加入子弹爆炸特效
 		}
 		for i=aircraft.length()-1;i>=0;i=i-1{

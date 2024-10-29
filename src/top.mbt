@@ -7,8 +7,34 @@ pub fn start() -> Unit {
 }
 
 pub fn update() -> Unit {
+	//@antity.play_sound_effects(@antity.tones);
 	@time_cnt.update_time();
+	let currenttime=@time_cnt.get_time();
 	// @antity.player_Plane_1_frame.print()
 	@interface.interface()
 	// @antity.player_Plane.print()
+  @antity.musicplay();
+	// @time_cnt.get_time()
+	while true{
+		//@antity.play_tone(@antity.tones.effects[1]);
+		//let tone = @antity.pubsound_effects.peek().unwrap();
+		if(@antity.pubsound_effects.is_empty() ){
+			//@antity.play_tone(@antity.tonefortest);
+			break;
+
+		}
+		let tone = @antity.pubsound_effects.peek().unwrap();
+		//@antity.play_tone(@antity.tonefortest);
+		if(tone.startfps>currenttime){
+			break;
+		}
+		else{
+			
+			@antity.play_tone(@antity.tonefortest);
+			let tone = @antity.pubsound_effects.pop().unwrap();
+			@antity.play_tone(tone.tone);
+			//ignore(@antity.pubsound_effects.pop());
+			//@antity.pubsound_effects.pop();
+		}
+	}
 }
