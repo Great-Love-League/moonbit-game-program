@@ -68,14 +68,14 @@ fn gaming_logic()->Unit{
 		for i=bullet.length()-1;i>=0;i=i-1{
 			if(bullet[i].crash(player_plane)){
 				bullet_crashed.push(i)
-        @wasm4.tone((200,201),@wasm4.ADSR::new(100),@wasm4.ADSRVolume::new(100),@wasm4.ToneFlag::new(channel=Noise,mode=Duty_1_2,pan=Center));
+        @wasm4.tone((200,401),@wasm4.ADSR::new(10),@wasm4.ADSRVolume::new(100),@wasm4.ToneFlag::new(channel=Noise,mode=Duty_1_2,pan=Center));
 			}
 		}
 		for i=bullet_my.length()-1;i>=0;i=i-1{
 			for j=aircraft.length()-1;j>=0;j=j-1{
 				if(bullet_my[i].crash(aircraft[j])){
 					bullet_crashed_my.push(i)
-          @wasm4.tone((200,201),@wasm4.ADSR::new(100),@wasm4.ADSRVolume::new(100),@wasm4.ToneFlag::new(channel=Noise,mode=Duty_1_2,pan=Center));
+          @wasm4.tone((200,401),@wasm4.ADSR::new(10),@wasm4.ADSRVolume::new(100),@wasm4.ToneFlag::new(channel=Noise,mode=Duty_1_2,pan=Center));
 				}
 			}
 		}
