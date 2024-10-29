@@ -81,6 +81,7 @@ fn gaming_logic()->Unit{
 		}
 		for i=aircraft.length()-1;i>=0;i=i-1{
 			if(aircraft[i].crash(player_plane)){
+        @antity.play_sound_effects({effects:@antity.generate_noise()})
 				died.val=true
 				aircraft.remove(i) |> ignore
 			}

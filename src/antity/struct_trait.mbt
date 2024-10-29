@@ -256,7 +256,6 @@ fn take_effect(self:Cartridge,obj:Aircraft)->Unit{
 
 //弹药箱生效函数######################################################################################
 
-
 //function of music 
 
 

@@ -59,6 +59,14 @@ pub struct ToneParams {
     channel: @wasm4.ToneFlag
 }
 
+pub struct Sound_effects{
+	//具体实现待研究QWQ
+	effects:Array[ToneParams]
+}
+pub struct ToneForPub {
+	tone:ToneParams
+	startfps:UInt
+}
 // pub struct Effects{
 // 	frame:Frame_effects_
 // 	sound:Array[ToneParams]
