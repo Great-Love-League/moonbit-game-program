@@ -7,6 +7,30 @@ let interface_gaming1:Int=1
 let interface_start:Int=0
 
 pub fn interface()->Unit{
+  @antity.musicplay();
+  let currenttime:UInt = @time_cnt.get_time()
+  while true{
+		//@antity.play_tone(@antity.tones.effects[1]);
+		//let tone = @antity.pubsound_effects.peek().unwrap();
+		if(@antity.pubsound_effects.is_empty() ){
+			//@antity.play_tone(@antity.tonefortest);
+			break;
+
+		}
+		let tone = @antity.pubsound_effects.peek().unwrap();
+		//@antity.play_tone(@antity.tonefortest);
+		if(tone.startfps>currenttime){
+			break;
+		}
+		else{
+			
+			@antity.play_tone(@antity.tonefortest);
+			let tone = @antity.pubsound_effects.pop().unwrap();
+			@antity.play_tone(tone.tone);
+			//ignore(@antity.pubsound_effects.pop());
+			//@antity.pubsound_effects.pop();
+		}
+	}
   button_state.val=@wasm4.get_gamepad()
   if interface_type.val==interface_gaming1 {gaming1()}
   if interface_type.val==interface_start {start_interface()}

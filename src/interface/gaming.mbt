@@ -67,17 +67,20 @@ fn gaming_logic()->Unit{
 		for i=bullet.length()-1;i>=0;i=i-1{
 			if(bullet[i].crash(player_plane)){
 				bullet_crashed.push(i)
+        @antity.play_sound_effects({effects:@antity.generate_noise()})
 			}
 		}
 		for i=bullet_my.length()-1;i>=0;i=i-1{
 			for j=aircraft.length()-1;j>=0;j=j-1{
 				if(bullet_my[i].crash(aircraft[j])){
 					bullet_crashed_my.push(i)
+          @antity.play_sound_effects({effects:@antity.generate_noise()})
 				}
 			}
 		}
 		for i=aircraft.length()-1;i>=0;i=i-1{
 			if(aircraft[i].crash(player_plane)){
+        @antity.play_sound_effects({effects:@antity.generate_noise()})
 				died.val=true
 				aircraft.remove(i) |> ignore
 			}
