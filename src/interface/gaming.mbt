@@ -22,6 +22,7 @@ let ttime:Ref[Int]=Ref::new(0)
 
 fn gaming_logic()->Unit{
 	if(died.val){
+    //@wasm4.tone((200,201),@wasm4.ADSR::new(100),@wasm4.ADSRVolume::new(100),@wasm4.ToneFlag::new(channel=Noise,mode=Duty_1_2,pan=Center));
 		if(updated.val.not()){
 			player_Plane_effect.begin=@time_cnt.get_time()+1
 			updated.val=true
@@ -67,14 +68,14 @@ fn gaming_logic()->Unit{
 		for i=bullet.length()-1;i>=0;i=i-1{
 			if(bullet[i].crash(player_plane)){
 				bullet_crashed.push(i)
-        @antity.play_sound_effects({effects:@antity.generate_noise()})
+        @wasm4.tone((200,401),@wasm4.ADSR::new(10),@wasm4.ADSRVolume::new(100),@wasm4.ToneFlag::new(channel=Noise,mode=Duty_1_2,pan=Center));
 			}
 		}
 		for i=bullet_my.length()-1;i>=0;i=i-1{
 			for j=aircraft.length()-1;j>=0;j=j-1{
 				if(bullet_my[i].crash(aircraft[j])){
 					bullet_crashed_my.push(i)
-          @antity.play_sound_effects({effects:@antity.generate_noise()})
+          @wasm4.tone((200,401),@wasm4.ADSR::new(10),@wasm4.ADSRVolume::new(100),@wasm4.ToneFlag::new(channel=Noise,mode=Duty_1_2,pan=Center));
 				}
 			}
 		}
@@ -134,13 +135,13 @@ fn gaming_logic()->Unit{
 		//生成##############################################################################################################
 
 
-		if(random.uint()%500<=1){
+		if(random.uint(limit=500)<=1){
 			generate_plane(5)
 		}
-		if(random.uint()%1000<=3){
+		if(random.uint(limit =1000)<=3){
 			generate_plane(4)
 		}
-		if(random.uint()%1000<=3){
+		if(random.uint(limit =1000)<=3){
 			generate_cartridge()
 		}
 		for i=aircraft.length()-1;i>=0;i=i-1{
@@ -193,12 +194,12 @@ fn generate_plane(type_:Int)->Unit{
   let x={
     ..@antity.plans(type_),
     pos:@antity.Location::new(
-      x=(random.uint()%160).to_float().to_double(),
+      x=(random.uint(limit=160)).to_float().to_double(),
       y=0,type_.reinterpret_as_uint()
     ),
   }
   while(x.is_out_partly()) {
-    x.pos.x=(random.uint()%160).to_float().to_double()
+    x.pos.x=(random.uint(limit =160)).to_float().to_double()
   }
   aircraft.push(x)
 }
@@ -251,45 +252,45 @@ fn update_shoot(plane:@antity.Aircraft)->Unit{
 }
 
 fn generate_cartridge()->Unit{
-  if(random.uint()%100<=20){
+  if(random.uint(limit =100)<=20){
     let x={
       ..@antity.cartridge(8),
       pos:@antity.Location::new(
-        x=(random.uint()%160).to_float().to_double(),
+        x=(random.uint(limit =160)).to_float().to_double(),
         y=0,
         8
       )
     }
     while(x.is_out_partly()) {
-      x.pos.x=(random.uint()%160).to_float().to_double()
+      x.pos.x=(random.uint(limit = 160)).to_float().to_double()
     }
     cartridge.push(x)
   }
-  if(random.uint()%100<=20){
+  if(random.uint(limit =100)<=20){
     let x={
       ..@antity.cartridge(6),
       pos:@antity.Location::new(
-        x=(random.uint()%160).to_float().to_double(),
+        x=(random.uint(limit =160)).to_float().to_double(),
         y=0,
         6
       )
     }
     while(x.is_out_partly()) {
-      x.pos.x=(random.uint()%160).to_float().to_double()
+      x.pos.x=(random.uint(limit = 160)).to_float().to_double()
     }
     cartridge.push(x)
   }
-  if(random.uint()%100<=20){
+  if(random.uint(limit =100)<=20){
     let x={
       ..@antity.cartridge(7),
       pos:@antity.Location::new(
-        x=(random.uint()%160).to_float().to_double(),
+        x=(random.uint(limit =160)).to_float().to_double(),
         y=0,
         7
       )
     }
     while(x.is_out_partly()) {
-      x.pos.x=(random.uint()%160).to_float().to_double()
+      x.pos.x=(random.uint(limit =160)).to_float().to_double()
     }
     cartridge.push(x)
   }
@@ -332,8 +333,8 @@ fn game_over()->Unit{
   @wasm4.text("Score:"+score.val.to_string(),2,55)
   @wasm4.text("Time:"+(((ttime.val.to_double()/60.0*100).to_int()).to_double()/100).to_string()+"s",2,68)
   @wasm4.text("Press R to restart.",2,82)
-  @wasm4.text("YOU DIED",50,30)
-  @wasm4.text("If you get a crush",8,120)
+  @wasm4.text("U DIED",50,30)
+  @wasm4.text("If u get a crush",8,120)
   @wasm4.text("Kill more enemies.",10,130)
 }
 

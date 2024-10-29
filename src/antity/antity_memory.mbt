@@ -357,7 +357,7 @@ pub fn cartridge(n:Int)->Cartridge{
 	}
 }
 
-pub fn default_bullet(n:Int)->Array[Bullet_exit_point]{
+pub fn default_bullet(n:Int)->FixedArray[Bullet_exit_point]{
 	match n{
 		3 => return [Bullet_exit_point::new(5,5,9,0,10)]
 		5 => return [Bullet_exit_point::new(4,17,1,0,90)]
@@ -374,19 +374,4 @@ pub fn get_score(n:Int)->Int{
 }
 
 //pub var of music
-pub let adsrSTD:@wasm4.ADSR=@wasm4.ADSR::new(attack=0, decay=0,30, release=0);//ADSR指播放时声音的变化形式，具体自己查
-pub let volumeSTD:@wasm4.ADSRVolume=@wasm4.ADSRVolume::new(100,peak=100);//音量
-pub let channelSTD:@wasm4.ToneFlag=@wasm4.ToneFlag::new(
-        channel = @wasm4.ToneChannel::Triangle,//音色
-        mode = @wasm4.ToneMode::Duty_1_2,//波形
-        pan = @wasm4.TonePan::Center//左右，中心声道
-    );
 //音乐用途tones数组
-pub let pubsound_effects:@priority_queue.T[ToneForPub]=@priority_queue.new();
-pub let tones: Sound_effects={effects:setup_tone_params()};
-pub let tonefortest :ToneParams= {
-		frequency:(800,800),
-		adsr:adsrSTD,
-		volume:volumeSTD,
-		channel:channelSTD
-}
