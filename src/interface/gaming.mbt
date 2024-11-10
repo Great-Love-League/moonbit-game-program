@@ -264,6 +264,7 @@ fn generate_cartridge()->Unit{
       x.pos.x=(random.uint(limit = 160)).to_float().to_double()
     }
     cartridge.push(x)
+    return
   }
   if(random.uint(limit =100)<=20){
     let x={
@@ -278,6 +279,7 @@ fn generate_cartridge()->Unit{
       x.pos.x=(random.uint(limit = 160)).to_float().to_double()
     }
     cartridge.push(x)
+    return
   }
   if(random.uint(limit =100)<=20){
     let x={
@@ -292,6 +294,7 @@ fn generate_cartridge()->Unit{
       x.pos.x=(random.uint(limit =160)).to_float().to_double()
     }
     cartridge.push(x)
+    return
   }
 }
 
