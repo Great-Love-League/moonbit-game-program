@@ -73,24 +73,24 @@ pub struct ToneForPub {
 // }
 
 pub struct Bullet{
-	type_:UInt
+	type_:Int
 	harm:Double
 	pos:Location
 	dir:Double
 	speed:Double
-	frame:Frame_effects
+	// frame:Frame_effects
 }
 
-pub struct Laser{
-	type_:UInt
-	pos:Location
-	//表示激光最顶点的位置
-	dir:UInt
-	//激光方向
-	harm:UInt
-	warming:Frame_effects
+// pub struct Laser{
+// 	type_:UInt
+// 	pos:Location
+// 	//表示激光最顶点的位置
+// 	dir:UInt
+// 	//激光方向
+// 	harm:UInt
+// 	// warming:Frame_effects
 	
-}
+// }
 //激光应当还有一个方向改变函数！！！
 
 pub struct Bullet_exit_point{
@@ -107,7 +107,7 @@ pub struct Aircraft{
   pos:Location
   speed:Double
   mut dir:Double
-  frame:Frame_effects
+  // frame:Frame_effects
   mut hp:Double
   bullet_exit_point:Array[Bullet_exit_point]
 }
@@ -120,7 +120,7 @@ pub struct Cartridge{
   mut speed:Double
   dir:Double
 	effect:Double
-  frame:Frame_effects
+  // frame:Frame_effects
 }
 
 // type_ 分配规则

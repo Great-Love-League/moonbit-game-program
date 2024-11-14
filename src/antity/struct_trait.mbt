@@ -61,19 +61,19 @@ pub fn showp(self:Frame_effects_,x:Int,y:Int,t:Int)->Unit{
 
 
 pub fn print(self:Aircraft)->Unit{
-    self.frame.show(self.pos.x.to_int(),self.pos.y.to_int())
+    get_fram_entity(self.type_).show(self.pos.x.to_int(),self.pos.y.to_int())
 }
 
 pub fn print(self:Bullet)->Unit{
-    self.frame.show(self.pos.x.to_int(),self.pos.y.to_int())
+    get_fram_entity(self.type_).show(self.pos.x.to_int(),self.pos.y.to_int())
 }
 
-pub fn print(self:Laser)->Unit{
-    // self.frame.show(self.pos.x.to_int(),self.pos.y.to_int())
-}
+// pub fn print(self:Laser)->Unit{
+//     // get_fram_entity(self.type_).show(self.pos.x.to_int(),self.pos.y.to_int())
+// }
 
 pub fn print(self:Cartridge)->Unit{
-    self.frame.show(self.pos.x.to_int(),self.pos.y.to_int())
+    get_fram_entity(self.type_).show(self.pos.x.to_int(),self.pos.y.to_int())
 }
 
 //展示函数#############################################
@@ -116,8 +116,8 @@ pub fn Cartridge::update_pos(self:Cartridge)->Unit{
 
 //检测是否出界#########################################
 pub fn Aircraft::is_out_partly(self:Aircraft)->Bool{
-    let xl=self.pos.x.to_int()+self.frame.xlen.reinterpret_as_int()-1
-    let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
+    let xl=self.pos.x.to_int()+get_fram_entity(self.type_).xlen.reinterpret_as_int()-1
+    let yl=self.pos.y.to_int()+get_fram_entity(self.type_).ylen.reinterpret_as_int()-1
     let x=self.pos.x
     let y=self.pos.y
     if(((x<160&&xl>=160)||(y>low_y.to_double()&&yl>=low_y)||(x<0&&xl>=0)||(y<0&&yl>=0))||self.is_out_all()) {true}
@@ -125,8 +125,8 @@ pub fn Aircraft::is_out_partly(self:Aircraft)->Bool{
 }
 
 pub fn Aircraft::is_out_all(self:Aircraft)->Bool{
-    let xl=self.pos.x.to_int()+self.frame.xlen.reinterpret_as_int()-1
-    let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
+    let xl=self.pos.x.to_int()+get_fram_entity(self.type_).xlen.reinterpret_as_int()-1
+    let yl=self.pos.y.to_int()+get_fram_entity(self.type_).ylen.reinterpret_as_int()-1
     let x=self.pos.x.to_int()
     let y=self.pos.y.to_int()
     if((x>=160||xl<0)||(y<0||yl>=low_y)) {true}
@@ -135,8 +135,8 @@ pub fn Aircraft::is_out_all(self:Aircraft)->Bool{
 
 
 pub fn Bullet::is_out_all(self:Bullet)->Bool{
-    let xl=self.pos.x.to_int()+self.frame.xlen.to_int()-1
-    let yl=self.pos.y.to_int()+self.frame.ylen.to_int()-1
+    let xl=self.pos.x.to_int()+get_fram_entity(self.type_).xlen.to_int()-1
+    let yl=self.pos.y.to_int()+get_fram_entity(self.type_).ylen.to_int()-1
     let x=self.pos.x.to_int()
     let y=self.pos.y.to_int()
     if((x>=160||xl<0)||(y<0||yl>=low_y)) {true}
@@ -144,8 +144,8 @@ pub fn Bullet::is_out_all(self:Bullet)->Bool{
 }
 
 pub fn Cartridge::is_out_all(self:Cartridge)->Bool{
-    let xl=self.pos.x.to_int()+self.frame.xlen.reinterpret_as_int()-1
-    let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
+    let xl=self.pos.x.to_int()+get_fram_entity(self.type_).xlen.reinterpret_as_int()-1
+    let yl=self.pos.y.to_int()+get_fram_entity(self.type_).ylen.reinterpret_as_int()-1
     let x=self.pos.x.to_int()
     let y=self.pos.y.to_int()
     if((x>=160||xl<0)||(y<0||yl>=low_y)) {true}
@@ -153,8 +153,8 @@ pub fn Cartridge::is_out_all(self:Cartridge)->Bool{
 }
 
 pub fn Cartridge::is_out_partly(self:Cartridge)->Bool{
-    let xl=self.pos.x.to_int()+self.frame.xlen.reinterpret_as_int()-1
-    let yl=self.pos.y.to_int()+self.frame.ylen.reinterpret_as_int()-1
+    let xl=self.pos.x.to_int()+get_fram_entity(self.type_).xlen.reinterpret_as_int()-1
+    let yl=self.pos.y.to_int()+get_fram_entity(self.type_).ylen.reinterpret_as_int()-1
     let x=self.pos.x
     let y=self.pos.y
     if(((x<160&&xl>=160)||(y>low_y.to_double()&&yl>=low_y)||(x<0&&xl>=0)||(y<0&&yl>=0))||self.is_out_all()) {true}
@@ -179,12 +179,14 @@ pub fn crash(self:Bullet,obj:Aircraft)->Bool{
     let mut xo:Int=0
     let mut yo:Int=0
     let mut ans=false
-    for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
-        xs=i%self.frame.xlen.reinterpret_as_int()+self.pos.x.to_int()
-        ys=i/self.frame.xlen.reinterpret_as_int()+self.pos.y.to_int()
-        for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
-            xo=j%obj.frame.xlen.reinterpret_as_int()+obj.pos.x.to_int()
-            yo=j%obj.frame.ylen.reinterpret_as_int()+obj.pos.y.to_int()
+    let selff=get_fram_entity(self.type_)
+    let objj=get_fram_entity(obj.type_)
+    for i=selff.sprite.length()-1;i>=0&&ans.not();i=i-1{
+        xs=i%selff.xlen.reinterpret_as_int()+self.pos.x.to_int()
+        ys=i/selff.xlen.reinterpret_as_int()+self.pos.y.to_int()
+        for j=objj.sprite.length()-1;j>=0&&ans.not();j=j-1{
+            xo=j%objj.xlen.reinterpret_as_int()+obj.pos.x.to_int()
+            yo=j%objj.ylen.reinterpret_as_int()+obj.pos.y.to_int()
             if(xs==xo&&yo==ys) {ans=true}
         }
     }
@@ -200,12 +202,14 @@ pub fn crash(self:Aircraft,obj:Aircraft)->Bool{
     let mut xo:Int=0
     let mut yo:Int=0
     let mut ans=false
-    for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
-        xs=i%self.frame.xlen.reinterpret_as_int()+self.pos.x.to_int()
-        ys=i/self.frame.xlen.reinterpret_as_int()+self.pos.y.to_int()
-        for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
-            xo=j%obj.frame.xlen.reinterpret_as_int()+obj.pos.x.to_int()
-            yo=j%obj.frame.ylen.reinterpret_as_int()+obj.pos.y.to_int()
+    let selff=get_fram_entity(self.type_)
+    let objj=get_fram_entity(obj.type_)
+    for i=selff.sprite.length()-1;i>=0&&ans.not();i=i-1{
+        xs=i%selff.xlen.reinterpret_as_int()+self.pos.x.to_int()
+        ys=i/selff.xlen.reinterpret_as_int()+self.pos.y.to_int()
+        for j=objj.sprite.length()-1;j>=0&&ans.not();j=j-1{
+            xo=j%objj.xlen.reinterpret_as_int()+obj.pos.x.to_int()
+            yo=j%objj.ylen.reinterpret_as_int()+obj.pos.y.to_int()
             if(xs==xo&&yo==ys) {ans=true}
         }
     }
@@ -221,12 +225,14 @@ pub fn crash(self:Cartridge,obj:Aircraft)->Bool{
     let mut xo:Int=0
     let mut yo:Int=0
     let mut ans=false
-    for i=self.frame.sprite.length()-1;i>=0&&ans.not();i=i-1{
-        xs=i%self.frame.xlen.reinterpret_as_int()+self.pos.x.to_int()
-        ys=i/self.frame.xlen.reinterpret_as_int()+self.pos.y.to_int()
-        for j=obj.frame.sprite.length()-1;j>=0&&ans.not();j=j-1{
-            xo=j%obj.frame.xlen.reinterpret_as_int()+obj.pos.x.to_int()
-            yo=j%obj.frame.ylen.reinterpret_as_int()+obj.pos.y.to_int()
+    let selff=get_fram_entity(self.type_)
+    let objj=get_fram_entity(obj.type_)
+    for i=selff.sprite.length()-1;i>=0&&ans.not();i=i-1{
+        xs=i%selff.xlen.reinterpret_as_int()+self.pos.x.to_int()
+        ys=i/selff.xlen.reinterpret_as_int()+self.pos.y.to_int()
+        for j=objj.sprite.length()-1;j>=0&&ans.not();j=j-1{
+            xo=j%objj.xlen.reinterpret_as_int()+obj.pos.x.to_int()
+            yo=j%objj.ylen.reinterpret_as_int()+obj.pos.y.to_int()
             if(xs==xo&&yo==ys) {ans=true}
         }
     }

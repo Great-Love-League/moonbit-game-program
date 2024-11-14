@@ -147,6 +147,34 @@ pub fn player_Plane_effect()->Frame_effects_{
 }
 
 // 玩家飞机正常一般形态
+
+pub fn get_fram_entity(num:Int)->Frame_effects{
+	if(num==1) {return bullet1_()}
+	if(num==9) {return bullet9_()}
+	if(num==2) {return high_explosive_my_()}
+	if(num==11) {return high_explosive_en_()}
+	if(num==3) {return player_Plane_1_frame()}
+	if(num==4) {return small_plane_()}
+	if(num==5) {return middle_plane_()}
+	if(num==6) {return high_explosive_cartridge_()}
+	if(num==7) {return double_cartridge_()}
+	if(num==8) {return hp_recovery_pack_()}
+	return double_cartridge_()
+}
+
+// type_ 分配规则
+// 普通子弹_敌人 1
+// 普通子弹_自己 9
+// 高爆子弹_自己 2
+// 高爆子弹_敌人 11
+// 自机 3
+// 敌机小型机 4
+// 敌机中型机_普通子弹版 5
+// 高爆子弹包 6
+// 双倍子弹包 7
+// 血量恢复包 8
+// 激光子弹包 10
+
 pub fn player_Plane_1_frame()-> Frame_effects{
 	{
   xlen:13,
@@ -180,7 +208,7 @@ pub fn small_plane()->Aircraft{{
 	bullet_exit_point:[],
 	speed:1.3666666666666667,
 	dir:90,
-	frame:small_plane_(),
+	// frame:small_plane_(),
 	hp:10}
 }
 
@@ -190,7 +218,7 @@ pub fn middle_plane()->Aircraft{{
 	bullet_exit_point:[Bullet_exit_point::new(4,17,1,95,90)],
 	speed:0.8666666666666667,
 	dir:90,
-	frame:middle_plane_(),
+	// frame:middle_plane_(),
 	hp:60}
 }
 
@@ -200,18 +228,18 @@ pub fn player_Plane()->Aircraft{{
 	bullet_exit_point:[Bullet_exit_point::new(5,5,9,0,10)],
 	speed:1.3666666666666667,
 	dir:180,
-	frame:player_Plane_1_frame(),
+	// frame:player_Plane_1_frame(),
 	hp:100}
 }
 
-pub fn bullet1_()->Frame_effects{{
+pub fn bullet9_()->Frame_effects{{
   xlen:3,
   ylen:3,
   sprite:@bitset.Bitset::new(2,"010101010101010101"),
   back_ground:@bitset.Bitset::new(1,"000000000")}
 }
 
-pub fn bullet2_()->Frame_effects{{
+pub fn bullet1_()->Frame_effects{{
   xlen:3,
   ylen:3,
   sprite:@bitset.Bitset::new(2,"111111111111111111"),
@@ -226,7 +254,8 @@ pub fn bullet1()->Bullet{{
 	pos:Location::new(9),
 	dir:270,
 	speed:1,
-	frame:bullet1_()}
+	// frame:bullet1_()
+	}
 }
 
 pub fn bullet2()->Bullet{{
@@ -235,7 +264,8 @@ pub fn bullet2()->Bullet{{
 	pos:Location::new(1),
 	dir:90,
 	speed:1,
-	frame:bullet2_()}
+	// frame:bullet2_()
+	}
 }
 
 pub fn high_explosive_en_()->Frame_effects{{
@@ -258,7 +288,8 @@ pub fn high_explosive_my()->Bullet{{
 	pos:Location::new(2),
 	dir:270,
 	speed:1,
-	frame:high_explosive_my_()}
+	// frame:high_explosive_my_()
+	}
 }
 
 pub fn high_explosive_en()->Bullet{{
@@ -267,7 +298,8 @@ pub fn high_explosive_en()->Bullet{{
 	pos:Location::new(11),
 	dir:90,
 	speed:1,
-	frame:high_explosive_en_()}
+	// frame:high_explosive_en_()
+	}
 }
 
 pub fn high_explosive_cartridge_()->Frame_effects{{
@@ -283,7 +315,8 @@ pub fn high_explosive_cartridge()->Cartridge{{
 	speed:0.5,
 	dir:90,
 	effect:0,
-	frame:high_explosive_cartridge_()}
+	// frame:high_explosive_cartridge_()
+	}
 }
 
 pub fn hp_recovery_pack()->Cartridge{{
@@ -292,7 +325,8 @@ pub fn hp_recovery_pack()->Cartridge{{
 	speed:0.5,
 	dir:90,
 	effect:50,
-	frame:hp_recovery_pack_()}
+	// frame:hp_recovery_pack_()
+	}
 }
 
 pub fn hp_recovery_pack_()->Frame_effects{{
@@ -308,7 +342,8 @@ pub fn double_cartridge()->Cartridge{{
 	speed:0.5,
 	dir:90,
 	effect:0,
-	frame:double_cartridge_()}
+	// frame:double_cartridge_()
+	}
 }
 
 pub fn double_cartridge_()->Frame_effects{{
