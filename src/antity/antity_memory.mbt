@@ -426,3 +426,4 @@ pub fn get_score(n:Int)->Int{
 
 //pub var of music
 //音乐用途tones数组
+pub let tones: Sound_effects={effects:setup_tone_params()};
