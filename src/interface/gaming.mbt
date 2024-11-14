@@ -31,8 +31,8 @@ fn gaming_logic()->Unit{
 			player_Plane_effect.begin=@time_cnt.get_time()+1
 			updated.val=true
 		}
-		else if(((@time_cnt.get_time()-player_Plane_effect.begin)/16).to_int()<4){
-			@antity.showp(player_Plane_effect,(player_plane.pos.x-3).to_int(),(player_plane.pos.y).to_int(),((@time_cnt.get_time()-player_Plane_effect.begin)/16).to_int());
+		else if(((@time_cnt.get_time()-player_Plane_effect.begin)/16).reinterpret_as_int()<4){
+			@antity.showp(player_Plane_effect,(player_plane.pos.x-3).to_int(),(player_plane.pos.y).to_int(),((@time_cnt.get_time()-player_Plane_effect.begin)/16).reinterpret_as_int());
 		}
 		else{
       game_over()
@@ -43,7 +43,7 @@ fn gaming_logic()->Unit{
 	else{
     @antity.scores.val=score.val
     // @wasm4.trace(@antity.get_ratio().to_string())
-		ttime.val=@time_cnt.get_time().to_int()
+		ttime.val=@time_cnt.get_time().reinterpret_as_int()
 		//get_next_pos################################################################################################################
 		//self_plane_update_pos
 		if (button_state.val.button_down||button_state.val.button_up||button_state.val.button_left||button_state.val.button_right)&&(button_state.val.button_down&&button_state.val.button_up&&button_state.val.button_left&&button_state.val.button_right).not()&&((button_state.val.button_down&&button_state.val.button_up)&&button_state.val.button_left.not()&&button_state.val.button_right.not()).not()&&(button_state.val.button_down.not()&&button_state.val.button_up.not()&&(button_state.val.button_left&&button_state.val.button_right)).not(){

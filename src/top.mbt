@@ -7,6 +7,7 @@ pub fn start() -> Unit {
 }
 
 pub fn update() -> Unit {
+	@wasm4.trace("312312")
 	@time_cnt.update_time();
 	// @antity.player_Plane_1_frame.print()
 	@interface.interface()

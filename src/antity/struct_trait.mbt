@@ -93,8 +93,8 @@ pub fn Bullet_exit_point::new(x:Int,y:Int,type_:Int,last_shoot:Int,shoot_speed:I
 pub fn Aircraft::update_pos(self:Aircraft)->Unit{
     let x=self.pos.x
     let y=self.pos.y
-    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.pi)
-    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.pi)
+    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.PI)
+    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.PI)
     if self.type_==3{
         if(self.is_out_partly()){
             self.pos.x=x
@@ -104,13 +104,13 @@ pub fn Aircraft::update_pos(self:Aircraft)->Unit{
 }
 
 pub fn Bullet::update_pos(self:Bullet)->Unit{
-    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.pi)
-    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.pi)
+    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.PI)
+    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.PI)
 }
 
 pub fn Cartridge::update_pos(self:Cartridge)->Unit{
-    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.pi)
-    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.pi)
+    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.PI)
+    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.PI)
 }
 //更新位置#############################################
 
@@ -135,8 +135,8 @@ pub fn Aircraft::is_out_all(self:Aircraft)->Bool{
 
 
 pub fn Bullet::is_out_all(self:Bullet)->Bool{
-    let xl=self.pos.x.to_int()+get_fram_entity(self.type_).xlen.to_int()-1
-    let yl=self.pos.y.to_int()+get_fram_entity(self.type_).ylen.to_int()-1
+    let xl=self.pos.x.to_int()+get_fram_entity(self.type_).xlen.reinterpret_as_int()-1
+    let yl=self.pos.y.to_int()+get_fram_entity(self.type_).ylen.reinterpret_as_int()-1
     let x=self.pos.x.to_int()
     let y=self.pos.y.to_int()
     if((x>=160||xl<0)||(y<0||yl>=low_y)) {true}

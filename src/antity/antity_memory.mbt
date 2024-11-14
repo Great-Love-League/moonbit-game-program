@@ -373,6 +373,7 @@ pub fn bullet(n:Int)->Bullet{
 		1=>bullet2()
 		2=>high_explosive_my()
 		11=>high_explosive_en()
+		_=>bullet1()
 	}
 }
 pub fn plans(n:Int)->Aircraft{
@@ -380,6 +381,7 @@ pub fn plans(n:Int)->Aircraft{
 		3=>player_Plane()
 		4=>small_plane()
 		5=>middle_plane()
+		_=>small_plane()
 	}
 }
 
@@ -398,6 +400,8 @@ pub fn default_bullet(n:Int)->FixedArray[Bullet_exit_point]{
 		5 => return [Bullet_exit_point::new(4,17,1,0,90)]
 		6 => [Bullet_exit_point::new(5,5,2,0,10,limit=20)]
 		7 => [Bullet_exit_point::new(2,8,9,0,10,limit=30),Bullet_exit_point::new(9,8,9,0,10,limit=30)]
+		11 => [Bullet_exit_point::new(6,17,)]
+		_=> [Bullet_exit_point::new(5,5,9,0,10)]
 	}
 }
 
@@ -405,6 +409,7 @@ pub fn get_score(n:Int)->Int{
 	match n{
 		4 => return 10
 		5 => return 50
+		_ => 0
 	}
 }
 

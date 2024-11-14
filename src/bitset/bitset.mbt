@@ -20,7 +20,7 @@ pub fn Bitset::new(per_size:Int,string:String)->Bitset{
       block=block+1;
       move=0;
     }
-    ans.bits[block]=ans.bits[block]|((i.to_int()-'0'.to_int()).to_uint()<<move)
+    ans.bits[block]=ans.bits[block]|((i.to_int()-'0'.to_int()).reinterpret_as_uint()<<move)
     move=move+1
   }
   ans
