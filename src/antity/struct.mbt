@@ -105,7 +105,7 @@ pub struct Bullet_exit_point{
 pub struct Aircraft{
   type_:Int
   pos:Location
-  speed:Double
+  mut speed:Double
   mut dir:Double
   // frame:Frame_effects
   mut hp:Double
@@ -131,6 +131,7 @@ pub struct Cartridge{
 // 自机 3
 // 敌机小型机 4
 // 敌机中型机_普通子弹版 5
+// 敌机中型机_高爆子弹版 12
 // 高爆子弹包 6
 // 双倍子弹包 7
 // 血量恢复包 8

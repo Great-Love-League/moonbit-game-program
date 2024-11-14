@@ -1,17 +1,19 @@
-pub trait Strike{
-	is_strike(Self,Self)->Bool
-}
+// pub trait Strike{
+// 	is_strike(Self,Self)->Bool
+// }
 
-pub trait Updata_pos{
-	updata_pos(Self)->Unit
-}
+// pub trait Updata_pos{
+// 	updata_pos(Self)->Unit
+// }
 
-pub trait Get_new_pos{
-	get_new_pos(Self)->Unit
-}
-pub trait Setmusic{
-		setup_tone_params() -> Array[ToneParams]
-}
+// pub trait Get_new_pos{
+// 	get_new_pos(Self)->Unit
+// }
+// pub trait Setmusic{
+// 		setup_tone_params() -> Array[ToneParams]
+// }
+
+pub let scores:Ref[Int]=Ref::new(0);
 
 pub fn get_index(x:UInt,y:UInt)->UInt{
 	y*160+x
@@ -24,7 +26,6 @@ pub fn get_index(x:UInt,y:UInt)->UInt{
 //展示函数#############################################
 
 pub fn show(self:Frame_effects,x:Int,y:Int)->Unit{
-    let len=self.sprite.length()
     let mut index=0
     let mut posx=x
     let mut posy=y
@@ -42,7 +43,6 @@ pub fn show(self:Frame_effects,x:Int,y:Int)->Unit{
 }
 
 pub fn showp(self:Frame_effects_,x:Int,y:Int,t:Int)->Unit{
-    let len=self.sprite[t].length()
     let mut index=0
     let mut posx=x
     let mut posy=y
@@ -93,8 +93,8 @@ pub fn Bullet_exit_point::new(x:Int,y:Int,type_:Int,last_shoot:Int,shoot_speed:I
 pub fn Aircraft::update_pos(self:Aircraft)->Unit{
     let x=self.pos.x
     let y=self.pos.y
-    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.pi)
-    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.pi)
+    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.PI)
+    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.PI)
     if self.type_==3{
         if(self.is_out_partly()){
             self.pos.x=x
@@ -104,13 +104,13 @@ pub fn Aircraft::update_pos(self:Aircraft)->Unit{
 }
 
 pub fn Bullet::update_pos(self:Bullet)->Unit{
-    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.pi)
-    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.pi)
+    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.PI)
+    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.PI)
 }
 
 pub fn Cartridge::update_pos(self:Cartridge)->Unit{
-    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.pi)
-    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.pi)
+    self.pos.x=self.pos.x+self.speed*@math.cos(self.dir/180*@math.PI)
+    self.pos.y=self.pos.y+self.speed*@math.sin(self.dir/180*@math.PI)
 }
 //更新位置#############################################
 
@@ -135,8 +135,8 @@ pub fn Aircraft::is_out_all(self:Aircraft)->Bool{
 
 
 pub fn Bullet::is_out_all(self:Bullet)->Bool{
-    let xl=self.pos.x.to_int()+get_fram_entity(self.type_).xlen.to_int()-1
-    let yl=self.pos.y.to_int()+get_fram_entity(self.type_).ylen.to_int()-1
+    let xl=self.pos.x.to_int()+get_fram_entity(self.type_).xlen.reinterpret_as_int()-1
+    let yl=self.pos.y.to_int()+get_fram_entity(self.type_).ylen.reinterpret_as_int()-1
     let x=self.pos.x.to_int()
     let y=self.pos.y.to_int()
     if((x>=160||xl<0)||(y<0||yl>=low_y)) {true}
@@ -173,6 +173,14 @@ pub fn die(self:Aircraft)->Bool{
 
 //检测撞击#################################################################################
 
+pub fn get_ratio_en()->Double{
+    return (1.0+scores.val.to_double()*0.0008)
+}
+
+pub fn get_ratio_my()->Double{
+    return (1.0+scores.val.to_double()*0.0004)
+}
+
 pub fn crash(self:Bullet,obj:Aircraft)->Bool{
     let mut xs:Int=0
     let mut ys:Int=0
@@ -191,7 +199,10 @@ pub fn crash(self:Bullet,obj:Aircraft)->Bool{
         }
     }
     if(ans){
-        obj.hp=obj.hp-self.harm
+        if(self.type_==1||self.type_==11){
+            obj.hp=obj.hp-self.harm*get_ratio_en();
+        }
+        else if(self.type_==2||self.type_==9){obj.hp=obj.hp-self.harm*get_ratio_my()}
     }
     ans
 }

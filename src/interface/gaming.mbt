@@ -31,8 +31,8 @@ fn gaming_logic()->Unit{
 			player_Plane_effect.begin=@time_cnt.get_time()+1
 			updated.val=true
 		}
-		else if(((@time_cnt.get_time()-player_Plane_effect.begin)/16).to_int()<4){
-			@antity.showp(player_Plane_effect,(player_plane.pos.x-3).to_int(),(player_plane.pos.y).to_int(),((@time_cnt.get_time()-player_Plane_effect.begin)/16).to_int());
+		else if(((@time_cnt.get_time()-player_Plane_effect.begin)/16).reinterpret_as_int()<4){
+			@antity.showp(player_Plane_effect,(player_plane.pos.x-3).to_int(),(player_plane.pos.y).to_int(),((@time_cnt.get_time()-player_Plane_effect.begin)/16).reinterpret_as_int());
 		}
 		else{
       game_over()
@@ -41,7 +41,9 @@ fn gaming_logic()->Unit{
 		}
 	}
 	else{
-		ttime.val=@time_cnt.get_time().to_int()
+    @antity.scores.val=score.val
+    // @wasm4.trace(@antity.get_ratio().to_string())
+		ttime.val=@time_cnt.get_time().reinterpret_as_int()
 		//get_next_pos################################################################################################################
 		//self_plane_update_pos
 		if (button_state.val.button_down||button_state.val.button_up||button_state.val.button_left||button_state.val.button_right)&&(button_state.val.button_down&&button_state.val.button_up&&button_state.val.button_left&&button_state.val.button_right).not()&&((button_state.val.button_down&&button_state.val.button_up)&&button_state.val.button_left.not()&&button_state.val.button_right.not()).not()&&(button_state.val.button_down.not()&&button_state.val.button_up.not()&&(button_state.val.button_left&&button_state.val.button_right)).not(){
@@ -91,6 +93,7 @@ fn gaming_logic()->Unit{
 		}
 		for i=cartridge.length()-1;i>=0;i=i-1{
 			if(cartridge[i].crash(player_plane)){
+				score.val=score.val+@antity.get_score(cartridge[i].type_)
 				cartridge.remove(i)|> ignore
 			}
 		}
@@ -138,12 +141,7 @@ fn gaming_logic()->Unit{
 		//生成##############################################################################################################
 
 
-		if(random.uint(limit=500)<=1){
-			generate_plane(5)
-		}
-		if(random.uint(limit =1000)<=3){
-			generate_plane(4)
-		}
+		generate_plane()
 		if(random.uint(limit =1000)<=3){
 			generate_cartridge()
 		}
@@ -186,14 +184,25 @@ fn gaming_logic()->Unit{
   @wasm4.text(score.val.to_string(),0,10)
   @wasm4.text("Score",0,0)
   @wasm4.text("HP: ",0,150)
-  @wasm4.text(player_plane.hp.to_string(),20,150)
+  @wasm4.text((((player_plane.hp*100).to_int().to_double())/100.0).to_string(),20,150)
   // @wasm4.text(ttime.val.to_string(),90,150)
   // @wasm4.text("Frames",120,150)
   @wasm4.text((((ttime.val.to_double()/60.0*100).to_int()).to_double()/100).to_string()+"s",110,150)
 }
 
 //生成################################################################################################################################################
-fn generate_plane(type_:Int)->Unit{
+
+// let generate_planelist: FixedArray[Int]=[5,4,12]
+fn generate_plane()->Unit{
+  let mut type_:Int=0;
+  if(random.uint(limit=1000)>=20) {return}
+  if(random.uint(limit=100)<=60) {type_=4}
+  else {
+    if(random.uint(limit=100)>=30){
+      type_=5
+    }
+    else {type_=12}
+  }
   let x={
     ..@antity.plans(type_),
     pos:@antity.Location::new(
