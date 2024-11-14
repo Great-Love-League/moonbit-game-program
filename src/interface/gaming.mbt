@@ -20,6 +20,10 @@ let ttime:Ref[Int]=Ref::new(0)
 // let time_gone:Int= @time_cnt.get_time().to_int()/60
 // let time_trans:Double=time_gone.to_double()/60.0
 
+fn get_rand()->Double{
+  (random.uint(limit =160)).to_float().to_double()
+}
+
 fn gaming_logic()->Unit{
 	if(died.val){
     //@wasm4.tone((200,201),@wasm4.ADSR::new(100),@wasm4.ADSRVolume::new(100),@wasm4.ToneFlag::new(channel=Noise,mode=Duty_1_2,pan=Center));
@@ -193,12 +197,12 @@ fn generate_plane(type_:Int)->Unit{
   let x={
     ..@antity.plans(type_),
     pos:@antity.Location::new(
-      x=(random.uint(limit=160)).to_float().to_double(),
+      x=get_rand(),
       y=0,type_.reinterpret_as_uint()
     ),
   }
   while(x.is_out_partly()) {
-    x.pos.x=(random.uint(limit =160)).to_float().to_double()
+    x.pos.x=get_rand()
   }
   aircraft.push(x)
 }
@@ -255,13 +259,13 @@ fn generate_cartridge()->Unit{
     let x={
       ..@antity.cartridge(8),
       pos:@antity.Location::new(
-        x=(random.uint(limit =160)).to_float().to_double(),
+        x=get_rand(),
         y=0,
         8
       )
     }
     while(x.is_out_partly()) {
-      x.pos.x=(random.uint(limit = 160)).to_float().to_double()
+      x.pos.x=get_rand()
     }
     cartridge.push(x)
     return
@@ -270,13 +274,13 @@ fn generate_cartridge()->Unit{
     let x={
       ..@antity.cartridge(6),
       pos:@antity.Location::new(
-        x=(random.uint(limit =160)).to_float().to_double(),
+        x=get_rand(),
         y=0,
         6
       )
     }
     while(x.is_out_partly()) {
-      x.pos.x=(random.uint(limit = 160)).to_float().to_double()
+      x.pos.x=get_rand()
     }
     cartridge.push(x)
     return
@@ -285,13 +289,13 @@ fn generate_cartridge()->Unit{
     let x={
       ..@antity.cartridge(7),
       pos:@antity.Location::new(
-        x=(random.uint(limit =160)).to_float().to_double(),
+        x=get_rand(),
         y=0,
         7
       )
     }
     while(x.is_out_partly()) {
-      x.pos.x=(random.uint(limit =160)).to_float().to_double()
+      x.pos.x=get_rand()
     }
     cartridge.push(x)
     return
