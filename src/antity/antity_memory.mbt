@@ -215,7 +215,7 @@ pub fn small_plane()->Aircraft{{
 pub fn middle_plane()->Aircraft{{
 	type_:5,
 	pos:Location::new(x=0,y=0,5),
-	bullet_exit_point:[Bullet_exit_point::new(4,17,1,95,90)],
+	bullet_exit_point:[Bullet_exit_point::new(4,17,1,95,50)],
 	speed:0.8666666666666667,
 	dir:90,
 	// frame:middle_plane_(),
@@ -223,9 +223,9 @@ pub fn middle_plane()->Aircraft{{
 }
 
 pub fn middle_plane_high_explode()->Aircraft{{
-	type_:12,
+	type_:5,
 	pos:Location::new(x=0,y=0,5),
-	bullet_exit_point:[Bullet_exit_point::new(4,17,11,95,90)],
+	bullet_exit_point:[Bullet_exit_point::new(4,17,11,95,60)],
 	speed:0.8666666666666667,
 	dir:90,
 	// frame:middle_plane_(),
@@ -391,7 +391,7 @@ pub fn plans(n:Int)->Aircraft{
 		3=>player_Plane()
 		4=>small_plane()
 		5=>middle_plane()
-		12=>middle_plane()
+		12=>middle_plane_high_explode()
 		_=>small_plane()
 	}
 }

@@ -140,15 +140,7 @@ fn gaming_logic()->Unit{
 		//生成##############################################################################################################
 
 
-		if(random.uint(limit=500)<=1){
-			generate_plane(5)
-		}
-		if(random.uint(limit =1000)<=3){
-			generate_plane(4)
-		}
-		if(random.uint(limit =1000)<=3){
-			generate_plane(12)
-		}
+		generate_plane()
 		if(random.uint(limit =1000)<=3){
 			generate_cartridge()
 		}
@@ -198,7 +190,18 @@ fn gaming_logic()->Unit{
 }
 
 //生成################################################################################################################################################
-fn generate_plane(type_:Int)->Unit{
+
+// let generate_planelist: FixedArray[Int]=[5,4,12]
+fn generate_plane()->Unit{
+  let mut type_:Int=0;
+  if(random.uint(limit=1000)>=20) {return}
+  if(random.uint(limit=100)<=60) {type_=4}
+  else {
+    if(random.uint(limit=100)>=30){
+      type_=5
+    }
+    else {type_=12}
+  }
   let x={
     ..@antity.plans(type_),
     pos:@antity.Location::new(
