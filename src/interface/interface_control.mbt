@@ -6,6 +6,7 @@ pub let low_y=150
 let interface_gaming1:Int=1
 
 pub fn interface()->Unit{
+  @antity.musicplay();
   button_state.val=@wasm4.get_gamepad()
   if interface_type.val==interface_gaming1 {gaming1()}
 }
