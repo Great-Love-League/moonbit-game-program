@@ -93,6 +93,7 @@ fn gaming_logic()->Unit{
 		}
 		for i=cartridge.length()-1;i>=0;i=i-1{
 			if(cartridge[i].crash(player_plane)){
+				score.val=score.val+@antity.get_score(cartridge[i].type_)
 				cartridge.remove(i)|> ignore
 			}
 		}
@@ -183,7 +184,7 @@ fn gaming_logic()->Unit{
   @wasm4.text(score.val.to_string(),0,10)
   @wasm4.text("Score",0,0)
   @wasm4.text("HP: ",0,150)
-  @wasm4.text(player_plane.hp.to_string(),20,150)
+  @wasm4.text((((player_plane.hp*100).to_int().to_double())/100.0).to_string(),20,150)
   // @wasm4.text(ttime.val.to_string(),90,150)
   // @wasm4.text("Frames",120,150)
   @wasm4.text((((ttime.val.to_double()/60.0*100).to_int()).to_double()/100).to_string()+"s",110,150)

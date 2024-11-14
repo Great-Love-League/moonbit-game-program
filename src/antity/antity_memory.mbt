@@ -216,7 +216,7 @@ pub fn middle_plane()->Aircraft{{
 	type_:5,
 	pos:Location::new(x=0,y=0,5),
 	bullet_exit_point:[Bullet_exit_point::new(4,17,1,95,50)],
-	speed:0.8666666666666667,
+	speed:0.6666666666666667,
 	dir:90,
 	// frame:middle_plane_(),
 	hp:60}
@@ -226,7 +226,7 @@ pub fn middle_plane_high_explode()->Aircraft{{
 	type_:5,
 	pos:Location::new(x=0,y=0,5),
 	bullet_exit_point:[Bullet_exit_point::new(4,17,11,95,60)],
-	speed:0.8666666666666667,
+	speed:0.6666666666666667,
 	dir:90,
 	// frame:middle_plane_(),
 	hp:60}
@@ -239,7 +239,8 @@ pub fn player_Plane()->Aircraft{{
 	speed:1.3666666666666667,
 	dir:180,
 	// frame:player_Plane_1_frame(),
-	hp:100}
+	hp:100
+	}
 }
 
 pub fn bullet9_()->Frame_effects{{
@@ -420,6 +421,8 @@ pub fn get_score(n:Int)->Int{
 	match n{
 		4 => return 10
 		5 => return 50
+		6 => 30
+		7 => 25
 		_ => 0
 	}
 }

@@ -173,8 +173,12 @@ pub fn die(self:Aircraft)->Bool{
 
 //检测撞击#################################################################################
 
-pub fn get_ratio()->Double{
+pub fn get_ratio_en()->Double{
     return (1.0+scores.val.to_double()*0.0008)
+}
+
+pub fn get_ratio_my()->Double{
+    return (1.0+scores.val.to_double()*0.0004)
 }
 
 pub fn crash(self:Bullet,obj:Aircraft)->Bool{
@@ -196,9 +200,9 @@ pub fn crash(self:Bullet,obj:Aircraft)->Bool{
     }
     if(ans){
         if(self.type_==1||self.type_==11){
-            obj.hp=obj.hp-self.harm*get_ratio();
+            obj.hp=obj.hp-self.harm*get_ratio_en();
         }
-        else {obj.hp=obj.hp-self.harm}
+        else if(self.type_==2||self.type_==9){obj.hp=obj.hp-self.harm*get_ratio_my()}
     }
     ans
 }
