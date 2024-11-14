@@ -222,6 +222,16 @@ pub fn middle_plane()->Aircraft{{
 	hp:60}
 }
 
+pub fn middle_plane_high_explode()->Aircraft{{
+	type_:12,
+	pos:Location::new(x=0,y=0,5),
+	bullet_exit_point:[Bullet_exit_point::new(4,17,11,95,90)],
+	speed:0.8666666666666667,
+	dir:90,
+	// frame:middle_plane_(),
+	hp:60}
+}
+
 pub fn player_Plane()->Aircraft{{
 	type_:3,
 	pos:Location::new(x=73,y=120,3),
@@ -381,6 +391,7 @@ pub fn plans(n:Int)->Aircraft{
 		3=>player_Plane()
 		4=>small_plane()
 		5=>middle_plane()
+		12=>middle_plane()
 		_=>small_plane()
 	}
 }
@@ -400,7 +411,7 @@ pub fn default_bullet(n:Int)->FixedArray[Bullet_exit_point]{
 		5 => return [Bullet_exit_point::new(4,17,1,0,90)]
 		6 => [Bullet_exit_point::new(5,5,2,0,10,limit=20)]
 		7 => [Bullet_exit_point::new(2,8,9,0,10,limit=30),Bullet_exit_point::new(9,8,9,0,10,limit=30)]
-		11 => [Bullet_exit_point::new(6,17,)]
+		12 => [Bullet_exit_point::new(4,17,11,0,90)]
 		_=> [Bullet_exit_point::new(5,5,9,0,10)]
 	}
 }

@@ -147,6 +147,9 @@ fn gaming_logic()->Unit{
 			generate_plane(4)
 		}
 		if(random.uint(limit =1000)<=3){
+			generate_plane(12)
+		}
+		if(random.uint(limit =1000)<=3){
 			generate_cartridge()
 		}
 		for i=aircraft.length()-1;i>=0;i=i-1{
