@@ -105,7 +105,7 @@ pub struct Bullet_exit_point{
 pub struct Aircraft{
   type_:Int
   pos:Location
-  speed:Double
+  mut speed:Double
   mut dir:Double
   // frame:Frame_effects
   mut hp:Double

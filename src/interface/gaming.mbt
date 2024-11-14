@@ -41,6 +41,8 @@ fn gaming_logic()->Unit{
 		}
 	}
 	else{
+    @antity.scores.val=score.val
+    // @wasm4.trace(@antity.get_ratio().to_string())
 		ttime.val=@time_cnt.get_time().to_int()
 		//get_next_pos################################################################################################################
 		//self_plane_update_pos

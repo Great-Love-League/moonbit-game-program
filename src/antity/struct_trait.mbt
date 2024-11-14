@@ -1,17 +1,19 @@
-pub trait Strike{
-	is_strike(Self,Self)->Bool
-}
+// pub trait Strike{
+// 	is_strike(Self,Self)->Bool
+// }
 
-pub trait Updata_pos{
-	updata_pos(Self)->Unit
-}
+// pub trait Updata_pos{
+// 	updata_pos(Self)->Unit
+// }
 
-pub trait Get_new_pos{
-	get_new_pos(Self)->Unit
-}
-pub trait Setmusic{
-		setup_tone_params() -> Array[ToneParams]
-}
+// pub trait Get_new_pos{
+// 	get_new_pos(Self)->Unit
+// }
+// pub trait Setmusic{
+// 		setup_tone_params() -> Array[ToneParams]
+// }
+
+pub let scores:Ref[Int]=Ref::new(0);
 
 pub fn get_index(x:UInt,y:UInt)->UInt{
 	y*160+x
@@ -24,7 +26,6 @@ pub fn get_index(x:UInt,y:UInt)->UInt{
 //展示函数#############################################
 
 pub fn show(self:Frame_effects,x:Int,y:Int)->Unit{
-    let len=self.sprite.length()
     let mut index=0
     let mut posx=x
     let mut posy=y
@@ -42,7 +43,6 @@ pub fn show(self:Frame_effects,x:Int,y:Int)->Unit{
 }
 
 pub fn showp(self:Frame_effects_,x:Int,y:Int,t:Int)->Unit{
-    let len=self.sprite[t].length()
     let mut index=0
     let mut posx=x
     let mut posy=y
@@ -173,6 +173,10 @@ pub fn die(self:Aircraft)->Bool{
 
 //检测撞击#################################################################################
 
+pub fn get_ratio()->Double{
+    return (1.0+scores.val.to_double()*0.0008)
+}
+
 pub fn crash(self:Bullet,obj:Aircraft)->Bool{
     let mut xs:Int=0
     let mut ys:Int=0
@@ -191,7 +195,10 @@ pub fn crash(self:Bullet,obj:Aircraft)->Bool{
         }
     }
     if(ans){
-        obj.hp=obj.hp-self.harm
+        if(self.type_==1||self.type_==11){
+            obj.hp=obj.hp-self.harm*get_ratio();
+        }
+        else {obj.hp=obj.hp-self.harm}
     }
     ans
 }
