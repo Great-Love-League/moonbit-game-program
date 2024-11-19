@@ -274,7 +274,87 @@ fn take_effect(self:Cartridge,obj:Aircraft)->Unit{
 //弹药箱生效函数######################################################################################
 
 //function of music 
+pub fn play_tone(params: ToneParams) -> Unit {
+    @wasm4.tone(params.frequency, params.adsr, params.volume, params.channel);
+}
+pub fn musicplay() -> Unit {
+    let frame_counter :UInt= @time_cnt.get_time();
+            // 每秒运行60次，假设每个音调播放0.5秒（30帧）
+    let tone_duration :Int= 10;
+    let index = ((frame_counter.to_int() / tone_duration) % tones.effects.length());  
+    // 根据frame_counter的值播放不同的音调
+    play_tone(tones.effects[index])
+}
 
+pub fn setup_tone_params() -> Array[ToneParams] {
+    let adsr = @wasm4.ADSR::new(attack=0, decay=0,10, release=0);
+    let volume = @wasm4.ADSRVolume::new(100,peak=100);
+    let channel1 = @wasm4.ToneFlag::new(
+        channel = @wasm4.ToneChannel::Triangle,
+        mode = @wasm4.ToneMode::Duty_1_4,
+        pan = @wasm4.TonePan::Left
+    );
+    let channel2 = @wasm4.ToneFlag::new(
+        channel = @wasm4.ToneChannel::Triangle,
+        mode = @wasm4.ToneMode::Duty_1_2,
+        pan = @wasm4.TonePan::Right
+    );
+    let channel3 = @wasm4.ToneFlag::new(
+        channel = @wasm4.ToneChannel::Triangle,
+        mode = @wasm4.ToneMode::Duty_1_2,
+        pan = @wasm4.TonePan::Center
+    );
+    let toneC = {
+        frequency: (261, 262),
+        adsr: adsr,
+        volume: volume,
+        channel: channel1
+    };
+    let toneD = {
+        frequency: (293, 294),
+        adsr: adsr,
+        volume: volume,
+        channel: channel2
+    };
+    let toneE = {
+        frequency: (329, 330),
+        adsr: adsr,
+        volume: volume,
+        channel: channel3
+    };
+    let toneF = {
+        frequency: (349, 350),
+        adsr: adsr,
+        volume: volume,
+        channel: channel1
+    };
+    let toneG =  {
+        frequency: (392, 393),
+        adsr: adsr,
+        volume: volume,
+        channel: channel2
+    };
+    let toneA = {
+        frequency: (440,441),
+        adsr: adsr,
+        volume: volume,
+        channel: channel3
+    };
+    let toneB = {
+        frequency: (493, 494),
+        adsr: adsr,
+        volume: volume,
+        channel: channel1
+    };
+    return [toneE, toneE, toneF, toneG,
+            toneA, toneG, toneF, toneE,
+            toneD, toneD, toneE, toneF,
+            toneG, toneF, toneE, toneD,
+            toneC, toneC, toneD, toneE,
+            toneF, toneE, toneD, toneC,
+            toneB, toneB, toneC, toneD,
+            toneE, toneD, toneC, toneB];
+}
 
 //play_tone的用法如下:
 //let toneExample = {
