@@ -5,7 +5,7 @@
     "GAME/time_cnt"
   ],
   "link": {
-    "wasm": {
+    "wasm-gc": {
       "exports": [
         "start",
         "update"
