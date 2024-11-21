@@ -79,11 +79,11 @@ pub fn print(self:Cartridge)->Unit{
 //展示函数#############################################
 
 //构造函数#############################################
-pub fn Location::new(~x:Double=0,~y:Double=0,type_:UInt)->Location{
+pub fn Location::new(x~:Double=0,y~:Double=0,type_:UInt)->Location{
     {x,y,type_}
 }
 
-pub fn Bullet_exit_point::new(x:Int,y:Int,type_:Int,last_shoot:Int,shoot_speed:Int,~limit:Int=-1)->Bullet_exit_point{
+pub fn Bullet_exit_point::new(x:Int,y:Int,type_:Int,last_shoot:Int,shoot_speed:Int,limit~:Int=-1)->Bullet_exit_point{
     {x,y,type_,last_shoot,shoot_speed,limit}
 }
 //构造函数#############################################
@@ -281,7 +281,7 @@ pub fn musicplay() -> Unit {
     let frame_counter :UInt= @time_cnt.get_time();
             // 每秒运行60次，假设每个音调播放0.5秒（30帧）
     let tone_duration :Int= 10;
-    let index = ((frame_counter.to_int() / tone_duration) % tones.effects.length());  
+    let index = ((frame_counter.reinterpret_as_int() / tone_duration) % tones.effects.length());  
     // 根据frame_counter的值播放不同的音调
     play_tone(tones.effects[index])
 }
