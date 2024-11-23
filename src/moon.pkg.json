@@ -27,6 +27,17 @@
         "name": "memory"
       },
       "heap-start-address": 6560
+    },
+    "wasm": {
+      "exports": [
+        "start",
+        "update"
+      ],
+      "import-memory": {
+        "module": "env",
+        "name": "memory"
+      },
+      "heap-start-address": 6560
     }
   }
 }
