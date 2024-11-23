@@ -237,6 +237,8 @@ pub fn update_pos[T:Get_infor+Mut_infor](entity:T)->T{
         }
     }
     entity
+
+}
 //function of music 
 pub fn play_tone(params: ToneParams) -> Unit {
     @wasm4.tone(params.frequency, params.adsr, params.volume, params.channel);
