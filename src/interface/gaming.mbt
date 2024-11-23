@@ -25,6 +25,7 @@ fn get_rand()->Double{
 }
 
 fn gaming_logic()->Unit{
+  // @wasm4.trace("\{button_state.val.button_down} \{button_state.val.button_up} \{button_state.val.button_right} \{button_state.val.button_left}")
 	if(died.val){
     //@wasm4.tone((200,201),@wasm4.ADSR::new(100),@wasm4.ADSRVolume::new(100),@wasm4.ToneFlag::new(channel=Noise,mode=Duty_1_2,pan=Center));
 		if(updated.val.not()){
@@ -50,16 +51,16 @@ fn gaming_logic()->Unit{
 			update_self()
 		}
 		for i=aircraft.length()-1;i>=0;i=i-1{
-			aircraft[i].update_pos()
+      aircraft[i]=@antity.update_pos(aircraft[i])
 		}
 		for i=bullet_my.length()-1;i>=0;i=i-1{
-			bullet_my[i].update_pos()
+      bullet_my[i]=@antity.update_pos(bullet_my[i])
 		}
 		for i=bullet.length()-1;i>=0;i=i-1{
-			bullet[i].update_pos()
+      bullet[i]=@antity.update_pos(bullet[i])
 		}
 		for i=cartridge.length()-1;i>=0;i=i-1{
-			cartridge[i].update_pos()
+      cartridge[i]=@antity.update_pos(cartridge[i])
 		}
 		// for i=laser.length();i>=0;i=i-1{
 		// 	//waiting
@@ -110,7 +111,7 @@ fn gaming_logic()->Unit{
 			//加入子弹爆炸特效
 		}
 		for i=aircraft.length()-1;i>=0;i=i-1{
-			if(aircraft[i].is_out_all()){
+			if(@antity.is_out_all(aircraft[i])){
 				aircraft.remove(i)|> ignore
 			}
 			else if(aircraft[i].die()){
@@ -120,17 +121,17 @@ fn gaming_logic()->Unit{
 			}
 		}
 		for i=bullet.length()-1;i>=0;i=i-1{
-			if(bullet[i].is_out_all()){
+			if(@antity.is_out_all(bullet[i])){
 				bullet.remove(i)|> ignore
 			}
 		}
 		for i=bullet_my.length()-1;i>=0;i=i-1{
-			if(bullet_my[i].is_out_all()){
+			if(@antity.is_out_all(bullet_my[i])){
 				bullet_my.remove(i)|> ignore
 			}
 		}
 		for i=cartridge.length()-1;i>=0;i=i-1{
-			if(cartridge[i].is_out_all()){
+			if(@antity.is_out_all(cartridge[i])){
 				cartridge.remove(i)|> ignore
 			}
 		}
@@ -150,7 +151,6 @@ fn gaming_logic()->Unit{
 		}
 		shoot(player_plane)
 		//子弹袋生成！！！
-    
     //临时参数显示
 		// @wasm4.text(bullet_my.length().to_string(),0,0)
 		// @wasm4.text(bullet.length().to_string(),0,8)
@@ -210,7 +210,7 @@ fn generate_plane()->Unit{
       y=0,type_.reinterpret_as_uint()
     ),
   }
-  while(x.is_out_partly()) {
+  while(@antity.is_out_partly(x)) {
     x.pos.x=get_rand()
   }
   aircraft.push(x)
@@ -273,7 +273,7 @@ fn generate_cartridge()->Unit{
         8
       )
     }
-    while(x.is_out_partly()) {
+    while(@antity.is_out_partly(x)) {
       x.pos.x=get_rand()
     }
     cartridge.push(x)
@@ -288,7 +288,7 @@ fn generate_cartridge()->Unit{
         6
       )
     }
-    while(x.is_out_partly()) {
+    while(@antity.is_out_partly(x)) {
       x.pos.x=get_rand()
     }
     cartridge.push(x)
@@ -303,7 +303,7 @@ fn generate_cartridge()->Unit{
         7
       )
     }
-    while(x.is_out_partly()) {
+    while(@antity.is_out_partly(x)) {
       x.pos.x=get_rand()
     }
     cartridge.push(x)
@@ -316,6 +316,7 @@ fn generate_cartridge()->Unit{
 //自身飞机操作控制########################################################################################################################################
 fn update_self()->Unit{
   let mut dir:Double=0;
+  @wasm4.trace("\{button_state.val.button_down} \{button_state.val.button_up} \{button_state.val.button_right} \{button_state.val.button_left}")
   if (button_state.val.button_down&&button_state.val.button_up).not()&&(button_state.val.button_down||button_state.val.button_up){
     if button_state.val.button_down {
       if (button_state.val.button_right||button_state.val.button_left).not()||(button_state.val.button_right&&button_state.val.button_left) {dir=90}
@@ -339,7 +340,9 @@ fn update_self()->Unit{
     else if button_state.val.button_left {dir=180}
   }
   player_plane.dir=dir
-  player_plane.update_pos()
+  let posg=@antity.update_pos(player_plane)
+  player_plane.pos=posg.pos;
+  @wasm4.trace("posg\{posg.pos.x},\{posg.pos.y}")
 }
 //自身飞机操作控制########################################################################################################################################
 
