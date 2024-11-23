@@ -7,3 +7,4 @@ pub fn update_time()->Unit{
 pub fn get_time()->UInt{
 	frame_cnt.val
 }
+

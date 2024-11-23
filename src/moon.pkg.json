@@ -5,6 +5,18 @@
     "GAME/time_cnt"
   ],
   "link": {
+    "wasm": {
+      "exports": [
+        "start",
+        "update"
+      ],
+      "import-memory": {
+        "module": "env",
+        "name": "memory"
+      },
+      "heap-start-address": 6560
+    },
+    
     "wasm-gc": {
       "exports": [
         "start",
