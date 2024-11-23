@@ -316,7 +316,6 @@ fn generate_cartridge()->Unit{
 //自身飞机操作控制########################################################################################################################################
 fn update_self()->Unit{
   let mut dir:Double=0;
-  @wasm4.trace("\{button_state.val.button_down} \{button_state.val.button_up} \{button_state.val.button_right} \{button_state.val.button_left}")
   if (button_state.val.button_down&&button_state.val.button_up).not()&&(button_state.val.button_down||button_state.val.button_up){
     if button_state.val.button_down {
       if (button_state.val.button_right||button_state.val.button_left).not()||(button_state.val.button_right&&button_state.val.button_left) {dir=90}
@@ -342,7 +341,6 @@ fn update_self()->Unit{
   player_plane.dir=dir
   let posg=@antity.update_pos(player_plane)
   player_plane.pos=posg.pos;
-  @wasm4.trace("posg\{posg.pos.x},\{posg.pos.y}")
 }
 //自身飞机操作控制########################################################################################################################################
 

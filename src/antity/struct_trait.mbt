@@ -202,8 +202,8 @@ pub fn Aircraft::gety(self:Aircraft)->Float{self.pos.y.to_float()}
 pub fn Aircraft::getdir(self:Aircraft)->Float{self.dir.to_float()}
 pub fn Aircraft::getspeed(self:Aircraft)->Float{self.speed.to_float()}
 pub fn Aircraft::gettype(self:Aircraft)->Int{self.type_}
-pub fn Aircraft::mutx(self:Aircraft, x:Float)->Unit {self.pos.x = x.to_double();@wasm4.trace("ffffff\{self.pos.x} \{x}")}
-pub fn Aircraft::muty(self:Aircraft, y:Float)->Unit {self.pos.y = y.to_double();@wasm4.trace("ffffff\{self.pos.y} \{y}")}
+pub fn Aircraft::mutx(self:Aircraft, x:Float)->Unit {self.pos.x = x.to_double()}
+pub fn Aircraft::muty(self:Aircraft, y:Float)->Unit {self.pos.y = y.to_double()}
 
 pub fn Bullet::getx(self:Bullet)->Float{self.pos.x.to_float()}
 pub fn Bullet::gety(self:Bullet)->Float{self.pos.y.to_float()}
@@ -222,24 +222,15 @@ pub fn Cartridge::mutx(self:Cartridge, x:Float)->Unit {self.pos.x = x.to_double(
 pub fn Cartridge::muty(self:Cartridge, y:Float)->Unit {self.pos.y = y.to_double()}
 
 pub fn update_pos[T:Get_infor+Mut_infor](entity:T)->T{
-    @wasm4.trace("GGGG")
     let x = entity.getx()
     let y = entity.gety()
-        let new_x = x + entity.getspeed() * @math.cos(entity.getdir().to_double() * @math.PI / 180.0).to_float()
+    let new_x = x + entity.getspeed() * @math.cos(entity.getdir().to_double() * @math.PI / 180.0).to_float()
     let new_y = y + entity.getspeed() * @math.sin(entity.getdir().to_double() * @math.PI / 180.0).to_float()
-    @wasm4.trace("\{x} \{y} \{new_x} \{new_y}")
     entity.mutx(new_x)
     entity.muty(new_y)
     
     if (entity.gettype() == 3) {
-    let xl=entity.getx().to_double().to_int()+get_fram_entity(entity.gettype()).xlen.reinterpret_as_int()-1
-    let yl=entity.gety().to_double().to_int()+get_fram_entity(entity.gettype()).ylen.reinterpret_as_int()-1
-    let xx=entity.getx().to_double().to_int()
-    let yy=entity.gety().to_double().to_int()
-    @wasm4.trace("ddddd \{xx},\{xl},\{yy},\{yl}")
-    @wasm4.trace("ddddd \{entity.getx()},\{entity.gety()}")
         if (is_out_partly(entity)) {
-            @wasm4.trace("111111111")
             entity.mutx(x)
             entity.muty(y)
         }
@@ -261,7 +252,6 @@ pub fn is_out_partly[T:Get_infor](entity:T)->Bool{
     let yl=entity.gety().to_double().to_int()+get_fram_entity(entity.gettype()).ylen.reinterpret_as_int()-1
     let x=entity.getx().to_double().to_int()
     let y=entity.gety().to_double().to_int()
-    @wasm4.trace("\{(x<160&&xl>=160)} \{(x<0&&xl>=0)} \{(y<low_y&&yl>=low_y)} \{(y<0&&yl>=0)}")
     if((x<160&&xl>=160)||(y<low_y&&yl>=low_y)||(x<0&&xl>=0)||(y<0&&yl>=0)) {true}
     else {false}
 }
